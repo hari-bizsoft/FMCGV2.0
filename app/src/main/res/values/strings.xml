@@ -20,4 +20,5 @@
     <string name="title_activity_dummy">Dummy</string>
     <string name="reloadMsg">Do you want to reload</string>
     <string name="noReloadMsg">No</string>
+    <string name="test">test</string>
 </resources>
