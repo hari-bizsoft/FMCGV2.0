@@ -21,4 +21,5 @@
     <string name="reloadMsg">Do you want to reload</string>
     <string name="noReloadMsg">No</string>
     <string name="test">test</string>
+    <string name="test2">test</string>
 </resources>
