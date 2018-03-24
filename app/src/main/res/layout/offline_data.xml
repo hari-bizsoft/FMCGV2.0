@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="182dp">
+
+    <TextView
+        android:id="@+id/textView84"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Offline data "
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"/>
+
+
+    <TextView
+        android:id="@+id/tbl_txt1"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="Sale"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sale"
+        app:layout_constraintEnd_toStartOf="@+id/sale"
+        app:layout_constraintTop_toTopOf="@+id/sale"/>
+
+    <TextView
+        android:id="@+id/sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView84"/>
+
+
+    <TextView
+        android:id="@+id/tbl_txt12"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="Sale Order"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sale_order"
+        app:layout_constraintEnd_toStartOf="@+id/sale_order"
+        app:layout_constraintTop_toTopOf="@+id/sale_order"/>
+
+    <TextView
+        android:id="@+id/sale_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+
+        android:padding="10dip"
+        android:text="0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sale"/>
+
+
+    <TextView
+        android:id="@+id/stock_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="Sale Return"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sale_return"
+        app:layout_constraintEnd_toStartOf="@+id/sale_return"
+        app:layout_constraintTop_toTopOf="@+id/sale_return"/>
+
+    <TextView
+        android:id="@+id/sale_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sale_order"/>
+
+
+    <TextView
+        android:id="@+id/accounts_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="Sales Order Conversion"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sales_order_pending_list"
+        app:layout_constraintEnd_toStartOf="@+id/sales_order_pending_list"
+        app:layout_constraintTop_toTopOf="@+id/sales_order_pending_list"/>
+
+    <TextView
+        android:id="@+id/sales_order_pending_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:padding="10dip"
+        android:text="0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sale_return"/>
+
+
+    <TextView
+        android:id="@+id/receipt_text"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="10dip"
+        android:text="Receipt"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/receipt"
+        app:layout_constraintEnd_toStartOf="@+id/receipt"
+        app:layout_constraintTop_toTopOf="@+id/receipt"/>
+
+    <TextView
+        android:id="@+id/receipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+
+
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:padding="10dip"
+        android:text="0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sales_order_pending_list"/>
+
+    <Button
+        android:id="@+id/load"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Load"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receipt"/>
+
+
+</android.support.constraint.ConstraintLayout>

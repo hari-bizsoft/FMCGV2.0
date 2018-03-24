@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Aboorvass</string>
+    <string name="alert_ButtonRetry">retry</string>
+    <string name="alert_ButtonCancel">cancel</string>
+    <string name="companyID">companyId</string>
+    <string name="dealerID">dealerId</string>
+    <string name="isLogged">isLogged</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="dealerName">dealerName</string>
+    <string name="dealerId">dealerId</string>
+    <string name="companyPosition">companyPosition</string>
+    <string name="companyAddressLine1">companyAddressLineone</string>
+    <string name="phoneNumber">phoneNumber</string>
+    <string name="gstNo">gstNo</string>
+    <string name="email">email</string>
+    <string name="postal_code">postal_code</string>
+    <string name="companyAddressLine2">companyAddressLineTwo</string>
+    <string name="companyName">Aboorvass</string>
+    <string name="title_activity_dummy">Dummy</string>
+    <string name="reloadMsg">Do you want to reload</string>
+    <string name="noReloadMsg">No</string>
+</resources>

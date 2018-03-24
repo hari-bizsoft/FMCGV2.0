@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bizsoft.fmcgv2"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="25" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <supports-screens android:xlargeScreens="true" />
+
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
+
+    <uses-permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <meta-data
+        android:name="android.support.VERSION"
+        android:value="25.3.1" />
+
+    <application
+        android:name="android.support.multidex.MultiDexApplication"
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@drawable/fmcglogo64"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/fmcglogo64"
+        android:supportsRtl="true"
+        android:testOnly="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.bizsoft.fmcgv2.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.bizsoft.fmcgv2.LoginActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.DashboardActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.CustomerActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.AddCustomerActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name="com.bizsoft.fmcgv2.SalesActivity" >
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name="com.bizsoft.fmcgv2.SalesOrderActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.BTLib.BTDeviceList"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.BTLib.BTPrint"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.ReportActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.PrintPreview"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.ReprintActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.bizsoft.fmcgv2.InvoiceListActivity"
+            android:configChanges="orientation|screenSize" >
+        </activity>
+        <activity
+            android:name="com.bizsoft.fmcgv2.SalesReturnActivity"
+            android:configChanges="orientation|screenSize" >
+        </activity>
+        <activity
+            android:name="com.bizsoft.fmcgv2.ReceiptActivity"
+            android:configChanges="orientation|screenSize" >
+        </activity>
+        <activity
+            android:name="com.bizsoft.fmcgv2.PaymentActivity"
+            android:configChanges="orientation|screenSize" >
+        </activity>
+        <activity android:name="com.bizsoft.fmcgv2.service.BlockPage" />
+        <activity android:name="com.bizsoft.fmcgv2.DownloadDataActivity" >
+        </activity>
+        <activity android:name="com.bizsoft.fmcgv2.STOSOActivity" >
+        </activity>
+        <activity android:name="com.bizsoft.fmcgv2.AppActivity" >
+        </activity>
+
+        <provider
+            android:name="com.android.tools.ir.server.InstantRunContentProvider"
+            android:authorities="com.bizsoft.fmcgv2.com.android.tools.ir.server.InstantRunContentProvider"
+            android:multiprocess="true" />
+    </application>
+
+</manifest>

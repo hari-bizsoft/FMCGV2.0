@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="D:\R&amp;D\FMCGV22\app\src\main\assets"><file name="fmcglogo64.png" path="D:\R&amp;D\FMCGV22\app\src\main\assets\fmcglogo64.png"/><file name="denariusoft64.png" path="D:\R&amp;D\FMCGV22\app\src\main\assets\denariusoft64.png"/></source><source path="D:\R&amp;D\FMCGV22\app\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\R&amp;D\FMCGV22\app\src\debug\assets"/></dataSet></merger>
