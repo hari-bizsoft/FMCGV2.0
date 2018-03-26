@@ -320,8 +320,6 @@ public class MainActivity extends AppCompatActivity {
         String host =  null;
         Context context;
         String result ="";
-
-
         public ConnectReceiver(Context context) {
             if(Store.getInstance().urlType.contains("full")) {
                 Store.getInstance().baseUrl = "http://" + Store.getInstance().domain + "/";
@@ -329,9 +327,7 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 Store.getInstance().baseUrl = "http://" + Store.getInstance().domain + "/";
-
             }
-
             this.host =Store.getInstance().baseUrl;
             this.context = context;
 

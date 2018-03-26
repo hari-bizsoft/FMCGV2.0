@@ -476,6 +476,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 BizUtils.readAsJSON("customerList",context);
+                dialog.dismiss();
 
             }
         });
@@ -2123,7 +2124,7 @@ public class BizUtils {
             }.getType();
             ArrayList<Customer> customers = new ArrayList<Customer>();
             customers = gson.fromJson(text.toString(), customerList);
-            Dialog dialog = new Dialog(context);
+            final Dialog dialog = new Dialog(context);
 
             dialog.setContentView(R.layout.offline_data);
             TextView sale = (TextView) dialog.findViewById(R.id.sale);
@@ -2160,6 +2161,7 @@ public class BizUtils {
 
                     Store.getInstance().customerList = finalCustomers;
                     Toast.makeText(context, "Loaded..", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
             });
 
