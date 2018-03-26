@@ -44,6 +44,7 @@ import com.bizsoft.fmcgv2.Tables.SalesReturnDetails;
 import com.bizsoft.fmcgv2.dataobject.Company;
 
 import com.bizsoft.fmcgv2.dataobject.Customer;
+import com.bizsoft.fmcgv2.dataobject.Ledger;
 import com.bizsoft.fmcgv2.dataobject.Notification;
 import com.bizsoft.fmcgv2.dataobject.Payment;
 import com.bizsoft.fmcgv2.dataobject.Product;
@@ -92,6 +93,8 @@ import static com.bizsoft.fmcgv2.DashboardActivity.appDiscount;
 import static com.bizsoft.fmcgv2.DashboardActivity.fromCustomer;
 import static com.bizsoft.fmcgv2.DashboardActivity.paymentModeValue;
 import static com.bizsoft.fmcgv2.DashboardActivity.subTotal;
+import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpId;
+import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpName;
 
 /**
  * Created by shri on 9/8/17.
@@ -492,15 +495,19 @@ public class BizUtils {
 
         Customer customers = new Customer();
         Customer customerResponse;
+        int position;
 
         boolean status;
+        private String from;
 
-        public SaveCustomer(Context context, Customer customers) {
+        public SaveCustomer(Context context, Customer customers,int position,String from) {
             this.context = context;
 
             this.customers = customers;
             this.status = false;
             this.customerResponse = new Customer();
+            this.position = position;
+            this.from = from;
         }
 
         @Override
@@ -538,6 +545,8 @@ public class BizUtils {
                 } else {
                     Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
 
+
+
                     this.customers.setId(customerResponse.getId());
 
 
@@ -546,12 +555,34 @@ public class BizUtils {
 
                     System.out.println("Received ID " + customerResponse.getId());
 
-                    Store.getInstance().customerList.get(size - 1).setId(customerResponse.getId());
+                    Store.getInstance().customerList.get(position).setId(customerResponse.getId());
+
+
+                    Customer customer = SignalRService.getCustomer(customerResponse.getId());
+
+                    System.out.println("Size " + Store.getInstance().customerList.size());
+                    System.out.println("Position " + position);
                     for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
                         System.out.println("cus id : " + Store.getInstance().customerList.get(i).getId());
+                        System.out.println("Position " + i);
+                        if(Store.getInstance().customerList.get(i).getId().compareTo(customer.getId())==0)
+                        {
+                            System.out.println("setting led if for cus id : " + Store.getInstance().customerList.get(i).getId());
+                            Store.getInstance().customerList.get(i).getLedger().setId(customer.getLedger().getId());
+                            break;
+                        }
                     }
 
+                    BizUtils.prettyJson("customer",customer);
+
+
+
+                           /*
+                    customers = new Customer();
+                    customers = Store.getInstance().customerList.get(position);
+
                     if (newcustomer = true) {
+                        System.out.println("customer id " + customers.getId());
                         System.out.println("Salew size " + customers.getSale().size());
                         System.out.println("Sale order size " + customers.getSaleOrder().size());
                         if (customers.getSale().size() > 0) {
@@ -629,7 +660,9 @@ public class BizUtils {
                         }
                     }
 
+                        */
 
+                   saveDetails(context,from);
                 }
                 syncStatus = true;
             } else {
@@ -642,6 +675,211 @@ public class BizUtils {
 
 
     }
+
+
+
+    private void saveDetails(Context context,String from) {
+
+        boolean sync = false;
+
+        ArrayList<Customer> customerList = Store.getInstance().customerList;
+        for (int i = 0; i < customerList.size(); i++) {
+            System.out.println("OBJ =" + customerList.get(i).getSale().size());
+
+            if (customerList.get(i).getId() != null) {
+
+
+                System.out.println("Sale size " + customerList.get(i).getSale().size());
+
+                System.out.println("Sale order size " + customerList.get(i).getSaleOrder().size());
+
+                System.out.println("Sale of cus size " + customerList.get(i).getSalesOfCustomer().size());
+
+                System.out.println("Sale order of cus size " + customerList.get(i).getSaleOrdersOfCustomer().size());
+
+                System.out.println("Sale of return size " + customerList.get(i).getSaleReturn().size());
+
+                System.out.println("Sale retutn of cus size " + customerList.get(i).getSaleReturnOfCustomer().size());
+                System.out.println("Receipt size " + customerList.get(i).getReceipts().size());
+                System.out.println("Payments size " + customerList.get(i).getPayments().size());
+                System.out.println("Pending list size " + customerList.get(i).getPayments().size());
+                System.out.println("Cus id " + customerList.get(i).getId());
+
+
+
+                if (customerList.get(i).getSale().size() > 0) {
+                    newcustomer = false;
+
+                    for (int y = 0; y < customerList.get(i).getSalesOfCustomer().size(); y++) {
+
+                        if(!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
+                             new Save(context, "sale/save", "SODetails", customerList.get(i).getSalesOfCustomer().get(y).getProducts(), customerList.get(i).getId(), customerList.get(i).getSalesOfCustomer().get(y), null, null, customerList.get(i)).execute();
+
+                            sync = true;
+
+                        }
+                    }
+
+                }
+                if (customerList.get(i).getSaleOrder().size() > 0) {
+                    newcustomer = false;
+
+
+                    for (int y = 0; y < customerList.get(i).getSaleOrdersOfCustomer().size(); y++) {
+                        if(!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
+                             new Save(context, "SaleOrder/save", "SaleOrderDetails", customerList.get(i).getSaleOrdersOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, customerList.get(i).getSaleOrdersOfCustomer().get(y), null, customerList.get(i)).execute();
+                            sync = true;
+                        }
+                    }
+
+
+                }
+                if (customerList.get(i).getSaleReturn().size() > 0) {
+
+                    for (int y = 0; y < customerList.get(i).getSaleReturnOfCustomer().size(); y++) {
+                        if(!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
+                            newcustomer = false;
+                             new Save(context, "SalesReturn/save", "SaleReturnDetails", customerList.get(i).getSaleReturnOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, null, customerList.get(i).getSaleReturnOfCustomer().get(y), customerList.get(i)).execute();
+                            sync = true;
+                        }
+                    }
+
+                }
+                if (customerList.get(i).getReceipts().size() > 0) {
+                    newcustomer = false;
+                    System.out.println("Called save receipt");
+                    for (int z = 0; z < customerList.get(i).getReceipts().size(); z++) {
+
+                        if( customerList.get(i).getReceipts().get(z).isSynced())
+                        {
+                            System.out.println("Receipt already synced");
+                        }
+                        else
+                        {
+                            System.out.println("Customer Ledger Id "+customerList.get(i).getLedger().getId());
+                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(),customerList.get(i)).execute();
+
+                            sync = true;
+                        }
+
+
+                    }
+                    System.out.println("Closing save receipt");
+
+                }
+
+                System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+                System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+                if (customerList.get(i).getsOPendingList().size() > 0) {
+                    for(int x = 0;x<customerList.get(i).getsOPendingList().size();x++)
+                    {
+                        if(customerList.get(i).getsOPendingList().get(x).isSynced()) {
+                            System.out.println("SO pendling  already synced");
+                        }
+                        else {
+                            boolean status = SignalRService.saleOrderMakeSales(customerList.get(i).getsOPendingList().get(x));
+                            if (status) {
+                                System.out.println("SO pending saved");
+                                customerList.get(i).getsOPendingList().get(x).setSynced(true);
+                                sync = true;
+
+                            } else {
+                                System.out.println("SO Pending Not  saved ");
+                            }
+                        }
+                    }
+
+                }
+                if (customerList.get(i).getPayments().size() > 0) {
+                    newcustomer = false;
+                    System.out.println("Called save payments");
+                    for (int z = 0; z < customerList.get(i).getPayments().size(); z++) {
+
+
+                        if( customerList.get(i).getPayments().get(z).isSynced())
+                        {
+                            System.out.println("Payment already synced");
+                        }
+                        else
+                        {
+                            new SaveReceipt(context, "Sale/Payment_Save", customerList.get(i).getPayments().get(z), customerList.get(i).getId()).execute();
+                            sync = true;
+                        }
+
+                    }
+                    System.out.println("Closing save payments");
+
+                }
+
+
+                //new Save(context,"SaleOrder/save","SaleOrderDetails",Store.getInstance().addedProductForSalesOrder).execute();
+
+                // new Save(context,"sale/save","SODetails",Store.getInstance().addedProductForSales).execute();
+
+            }
+
+
+        }
+
+
+
+
+        System.out.println("Sync required = " + sync);
+
+
+
+
+        if (!sync) {
+            if(from.toLowerCase().contains("auto"))
+            {
+                // System.out.print("No Data to sync...");
+                Store.getInstance().messageList.add("Auto Sync invoked");
+                Notification notification = new Notification();
+                notification.setTime(getCurrentTime());
+                notification.setMessage("Auto Sync invoked:No data to Sync");
+                //  Store.getInstance().notificationList.add(notification);
+
+            }
+            else
+            {
+                Notification notification = new Notification();
+                notification.setMessage("Manual Sync invoked:No data to Sync");
+                notification.setTime(getCurrentTime());
+                Store.getInstance().notificationList.add(notification);
+
+
+                try {
+                    Snackbar snackbar = null;
+
+                    View notifier = DashboardActivity.customActionBar.findViewById(R.id.notify);
+                    snackbar = Snackbar
+                            .make(notifier, "Manual sync: No Data ", Snackbar.LENGTH_LONG);
+
+                    // snackbar.show();
+                    Store.getInstance().messageList.add("Manual Sync invoked");
+
+                    showToast("No Data to sync...", context);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+
+        }
+        else
+        {
+            try {
+                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                System.err.println("DB Updated..on local storage");
+            } catch (ClassNotFoundException e) {
+
+                System.err.println("Unable to write to DB");
+            }
+        }
+    }
+
     class Save extends AsyncTask {
 
         Context context;
@@ -1121,7 +1359,13 @@ public class BizUtils {
                         syncStatus = true;
                     }
                 }
+                try {
+                    BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                    System.err.println("DB Updated..on local storage");
+                } catch (ClassNotFoundException e) {
 
+                    System.err.println("Unable to write to DB");
+                }
 
             }
         }
@@ -1137,16 +1381,20 @@ public class BizUtils {
         String paramKey;
         Receipt receipt_ = new Receipt();
         Payment payment = new Payment();
+        Receipt refReceipt;
         Long cusId;
         com.bizsoft.fmcgv2.Tables.Receipt receipt;
         private boolean status;
 
-        public SaveReceipt(Context context, String url, Receipt receipt, Long cusId) {
+        Customer customer;
+        public SaveReceipt(Context context, String url, Receipt receipt, Long cusId,Customer customer) {
             this.context = context;
             this.url = url;
             this.receipt_ = receipt;
+            refReceipt = receipt;
             this.cusId = cusId;
             params = new HashMap<String, String>();
+            this.customer = customer;
         }
 
         public SaveReceipt(Context context, String url, Payment receipt, Long cusId) {
@@ -1175,7 +1423,8 @@ public class BizUtils {
 
 
                 params.put("Amount", String.valueOf(receipt_.getAmount()));
-                params.put("LedgerId", String.valueOf(receipt_.getLegerId()));
+                System.out.println("Receipt ledger id : "+customer.getLedger().getId());
+                params.put("LedgerId", String.valueOf(customer.getLedger().getId()));
                 params.put("PayMode", String.valueOf(receipt_.getPaymentMode()));
 
                 this.params.put("ChqNo", receipt_.getChequeNo());
@@ -1200,6 +1449,7 @@ public class BizUtils {
                 receipt.setReceiptDate(BizUtils.getCurrentDatAndTimeInDF());
                 //Ledger id need to be set
                 System.out.println("RDATE================"+receipt.getReceiptDate());
+                System.out.println("Pay Mode================"+receipt_.getPaymentMode());
                 if(this.receipt_.getPaymentMode().toLowerCase().contains("cash"))
                 {
                     receipt.setLedgerId((long) Store.getInstance().cashLedgerId);
@@ -1229,7 +1479,8 @@ public class BizUtils {
                 ReceiptDetail receiptDetail = new ReceiptDetail();
                 receiptDetail.setId(Long.valueOf(0));
                 receiptDetail.setReceiptId(Long.valueOf(0));
-                receiptDetail.setLedgerId(this.receipt_.getLegerId());
+                System.out.println("Receipt ledger Cash/Cheque ----"+receipt_.getLegerId());
+                receiptDetail.setLedgerId(customer.getLedger().getId());
                 receiptDetail.setAmount(this.receipt_.getAmount());
 
 
@@ -1245,6 +1496,7 @@ public class BizUtils {
         protected Object doInBackground(Object[] params) {
             HttpHandler httpHandler = new HttpHandler();
             System.out.println("URL ================== " + this.url);
+
              status = SignalRService.receiptSave(receipt);
            // jsonStr = httpHandler.makeServiceCall(this.url, this.params);
             return true;
@@ -1277,8 +1529,17 @@ public class BizUtils {
                 } else {
 
                     receipt_.setSynced(true);
+                    refReceipt.setSynced(true);
+
                      receipt.getAmount();
 
+                }
+                try {
+                    BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                    System.err.println("DB Updated..on local storage");
+                } catch (ClassNotFoundException e) {
+
+                    System.err.println("Unable to write to DB");
                 }
             }
             else
@@ -1418,19 +1679,11 @@ public class BizUtils {
                 sync = true;
 
                 newcustomer = true;
-                Customer customer = customerList.get(i);
-                customer.setId(null);
-                customer.setSale(new ArrayList<Product>());
-                customer.setSalesOfCustomer(new ArrayList<Sale>());
-                customer.setSaleOrder(new ArrayList<Product>());
-                customer.setSaleOrdersOfCustomer(new ArrayList<SaleOrder>());
-                customer.setSaleReturnOfCustomer(new ArrayList<SaleReturn>());
-                customer.setSaleReturn(new ArrayList<Product>());
-                customer.setBalance(0.00);
-                customer.setReceivedAmount(0.00);
+
+                Customer customer = createCustomer(customerList.get(i));
                 //BizUtils.prettyJson("new customer \n",customer);
 
-                customerStatus = new SaveCustomer(context, customer).execute();
+                customerStatus = new SaveCustomer(context, customer,i,from).execute();
             }
         }
 
@@ -1456,6 +1709,7 @@ public class BizUtils {
                 System.out.println("Receipt size " + customerList.get(i).getReceipts().size());
                 System.out.println("Payments size " + customerList.get(i).getPayments().size());
                 System.out.println("Pending list size " + customerList.get(i).getPayments().size());
+                System.out.println("Customer Id " + customerList.get(i).getId());
 
 
 
@@ -1511,7 +1765,7 @@ public class BizUtils {
                         }
                         else
                         {
-                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId()).execute();
+                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(),customerList.get(i)).execute();
                             sync = true;
                         }
 
@@ -1535,7 +1789,13 @@ public class BizUtils {
                                 System.out.println("SO pending saved");
                                 customerList.get(i).getsOPendingList().get(x).setSynced(true);
                                 sync = true;
+                                try {
+                                    BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                                    System.err.println("DB Updated..on local storage");
+                                } catch (ClassNotFoundException e) {
 
+                                    System.err.println("Unable to write to DB");
+                                }
                             } else {
                                 System.out.println("SO Pending Not  saved ");
                             }
@@ -2137,21 +2397,64 @@ public class BizUtils {
 
 
             int s=0,so=0,sopl=0,sr=0,r=0;
+            int s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0;
             for(int i=0;i<customers.size();i++)
             {
+
                 s = s + customers.get(i).getSalesOfCustomer().size();
+                for(int x=0;x<customers.get(i).getSalesOfCustomer().size();x++)
+                {
+                    if(!customers.get(i).getSalesOfCustomer().get(x).isSynced())
+                    {
+                        s_synced++;
+                    }
+
+                }
+
                 so = so + customers.get(i).getSaleOrdersOfCustomer().size();
+                for(int x=0;x<customers.get(i).getSaleOrdersOfCustomer().size();x++)
+                {
+                    if(!customers.get(i).getSaleOrdersOfCustomer().get(x).isSynced())
+                    {
+                        so_synced++;
+                    }
+
+                }
                 sr = sr + customers.get(i).getSaleReturnOfCustomer().size();
+                for(int x=0;x< customers.get(i).getSaleReturnOfCustomer().size();x++)
+                {
+                    if(!customers.get(i).getSaleReturnOfCustomer().get(x).isSynced())
+                    {
+                        sr_synced++;
+                    }
+
+                }
                 sopl = sopl + customers.get(i).getsOPendingList().size();
+                for(int x=0;x<customers.get(i).getsOPendingList().size();x++)
+                {
+                    if(!customers.get(i).getsOPendingList().get(x).isSynced())
+                    {
+                        sopl_synced++;
+                    }
+
+                }
                 r = r +  customers.get(i).getReceipts().size();
+                for(int x=0;x<customers.get(i).getReceipts().size();x++)
+                {
+                    if(!customers.get(i).getReceipts().get(x).isSynced())
+                    {
+                        r_synced++;
+                    }
+
+                }
             }
 
 
-            sale.setText(String.valueOf(s));
-            saleOrder.setText(String.valueOf(so));
-            salesReturn.setText(String.valueOf(sr));
-            salesOrderPendingList.setText(String.valueOf(sopl));
-            receipt.setText(String.valueOf(r));
+            sale.setText(String.valueOf(s+"("+s_synced+")"));
+            saleOrder.setText(String.valueOf(so+"("+so_synced+")"));
+            salesReturn.setText(String.valueOf(sr+"("+sr_synced+")"));
+            salesOrderPendingList.setText(String.valueOf(sopl+"("+sopl_synced+")"));
+            receipt.setText(String.valueOf(r+"("+r_synced+")"));
 
             final ArrayList<Customer> finalCustomers = customers;
             load.setOnClickListener(new View.OnClickListener() {
@@ -2213,5 +2516,40 @@ public class BizUtils {
             e.getMessage();
             return null;
         }
+    }
+    public Customer createCustomer(Customer customer_)
+    {
+        Customer customer = new Customer();
+        customer.setLedgerName(customer_.getLedger().getLedgerName());
+        customer.setPersonIncharge(customer_.getLedger().getPersonIncharge());
+        customer.setAddressLine1(customer_.getLedger().getAddressLine1());
+        customer.setAddressLine2(customer_.getLedger().getAddressLine2());
+        customer.setCityName(customer_.getLedger().getCityName());
+        customer.setMobileNo(customer_.getLedger().getMobileNo());
+        customer.setGSTNo(customer_.getLedger().getGSTNo());
+
+
+        Ledger ledger = new Ledger();
+        ledger.setLedgerName(customer_.getLedger().getLedgerName());
+        ledger.setPersonIncharge(customer_.getLedger().getPersonIncharge());
+        ledger.setAddressLine1(customer_.getLedger().getAddressLine1());
+        ledger.setAddressLine2(customer_.getLedger().getAddressLine2());
+        ledger.setCityName(customer_.getLedger().getCityName());
+        ledger.setMobileNo(customer_.getLedger().getMobileNo());
+        ledger.setGSTNo(customer_.getLedger().getGSTNo());
+
+
+
+        System.out.println("Account group Id "+currentAccGrpId);
+        System.out.println("Account group name "+currentAccGrpName);
+        ledger.setAccountGroupId(currentAccGrpId);
+        ledger.setAccountName(currentAccGrpName);
+
+
+        customer.setLedger(ledger);
+
+
+
+        return customer;
     }
 }

@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,13 +15,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.DownloadDataActivity;
 import com.bizsoft.fmcgv2.LoginActivity;
-import com.bizsoft.fmcgv2.MainActivity;
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.Tables.BankNameList;
 import com.bizsoft.fmcgv2.Tables.Receipt;
@@ -50,7 +46,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -445,6 +440,63 @@ public class SignalRService {
 
         System.out.println("customer_list----"+customreCollection.size());
     }
+
+    public static Customer getCustomer(Long id)
+    {
+
+        ArrayList<LinkedTreeMap> customreCollection = new ArrayList<LinkedTreeMap>();
+        try {
+
+            customreCollection = Store.getInstance().mHubProxyCaller.invoke(customreCollection.getClass(),"Customer_List").get();
+
+
+            System.out.println("customertCollection---"+customreCollection);
+
+
+            Customer customer1 = new Customer();
+
+            for(int i=0;i<customreCollection.size();i++)
+            {
+
+                Customer customer = new Customer();
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+                customer = mapper.convertValue(customreCollection.get(i),Customer.class);
+                System.out.println("Customer Id"+customer.getId() + "======"+ id);
+                System.out.println("Customer ledger"+customer.getLedger());
+                System.out.println("Customer ledger name"+customer.getLedgerName());
+                //  BizUtils.prettyJson("Customer",customreCollection.get(i));
+
+                if(customer.getId().compareTo(id)==0)
+                {
+                    System.out.println("Customer Id  matched "+customer.getId());
+                    customer1 = customer;
+                }
+
+                //BizUtils.prettyJson("Customer ",customer);
+
+
+
+
+
+
+
+
+            }
+
+            return customer1;
+
+
+        } catch (InterruptedException e) {
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("customer_list----"+customreCollection.size());
+        return null;
+    }
+
     public static void productList(Context context)
     {
 

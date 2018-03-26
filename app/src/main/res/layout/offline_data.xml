@@ -127,7 +127,7 @@
 
         android:layout_weight="1"
         android:padding="10dip"
-        android:text="Sales Order Conversion"
+        android:text="SO to SA"
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/sales_order_pending_list"
@@ -141,7 +141,7 @@
 
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:padding="10dip"
         android:text="0"

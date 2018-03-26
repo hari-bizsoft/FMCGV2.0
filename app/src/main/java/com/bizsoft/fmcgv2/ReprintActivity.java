@@ -216,10 +216,17 @@ public class ReprintActivity extends AppCompatActivity {
 
         final ArrayList<Customer> customerList = Store.getInstance().customerList;
 
-
-            for(int i=0;i<customerList.size();i++)
+        for(int i=0;i<customerList.size();i++)
         {
-            genderList.add(customerList.get(i).getId()+" - "+customerList.get(i).getLedgerName());
+            if(customerList.get(i).getId()==null)
+            {
+                genderList.add("Unsaved"+" - "+customerList.get(i).getLedger().getLedgerName());
+            }
+            else
+            {
+                genderList.add(customerList.get(i).getId()+" - "+customerList.get(i).getLedger().getLedgerName());
+            }
+
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter <String>(ReprintActivity.this, android.R.layout.simple_spinner_item, genderList);
