@@ -112,6 +112,8 @@
         </activity>
         <activity android:name="com.bizsoft.fmcgv2.AppActivity" >
         </activity>
+        <activity android:name="com.bizsoft.fmcgv2.DealerActivity" >
+        </activity>
     </application>
 
 </manifest>

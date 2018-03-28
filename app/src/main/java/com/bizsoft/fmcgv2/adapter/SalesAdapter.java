@@ -1,16 +1,12 @@
 package com.bizsoft.fmcgv2.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.BTLib.BTIntialize;
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.dataobject.Product;
 
@@ -66,7 +62,7 @@ public class SalesAdapter extends BaseAdapter {
         final Product product = getItem(position);
 
         holder.id = (TextView) convertView.findViewById(R.id.sale_id);
-        holder.name = (TextView) convertView.findViewById(R.id.customer_name);
+        holder.name = (TextView) convertView.findViewById(R.id.dealer_name);
         holder.price = (TextView) convertView.findViewById(R.id.price);
 
         holder.discountAmount = (TextView) convertView.findViewById(R.id.discount);

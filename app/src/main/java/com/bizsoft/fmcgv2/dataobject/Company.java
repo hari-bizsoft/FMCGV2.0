@@ -19,13 +19,26 @@ public class Company {
     boolean IsActive;
     String AddressLine1;
     String AddressLine2;
+    @JsonProperty("PostalCode")
     String PostalCode;
+
+
     String TelephoneNo;
     String EMailId;
     String GSTNo;
    String CityName;
+    @JsonProperty("MobileNo")
+   String MobileNo;
 
-   boolean IsReadOnly;
+    public String getMobileNo() {
+        return MobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        MobileNo = mobileNo;
+    }
+
+    boolean IsReadOnly;
    boolean IsEnabled;
     @JsonProperty("Logo")
     String Logo;

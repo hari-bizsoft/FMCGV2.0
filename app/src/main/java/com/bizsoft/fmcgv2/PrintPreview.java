@@ -16,9 +16,6 @@ import android.widget.Toast;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Product;
-import com.bizsoft.fmcgv2.dataobject.Sale;
-import com.bizsoft.fmcgv2.dataobject.SaleOrder;
-import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
 import com.itextpdf.text.BaseColor;
@@ -75,7 +72,7 @@ public class PrintPreview extends AppCompatActivity {
 
         companyId = (TextView) findViewById(R.id.company_id);
         companyName = (TextView) findViewById(R.id.company_name);
-        companyPhoneNumber= (TextView) findViewById(R.id.phone_number);
+        companyPhoneNumber= (TextView) findViewById(R.id.telephone);
         companyAddLine1= (TextView) findViewById(R.id.address_line_1);
         companyAddLine2 = (TextView) findViewById(R.id.address_line_2);
         companyGst = (TextView) findViewById(R.id.gst_no);
@@ -89,7 +86,7 @@ public class PrintPreview extends AppCompatActivity {
 
 
             customerId = (TextView) findViewById(R.id.customer_id);
-            customerName = (TextView) findViewById(R.id.customer_name);
+            customerName = (TextView) findViewById(R.id.dealer_name);
             customerPhoneNumber= (TextView) findViewById(R.id.customer_ph);
             customerAddLine1= (TextView) findViewById(R.id.customer_address_line_1);
             customerAddLine2 = (TextView) findViewById(R.id.customer_address_line_2);

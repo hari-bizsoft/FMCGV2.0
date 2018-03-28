@@ -22,7 +22,7 @@ public class DownloadDataActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     public  TextView textView;
-    public TextView customers;
+    public static TextView customers;
     public static TextView products;
     public TextView categories;
     public TextView accounts;
@@ -94,12 +94,12 @@ public class DownloadDataActivity extends AppCompatActivity {
                 }
             });
 
-            SignalRService.customerList();
+            SignalRService.customerList(DownloadDataActivity.this);
             SignalRService.cashLedgerId();
 
            try {
                SignalRService.bankLedgerId();
-              // SignalRService.bankNameList();
+                SignalRService.bankNameList();
                SignalRService.SOPendingList();
                SignalRService.Sales_getNewRefNo();
                SignalRService.SalesOrder_getNewRefNo();

@@ -68,6 +68,7 @@ import microsoft.aspnet.signalr.client.transport.ServerSentEventsTransport;
 import static android.content.Context.MODE_PRIVATE;
 import static com.bizsoft.fmcgv2.MainActivity.getLocalBluetoothName;
 import static com.bizsoft.fmcgv2.dataobject.Store.SERVER_HUB_CHAT;
+import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
 /**
  * Created by GopiKing on 22-12-2017.
@@ -158,6 +159,14 @@ public class SignalRService {
 
                                 company.setCityName(v);
                             }
+                            if (key.equals("PostalCode")) {
+
+                                company.setPostalCode(v);
+                            }
+                            if (key.equals("MobileNo")) {
+
+                                company.setMobileNo(v);
+                            }
                             if (key.equals("UnderCompanyId")) {
 
                                 company.setUnderCompanyId(v);
@@ -217,8 +226,12 @@ public class SignalRService {
                 if(Long.valueOf(dealerId).compareTo(Store.getInstance().companyList.get(i).getId())==0)
                 {
 
-                    System.out.println("Logo Bytes = "+Store.getInstance().companyList.get(i).getLogo());
-                    Store.getInstance().dealerLogo = Store.getInstance().companyList.get(i).getLogo();
+                    Store.getInstance().dealer = Store.getInstance().companyList.get(i);
+
+
+                    Store.getInstance().dealerLogo = companyLogo();
+
+
 
 
 
@@ -322,7 +335,19 @@ public class SignalRService {
                     Store.getInstance().user = Store.getInstance().mHubProxyCaller.invoke(User.class,"userAccount_Login",year,dlrName,usrName,passWord).get();
                     if(Store.getInstance().user!=null)
                     {
-                        status = true;
+                        if(Store.getInstance().user.getId()!=0) {
+                            status = true;
+                        }
+                        else
+                        {
+                            status = false;
+                            Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        status = false;
+                        Toast.makeText(context, "Login error..", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
@@ -331,9 +356,23 @@ public class SignalRService {
                     System.out.println("Login details____OLDLOGIN"+Store.getInstance().user);
                     if(Store.getInstance().user!=null)
                     {
-                        status = true;
+                        if(Store.getInstance().user.getId()!=0) {
+                            status = true;
+                        }
+                        else
+                        {
+                            Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                            status = false;
+                        }
+                    }
+                    else
+                    {
+                        status = false;
+                        Toast.makeText(context, "Login error..", Toast.LENGTH_SHORT).show();
                     }
                 }
+
+                prettyJson("User ",Store.getInstance().user);
 
 
 
@@ -382,6 +421,8 @@ public class SignalRService {
             {
                 Store.getInstance().user = (User) obj;
 
+                prettyJson("User",Store.getInstance().user);
+
                 if(Store.getInstance().user.getId()!=null) {
                     status = true;
                     System.out.println("Login details____NEWLOGIN"+Store.getInstance().user);
@@ -394,7 +435,7 @@ public class SignalRService {
 
     }
 
-    public static void customerList()
+    public static void customerList(Context context)
     {
 
         ArrayList<LinkedTreeMap> customreCollection = new ArrayList<LinkedTreeMap>();
@@ -423,6 +464,13 @@ public class SignalRService {
 
 
                 Store.getInstance().customerList.add(customer);
+
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run()
+                    {
+                        DownloadDataActivity.customers.setText(String.valueOf(Store.getInstance().customerList.size()));
+                    }
+                });
 
 
 
@@ -594,7 +642,10 @@ public class SignalRService {
                 final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
                 stockGroup  = mapper.convertValue(companyCollection.get(i),StockGroup.class);
                 System.out.println("stockGroup Id"+stockGroup.getId());
-                Store.getInstance().stockGroupList.add(stockGroup);
+
+                if(stockGroup.isSale()) {
+                    Store.getInstance().stockGroupList.add(stockGroup);
+                }
 
             }
 
@@ -606,6 +657,7 @@ public class SignalRService {
         }
         System.out.println("customertList----"+Store.getInstance().stockGroupList.size());
     }
+
     public static Customer saveCustomer(Customer customer) {
 
         Object o = new Object();
@@ -642,7 +694,42 @@ public class SignalRService {
         return customerResponse;
 
     }
+    public static Company saveCompany(Company company) {
 
+        Object o = new Object();
+
+
+
+        Company customerResponse = new Company();
+        Gson gson = new Gson();
+        try {
+            //BizUtils.prettyJson("Customer",customer);
+            System.out.println("---------------saving--"+company.getCompanyName());
+
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"CompanyDetail_Save",o).get();
+            System.out.println("---------------class type--"+o.getClass());
+
+
+
+            final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+            customerResponse  = mapper.convertValue(o,Company.class);
+            System.out.println("company Id"+customerResponse.getId());
+
+            BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | company saved Id :  "+customerResponse.getId());
+
+
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        return customerResponse;
+
+    }
     public static void   accountGroupList()
     {
 
@@ -777,26 +864,48 @@ public class SignalRService {
 
         ArrayList<LinkedTreeMap> collections = new ArrayList<LinkedTreeMap>();
         try {
-                collections = Store.getInstance().mHubProxyCaller.invoke(collections.getClass()," Bank_Name_List").get();
+                collections = Store.getInstance().mHubProxyCaller.invoke(collections.getClass(),"Bank_List").get();
 
             System.out.println("Collection = "+collections);
 
+            Store.getInstance().bankList.clear();
             for(int i=0;i<collections.size();i++)
             {
                 BankNameList bankNameList = new BankNameList();
                 final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
                 bankNameList  = mapper.convertValue(collections.get(i),BankNameList.class);
                 System.out.println("Bank_Name_List-"+bankNameList);
+
                 // System.out.println("accountGroup Name-"+taxMaster.getGroupName());
+                Store.getInstance().bankList.add(bankNameList);
 
             }
 
+            prettyJson("Bank List",Store.getInstance().bankList);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static String companyLogo()
+    {
+
+        Object o = new Object();
+        try {
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"Company_Logo").get();
+
+            System.out.println("Dealer Logo (RAW) = "+o.getClass() + " = "+o);
+
+            Store.getInstance().dealerLogo = String.valueOf(o);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return Store.getInstance().dealerLogo;
 
     }
     public static void  SOPendingList()
@@ -1650,7 +1759,7 @@ public class SignalRService {
         @Override
         protected String doInBackground(Integer... integers) {
 
-            SignalRService.customerList();
+            SignalRService.customerList(context);
             SignalRService.cashLedgerId();
 
             try {

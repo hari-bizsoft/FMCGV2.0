@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.dataobject.Product;
-import com.bizsoft.fmcgv2.dataobject.Store;
 
 import java.util.ArrayList;
 
@@ -57,7 +56,7 @@ public class ReportAdapter extends BaseAdapter {
         Holder holder = new Holder();
         Product product = (Product) getItem(position);
         convertView = layoutInflater.inflate(R.layout.product_report_single_item, null);
-        holder.productName = (TextView) convertView.findViewById(R.id.customer_name);
+        holder.productName = (TextView) convertView.findViewById(R.id.dealer_name);
         holder.amount = (TextView) convertView.findViewById(R.id.amount);
 
 

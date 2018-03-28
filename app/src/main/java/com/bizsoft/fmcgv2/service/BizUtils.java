@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.bizsoft.fmcgv2.AppActivity;
 import com.bizsoft.fmcgv2.CustomerActivity;
 import com.bizsoft.fmcgv2.DashboardActivity;
+import com.bizsoft.fmcgv2.DealerActivity;
 import com.bizsoft.fmcgv2.InvoiceListActivity;
 import com.bizsoft.fmcgv2.MainActivity;
 import com.bizsoft.fmcgv2.R;
@@ -321,6 +322,7 @@ public class BizUtils {
         ImageButton receipt = (ImageButton) dialog.findViewById(R.id.receipt);
         ImageButton payment = (ImageButton) dialog.findViewById(R.id.payment);
         ImageButton loadOffline = (ImageButton) dialog.findViewById(R.id.load_offline);
+        ImageButton dealer = (ImageButton) dialog.findViewById(R.id.dealer);
         Button activity = (Button) dialog.findViewById(R.id.activity);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -385,6 +387,9 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
+                if(Store.getInstance().waiter!=null) {
+                    Store.getInstance().waiter.touch();
+                }
 
                 sync(context,"manual");
 
@@ -394,6 +399,10 @@ public class BizUtils {
 
             }
         });
+
+
+
+
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -481,6 +490,16 @@ public class BizUtils {
                 BizUtils.readAsJSON("customerList",context);
                 dialog.dismiss();
 
+            }
+        });
+        dealer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Intent intent = new Intent(context,DealerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
             }
         });
     }
@@ -1835,6 +1854,9 @@ public class BizUtils {
         }
 
 
+       // SignalRService.saveCompany(Store.getInstance().dealer);
+
+
 
 
         System.out.println("Sync required = " + sync);
@@ -2407,6 +2429,12 @@ public class BizUtils {
                     if(!customers.get(i).getSalesOfCustomer().get(x).isSynced())
                     {
                         s_synced++;
+                        BizUtils.prettyJson("unsaved sale",customers.get(i).getSalesOfCustomer().get(x));
+                    }
+                    else {
+
+                        BizUtils.prettyJson("saved sale",customers.get(i).getSalesOfCustomer().get(x));
+
                     }
 
                 }

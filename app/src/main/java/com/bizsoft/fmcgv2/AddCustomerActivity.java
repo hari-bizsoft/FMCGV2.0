@@ -1,8 +1,6 @@
 package com.bizsoft.fmcgv2;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -11,18 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.dataobject.AddCustomerResponse;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Ledger;
 import com.bizsoft.fmcgv2.dataobject.Store;
-import com.bizsoft.fmcgv2.service.HttpHandler;
 import com.bizsoft.fmcgv2.service.Network;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
 
 import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpId;
 import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpName;
@@ -37,7 +27,7 @@ public class AddCustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_customer);
         getSupportActionBar().setTitle("Add Customer");
 
-        customerName = (EditText) findViewById(R.id.customer_name);
+        customerName = (EditText) findViewById(R.id.dealer_name);
         personIncharge = (EditText) findViewById(R.id.person_incharge);
         addressLine1 = (EditText) findViewById(R.id.address_line_one);
         addressLine2 = (EditText) findViewById(R.id.address_line_two);
@@ -125,11 +115,7 @@ public class AddCustomerActivity extends AppCompatActivity {
         }
         if(status)
         {
-
-
-
-
-            Network network = Network.getInstance(AddCustomerActivity.this);
+    Network network = Network.getInstance(AddCustomerActivity.this);
             System.out.println("===="+network.isOnline());
 
             if(!network.isOnline())

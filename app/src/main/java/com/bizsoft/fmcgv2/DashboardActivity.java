@@ -196,7 +196,7 @@ public class DashboardActivity extends AppCompatActivity {
         customerSearch = (ImageButton) findViewById(R.id.customer_search);
         productSearch = (ImageButton) findViewById(R.id.product_search);
         customerNameKey = (EditText) findViewById(R.id.customer_name_key);
-        customerName = (TextView) findViewById(R.id.customer_name);
+        customerName = (TextView) findViewById(R.id.dealer_name);
         stockGroupKey = (EditText) findViewById(R.id.stock_group_key);
         stockGroupName = (TextView) findViewById(R.id.stock_group_name);
         stockHomeSearch = (ImageButton) findViewById(R.id.stock_group_search);
@@ -290,6 +290,8 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d(TAG, "Starting application" + this.toString());
         waiter = new Waiter(Store.getInstance().idleTimeLimit * 60 * 1000, DashboardActivity.this);
         waiter.start();
+
+        Store.getInstance().waiter = waiter;
 
 
         checkBluetoothConnection();
@@ -605,18 +607,9 @@ public class DashboardActivity extends AppCompatActivity {
         setSaleType();
         //new CustomerDetails(DashboardActivity.this).execute();
 
+           new TransactionList().execute();
 
-
-
-
-
-        new TransactionList().execute();
-
-
-
-
-
-        customerSearch.setOnClickListener(new View.OnClickListener() {
+      customerSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -750,7 +743,7 @@ public class DashboardActivity extends AppCompatActivity {
                             Store.getInstance().currentCustomer = null;
 
 
-                        } else if (currentSaleType.toLowerCase().contains("return")) {
+                        }  if (currentSaleType.toLowerCase().contains("return")) {
                             System.out.println("Sales return Size -----------" + Store.getInstance().addedProductList.size());
 
 
@@ -808,7 +801,9 @@ public class DashboardActivity extends AppCompatActivity {
                             Store.getInstance().currentCustomer = null;
 
 
-                        } else {
+                        }
+                        if(! (currentSaleType.toLowerCase().contains("return") || currentSaleType.toLowerCase().contains("order")) )
+                        {
                             System.out.println("Size -----------" + Store.getInstance().addedProductList.size());
                             for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
                                 if (Store.getInstance().currentCustomerPosition == i) {
@@ -821,8 +816,6 @@ public class DashboardActivity extends AppCompatActivity {
                                     if(paymentModeValue.toLowerCase().contains("cash")) {
                                         fromCustomerValue = fromCustomer.getText().toString();
                                         tenderAmountValue = tenderAmount.getText().toString();
-
-
                                         Log.d("recived amount", fromCustomerValue);
                                         Log.d("balance amount", tenderAmountValue);
                                         r = Store.getInstance().customerList.get(i).getReceivedAmount();
@@ -988,9 +981,13 @@ public class DashboardActivity extends AppCompatActivity {
     public boolean storeOffline(Customer customer) {
         boolean status = false;
 
+        System.out.println("currentSaleType = "+currentSaleType);
+
 
         if (currentSaleType.toLowerCase().contains("order")) {
             int beforeAdd = customer.getSaleOrdersOfCustomer().size();
+
+
             System.out.println("Before add = " + beforeAdd);
             SaleOrder saleOrder = new SaleOrder();
             saleOrder.setTempId(Store.getInstance().companyID + "-" + Store.getInstance().dealerName + "-" + bizUtils.getCurrentTime());
@@ -1114,7 +1111,7 @@ public class DashboardActivity extends AppCompatActivity {
                 status = true;
             }
             writeToFile(saleReturn.getRefCode());
-        } else {
+        }  if( ! (currentSaleType.toLowerCase().contains("return") || currentSaleType.toLowerCase().contains("order")) ) {
 
             int beforeAdd = customer.getSalesOfCustomer().size();
 
@@ -2357,7 +2354,22 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                 }
-             
+                else  if(position==2)
+                {
+                    paymentMode.setEnabled(false);
+                    Toast.makeText(DashboardActivity.this, "Payment option disabled..", Toast.LENGTH_SHORT).show();
+                    fromCustomer.setEnabled(false);
+                    tenderAmount.setEnabled(false);
+                    discount.setEnabled(false);
+                    save.setEnabled(true);
+                    save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    preview.setEnabled(true);
+                    Log.d("Preview","Enaabled 7-2");
+                    preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    isGst.setSelection(0);
+                    paymentMode.setSelection(0);
+                    discount.setSelection(0);
+                }
                 else
                 {
                     save.setEnabled(false);
@@ -2396,8 +2408,8 @@ public class DashboardActivity extends AppCompatActivity {
         genderList.add("GST");
         genderList.add("No GST");
 
-
         // Drop down layout style - list view with radio button
+
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DashboardActivity.this, genderList);
         isGst.setAdapter(customSpinnerAdapter);
 
@@ -2406,14 +2418,11 @@ public class DashboardActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
               //  Toast.makeText(getApplicationContext(), genderList.get(position), Toast.LENGTH_SHORT).show();
                 isGstValue = genderList.get(position);
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 isGstValue = genderList.get(0);
-
-
             }
 
 
@@ -2560,18 +2569,12 @@ public class DashboardActivity extends AppCompatActivity {
                         bankName.setVisibility(View.GONE);
                         chequeDate.setVisibility(View.GONE);
                         dateChooser.setVisibility(View.GONE);
-
-
-
-
-                    }
-
-
+                  }
                 }
                 else
                 {
 
-                    if(!currentSaleType.toLowerCase().contains("order")) {
+                    if(! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
                         preview.setEnabled(false);
                         Log.d("Preview", "Disabled 10");
                         save.setEnabled(false);
@@ -2670,7 +2673,7 @@ public class DashboardActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] params) {
             HttpHandler httpHandler = new HttpHandler();
-            SignalRService.customerList();
+            SignalRService.customerList(DashboardActivity.this);
             jsonStr = httpHandler.makeServiceCall(this.url, this.params);
             return true;
         }
@@ -4052,7 +4055,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
-                    if(!currentSaleType.toLowerCase().contains("order")) {
+                    if(!currentSaleType.toLowerCase().contains("order" )) {
                         save.setEnabled(false);
                         save.setBackgroundColor(getResources().getColor(R.color.grey));
                         preview.setEnabled(false);
@@ -4080,10 +4083,8 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
-                    if (!currentSaleType.toLowerCase().contains("order"))
+                    if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") ))
                     {
-
-
 
                         if (Store.getInstance().fromCustomer.getText() != null) {
                             double balance = 0;

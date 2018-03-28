@@ -99,6 +99,8 @@
         </activity>
         <activity android:name=".AppActivity">
         </activity>
+        <activity android:name=".DealerActivity">
+        </activity>
     </application>
 
 </manifest>

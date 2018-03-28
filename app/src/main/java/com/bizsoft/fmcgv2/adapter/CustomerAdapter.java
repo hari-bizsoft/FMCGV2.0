@@ -56,7 +56,7 @@ public class CustomerAdapter extends BaseAdapter {
 
         Holder holder = new Holder();
         convertView = layoutInflater.inflate(R.layout.customer_single_item, null);
-        holder.customerName = (TextView) convertView.findViewById(R.id.customer_name);
+        holder.customerName = (TextView) convertView.findViewById(R.id.dealer_name);
         holder.state = (TextView) convertView.findViewById(R.id.state);
         holder.customerName.setText(String.valueOf(customerList.get(position).getLedger().getLedgerName()));
         holder.GSTNumber = (TextView) convertView.findViewById(R.id.gst_no);

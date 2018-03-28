@@ -260,7 +260,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView25"/>
 
     <TextView
-        android:id="@+id/phone_number"
+        android:id="@+id/telephone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -506,7 +506,7 @@
         android:textStyle="italic"
         android:text="address_line_1"
         app:layout_constraintLeft_toRightOf="@+id/textView40"
-        app:layout_constraintTop_toBottomOf="@+id/phone_number"
+        app:layout_constraintTop_toBottomOf="@+id/telephone"
         android:layout_marginStart="8dp" />
 
     <TextView
@@ -656,7 +656,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView58"/>
 
     <TextView
-        android:id="@+id/customer_name"
+        android:id="@+id/dealer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -744,7 +744,7 @@
         android:textStyle="italic"
         android:text="Anbu"
         app:layout_constraintLeft_toRightOf="@+id/textView48"
-        app:layout_constraintTop_toBottomOf="@+id/customer_name"
+        app:layout_constraintTop_toBottomOf="@+id/dealer_name"
         android:layout_marginStart="8dp"/>
 
     <TextView

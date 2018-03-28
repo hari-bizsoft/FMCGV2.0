@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bizsoft.fmcgv2.Tables.*;
 import com.bizsoft.fmcgv2.Tables.Sale;
 import com.bizsoft.fmcgv2.adapter.AddedProductAdapter;
+import com.bizsoft.fmcgv2.service.Waiter;
 
 import java.util.ArrayList;
 
@@ -95,6 +96,9 @@ public class Store {
     public ArrayList<Notification> notificationList = new ArrayList<Notification>();
     public String dealerLogo;
     public Bitmap dealerLogoBitmap;
+    public Waiter waiter;
+    public Company dealer = new Company();
+    public ArrayList<BankNameList> bankList = new ArrayList<BankNameList>();
 
 
     public static Store getInstance() {

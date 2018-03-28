@@ -72,7 +72,7 @@ public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
          holder = new Holder();
         view = layoutInflater.inflate(R.layout.dropdown_style, null);
 
-        holder.name = (TextView) view.findViewById(R.id.customer_name);
+        holder.name = (TextView) view.findViewById(R.id.dealer_name);
         Store.getInstance().reprintSpinnerText = holder.name;
 
         holder.name.setText(String.valueOf(asr.get(i)));

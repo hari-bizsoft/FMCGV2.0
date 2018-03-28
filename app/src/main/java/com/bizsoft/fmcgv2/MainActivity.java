@@ -198,6 +198,10 @@ public class MainActivity extends AppCompatActivity {
             }
                // SignalRService.getCompanyDetails(MainActivity.this);
             }
+            else
+            {
+                Toast.makeText(MainActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+            }
 
         }
 
