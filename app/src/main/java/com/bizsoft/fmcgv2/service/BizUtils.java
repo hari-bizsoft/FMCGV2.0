@@ -30,6 +30,7 @@ import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.DealerActivity;
 import com.bizsoft.fmcgv2.InvoiceListActivity;
 import com.bizsoft.fmcgv2.MainActivity;
+import com.bizsoft.fmcgv2.ProductSpecActivity;
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.ReceiptActivity;
 import com.bizsoft.fmcgv2.ReportActivity;
@@ -323,6 +324,7 @@ public class BizUtils {
         ImageButton payment = (ImageButton) dialog.findViewById(R.id.payment);
         ImageButton loadOffline = (ImageButton) dialog.findViewById(R.id.load_offline);
         ImageButton dealer = (ImageButton) dialog.findViewById(R.id.dealer);
+        ImageButton productSpec = (ImageButton) dialog.findViewById(R.id.product_spec);
         Button activity = (Button) dialog.findViewById(R.id.activity);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -498,6 +500,16 @@ public class BizUtils {
 
                 dialog.dismiss();
                 Intent intent = new Intent(context,DealerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
+            }
+        });
+        productSpec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Intent intent = new Intent(context,ProductSpecActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -1854,7 +1866,23 @@ public class BizUtils {
         }
 
 
-       // SignalRService.saveCompany(Store.getInstance().dealer);
+        System.out.println("Sync dealer = "+Store.getInstance().dealer.isSynced());
+
+
+        if(!Store.getInstance().dealer.isSynced()) {
+            if (SignalRService.saveCompany(Store.getInstance().dealer)) {
+
+                Toast.makeText(context, "Dealer Updated", Toast.LENGTH_SHORT).show();
+                Store.getInstance().dealer.setSynced(true);
+                sync = true;
+
+            } else {
+                Toast.makeText(context, "Dealer not Updated", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            System.out.println("Dealer already synced");
+        }
 
 
 

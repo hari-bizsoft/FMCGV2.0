@@ -389,11 +389,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#fff"
+        android:background="@drawable/database"
         app:layout_constraintEnd_toStartOf="@+id/home"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView79"
-        app:srcCompat="@drawable/ic_file_download_black_24dp"/>
+        />
 
     <TextView
         android:id="@+id/load_offline_text"
@@ -415,10 +415,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/handshake"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView79"
-        app:srcCompat="@drawable/user"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView79"/>
 
     <TextView
         android:id="@+id/textView83"
@@ -430,5 +430,28 @@
         app:layout_constraintEnd_toEndOf="@+id/dealer"
         app:layout_constraintStart_toStartOf="@+id/dealer"
         app:layout_constraintTop_toBottomOf="@+id/dealer"/>
+
+    <ImageButton
+        android:id="@+id/product_spec"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/measuring"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dealer"
+        app:layout_constraintTop_toBottomOf="@+id/textView68"/>
+
+    <TextView
+        android:id="@+id/textView85"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product Spec"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/product_spec"
+        app:layout_constraintStart_toStartOf="@+id/product_spec"
+        app:layout_constraintTop_toBottomOf="@+id/product_spec"/>
 </android.support.constraint.ConstraintLayout>
     </ScrollView>

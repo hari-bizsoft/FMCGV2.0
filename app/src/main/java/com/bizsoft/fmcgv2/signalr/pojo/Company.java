@@ -9,28 +9,17 @@ public class Company{
 
 	@JsonProperty("CompanyName")
 	private String companyName;
-
 	@JsonProperty("LoginAccYear")
 	private int loginAccYear;
 
-	@JsonProperty("CFiles")
-	private List<Object> cFiles;
-
 	@JsonProperty("IsEnabled")
 	private boolean isEnabled;
-
 	@JsonProperty("IsActive")
 	private boolean isActive;
-
-	@JsonProperty("lstValidation")
-	private List<Object> lstValidation;
-
 	@JsonProperty("CompanyType")
 	private String companyType;
-
 	@JsonProperty("Id")
 	private int id;
-
 	@JsonProperty("IsReadOnly")
 	private boolean isReadOnly;
 
@@ -50,13 +39,7 @@ public class Company{
 		return loginAccYear;
 	}
 
-	public void setCFiles(List<Object> cFiles){
-		this.cFiles = cFiles;
-	}
 
-	public List<Object> getCFiles(){
-		return cFiles;
-	}
 
 	public void setIsEnabled(boolean isEnabled){
 		this.isEnabled = isEnabled;
@@ -74,13 +57,6 @@ public class Company{
 		return isActive;
 	}
 
-	public void setLstValidation(List<Object> lstValidation){
-		this.lstValidation = lstValidation;
-	}
-
-	public List<Object> getLstValidation(){
-		return lstValidation;
-	}
 
 	public void setCompanyType(String companyType){
 		this.companyType = companyType;
@@ -112,10 +88,10 @@ public class Company{
 			"Company{" + 
 			"companyName = '" + companyName + '\'' + 
 			",loginAccYear = '" + loginAccYear + '\'' + 
-			",cFiles = '" + cFiles + '\'' + 
+
 			",isEnabled = '" + isEnabled + '\'' + 
 			",isActive = '" + isActive + '\'' + 
-			",lstValidation = '" + lstValidation + '\'' + 
+
 			",companyType = '" + companyType + '\'' + 
 			",id = '" + id + '\'' + 
 			",isReadOnly = '" + isReadOnly + '\'' + 
