@@ -297,6 +297,14 @@ public class DealerActivity extends AppCompatActivity {
 
         Store.getInstance().dealer.setSynced(false);
 
+        try {
+            BizUtils.storeAsJSON("Dealer",BizUtils.getJSON("dealer",Store.getInstance().dealer));
+            System.out.println("DB 'Dealer' Updated..on local storage");
+        } catch (ClassNotFoundException e) {
+
+            System.err.println("Unable to write to DB");
+        }
+
       //  Store.getInstance().dealerLogo = encodeImage();
 
 

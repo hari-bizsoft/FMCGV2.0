@@ -11,6 +11,7 @@ import com.bizsoft.fmcgv2.Tables.*;
 import com.bizsoft.fmcgv2.Tables.Sale;
 import com.bizsoft.fmcgv2.adapter.AddedProductAdapter;
 import com.bizsoft.fmcgv2.service.Waiter;
+import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 
 import java.util.ArrayList;
 
@@ -99,6 +100,8 @@ public class Store {
     public Waiter waiter;
     public Company dealer = new Company();
     public ArrayList<BankNameList> bankList = new ArrayList<BankNameList>();
+    public ArrayList<ProductSpec> productSpecList = new ArrayList<ProductSpec>();
+    public ArrayList<ProductSpecProcess> prodcutSpecProcess = new ArrayList<ProductSpecProcess>();
 
 
     public static Store getInstance() {

@@ -94,7 +94,7 @@ public class AddedProductAdapter extends BaseAdapter {
 
         holder.id = (TextView) convertView.findViewById(R.id.sale_id);
         holder.name = (TextView) convertView.findViewById(R.id.dealer_name);
-        holder.price = (TextView) convertView.findViewById(R.id.price);
+        holder.price = (TextView) convertView.findViewById(R.id.stock);
         holder.resale = (TextView) convertView.findViewById(R.id.is_resale);
         holder.reason= (TextView) convertView.findViewById(R.id.particulars);
 

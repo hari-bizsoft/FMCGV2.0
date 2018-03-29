@@ -9,6 +9,8 @@ import com.google.gson.internal.LinkedTreeMap;
  * Created by shri on 9/8/17.
  */
 @JsonIgnoreProperties(ignoreUnknown = true,value = {"UOM","UnderStockGroup"})
+
+
 public class Product {
 
     @JsonProperty("POQty")

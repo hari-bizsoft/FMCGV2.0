@@ -107,7 +107,7 @@ public class ProductAdapter extends BaseAdapter   {
 
             holder.id = (TextView) convertView.findViewById(R.id.sale_id);
             holder.name = (TextView) convertView.findViewById(R.id.dealer_name);
-            holder.price = (TextView) convertView.findViewById(R.id.price);
+            holder.price = (TextView) convertView.findViewById(R.id.stock);
             holder.stock = (TextView) convertView.findViewById(R.id.stock_left);
             holder.reason = (TextView) convertView.findViewById(R.id.particulars);
             holder.isResale = (CheckBox) convertView.findViewById(R.id.is_resale);

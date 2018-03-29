@@ -136,6 +136,7 @@ public class DownloadDataActivity extends AppCompatActivity {
             });
 
             SignalRService.stockHomeList();
+            SignalRService.productSpecList();
             progressBar.setProgress(75);
             runOnUiThread(new Runnable() {
                 @Override

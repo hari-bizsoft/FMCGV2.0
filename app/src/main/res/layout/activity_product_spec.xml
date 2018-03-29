@@ -25,12 +25,14 @@
         android:id="@+id/textView86"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Date "
         android:textColor="@android:color/background_dark"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/date_chooser_text_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -108,6 +110,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
+        android:text="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView89"
         app:layout_constraintTop_toBottomOf="@+id/product_name"/>
@@ -140,10 +143,10 @@
         app:layout_constraintTop_toBottomOf="@+id/quantity_text"
         android:layout_marginTop="24dp"/>
 
-    <ListView
+    <com.bizsoft.fmcgv2.service.NonScrollListView
         android:id="@+id/listView"
-        android:layout_width="374dp"
-        android:layout_height="87dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -165,7 +168,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view13"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -178,4 +181,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listView"/>
+
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Clear"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/save"/>
 </android.support.constraint.ConstraintLayout>

@@ -33,11 +33,13 @@ import com.bizsoft.fmcgv2.dataobject.CompanyDetails;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.Tables.Sale;
+import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
 import com.bizsoft.fmcgv2.dataobject.ReceiverResponse;
 import com.bizsoft.fmcgv2.dataobject.StockGroup;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.dataobject.TaxMaster;
 import com.bizsoft.fmcgv2.dataobject.User;
+import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -116,11 +118,6 @@ public class SignalRService {
                     System.out.println("removed---------" + "----" + i);
 
                 }
-
-
-
-
-
             }
 
         /*    for(int i=0;i<companyCollection.size();i++) {
@@ -685,6 +682,38 @@ public class SignalRService {
         }
         System.out.println("customertList----"+Store.getInstance().stockGroupList.size());
     }
+    public static void productSpecList()
+    {
+        ArrayList<LinkedTreeMap> companyCollection = new ArrayList<LinkedTreeMap>();
+        try {
+            companyCollection = Store.getInstance().mHubProxyCaller.invoke(companyCollection.getClass(),"Product_Spec_master_List").get();
+
+            Store.getInstance().productSpecList.clear();
+            for(int i=0;i<companyCollection.size();i++)
+            {
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+
+                ProductSpec productSpec = new ProductSpec();
+
+                  productSpec  = mapper.convertValue(companyCollection.get(i),ProductSpec.class);
+                  System.out.println("stockGroup Id"+productSpec.getId());
+
+                prettyJson("productSpec item",productSpec);
+
+
+                Store.getInstance().productSpecList.add(productSpec);
+
+            }
+
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("productSpecList----"+Store.getInstance().productSpecList.size());
+    }
 
     public static Customer saveCustomer(Customer customer) {
 
@@ -732,22 +761,13 @@ public class SignalRService {
         Company customerResponse = new Company();
         Gson gson = new Gson();
         try {
-            //BizUtils.prettyJson("Customer",customer);
-            System.out.println("---------------saving--"+company.getCompanyName());
-
             CompanyDetails companyDetails = new CompanyDetails();
             companyDetails.Id = company.getId().intValue();
-
-
-
-
             prettyJson("company details",company);
             o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"CompanyDetail_Save",company).get();
 
-
             System.out.println("---------------class type--"+o.getClass());
             System.out.println("---------------class value --"+o);
-
 
             if((Double)o != 0)
             {
@@ -755,7 +775,6 @@ public class SignalRService {
 
                 status = true;
                 BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | company saved Id :  "+customerResponse.getId());
-
             }
             else
             {
@@ -763,7 +782,43 @@ public class SignalRService {
             }
 
 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
+
+        return status;
+
+    }
+    public static boolean saveProductSpec(ProductSpecProcess productSpecProcess) {
+
+        Object o = new Object();
+
+
+        boolean status = false;
+
+        ProductSpecProcess specProcess = new ProductSpecProcess();
+
+        try {
+
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"Product_Spec_Process_Save",productSpecProcess).get();
+
+            System.out.println("---------------class type--"+o.getClass());
+            System.out.println("---------------class value --"+o);
+
+            if((boolean)o)
+            {
+                System.out.println("---------------productSpecProcess saved --"+o);
+
+                status = true;
+                BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | prod spec  saved Id :  "+productSpecProcess.getId());
+            }
+            else
+            {
+                System.out.println("---------------productSpecProcess not saved --"+o);
+            }
 
 
         } catch (InterruptedException e) {

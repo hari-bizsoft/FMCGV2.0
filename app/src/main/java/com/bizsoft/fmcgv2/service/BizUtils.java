@@ -52,11 +52,13 @@ import com.bizsoft.fmcgv2.dataobject.Payment;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.ProductModel;
 import com.bizsoft.fmcgv2.dataobject.ProductSaveResponse;
+import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
 import com.bizsoft.fmcgv2.dataobject.Receipt;
 import com.bizsoft.fmcgv2.dataobject.Sale;
 import com.bizsoft.fmcgv2.dataobject.SaleOrder;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
+import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -1623,7 +1625,7 @@ public class BizUtils {
                     System.out.println("CQ ====" + cq);
 
 
-                    //  allProducts.get(i).setQty(aq);
+                    //  allProducts.get(i).setRQty(aq);
 
                 }
 
@@ -1660,7 +1662,7 @@ public class BizUtils {
                     System.out.println("CQ ====" + cq);
 
 
-                    //  allProducts.get(i).setQty(aq);
+                    //  allProducts.get(i).setRQty(aq);
 
 
                 }
@@ -1876,12 +1878,54 @@ public class BizUtils {
                 Store.getInstance().dealer.setSynced(true);
                 sync = true;
 
+                try {
+                    BizUtils.storeAsJSON("Dealer",BizUtils.getJSON("dealer",Store.getInstance().dealer));
+                    System.out.println("DB 'Dealer' Updated..on local storage");
+                } catch (ClassNotFoundException e) {
+
+                    System.err.println("Unable to write to DB");
+                }
+
             } else {
                 Toast.makeText(context, "Dealer not Updated", Toast.LENGTH_SHORT).show();
             }
         }
         else {
             System.out.println("Dealer already synced");
+        }
+
+        for(int i=0;i<Store.getInstance().prodcutSpecProcess.size();i++)
+        {
+            System.out.println("Sync prod spec = "+Store.getInstance().prodcutSpecProcess.get(i).isSynced());
+            if(Store.getInstance().prodcutSpecProcess.get(i).isSynced())
+            {
+                System.out.println("No sync prod spec");
+
+            }
+            else
+            {
+                if(SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i)))
+                {
+                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
+                    Store.getInstance().prodcutSpecProcess.get(i).setSynced(true);
+                    try {
+                        BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().dealer));
+                        System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
+                    } catch (ClassNotFoundException e) {
+
+                        System.err.println("Unable to write to DB");
+                    }
+
+
+                }
+                else
+                {
+                    Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
+                }
+                sync = true;
+            }
+
+
         }
 
 
@@ -2421,7 +2465,17 @@ public class BizUtils {
         {
             Toast.makeText(context, "DB named "+DBName+" not found", Toast.LENGTH_SHORT).show();
         }
+        if (!root.exists()) {
+
+            Toast.makeText(context, "DB-root for "+root+" not found", Toast.LENGTH_SHORT).show();
+        }
+        File file2 = new File(root, "ProductSpecProcessList");
+        if(!file2.exists())
+        {
+            Toast.makeText(context, "DB named 'ProductSpecProcessList' not found", Toast.LENGTH_SHORT).show();
+        }
         StringBuilder text = new StringBuilder();
+        StringBuilder text2 = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -2429,10 +2483,22 @@ public class BizUtils {
                 text.append(line);
             }
             br.close();
+
+            BufferedReader br2 = new BufferedReader(new FileReader(file2));
+            String line2;
+            while ((line2 = br2.readLine()) != null) {
+                text2.append(line2);
+            }
+            br2.close();
+
+
             //reading customer list as json and storing again
             customerList = new TypeToken<Collection<Customer>>() {
             }.getType();
             ArrayList<Customer> customers = new ArrayList<Customer>();
+
+
+
             customers = gson.fromJson(text.toString(), customerList);
             final Dialog dialog = new Dialog(context);
 
@@ -2540,6 +2606,8 @@ public class BizUtils {
 
         Type companyType = null;
         Type customerList = null;
+        Type dealer = null;
+        Type productSpec = null;
         String json = "";
         if(db.equals("company"))
         {
@@ -2553,6 +2621,24 @@ public class BizUtils {
             customerList = new TypeToken<Collection<Customer>>() {
             }.getType();
             json = gson.toJson(Store.getInstance().customerList, customerList);
+
+
+        }
+        if(db.equals("dealer"))
+        {
+            dealer = new TypeToken<Company>() {
+            }.getType();
+            json = gson.toJson(Store.getInstance().dealer, dealer);
+
+
+        }
+
+        if(db.equals("productspecprocess"))
+        {
+            productSpec = new TypeToken<Collection<ProductSpecProcess>>() {
+            }.getType();
+
+            json = gson.toJson(Store.getInstance().productSpecList, productSpec);
 
 
         }
@@ -2607,5 +2693,18 @@ public class BizUtils {
 
 
         return customer;
+    }
+    public static Date getDateFromString(String d,String format) throws ParseException {
+
+
+        System.out.println("Input String : "+d);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+
+        Date d1 = df.parse(d);
+        System.out.println("Date: " + d1);
+        System.out.println("Date in MM/dd/yyyy format is: "+df.format(d1));
+
+
+        return d1;
     }
 }

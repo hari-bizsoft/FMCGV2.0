@@ -63,7 +63,7 @@ public class SalesAdapter extends BaseAdapter {
 
         holder.id = (TextView) convertView.findViewById(R.id.sale_id);
         holder.name = (TextView) convertView.findViewById(R.id.dealer_name);
-        holder.price = (TextView) convertView.findViewById(R.id.price);
+        holder.price = (TextView) convertView.findViewById(R.id.stock);
 
         holder.discountAmount = (TextView) convertView.findViewById(R.id.discount);
         holder.finalPrice= (TextView) convertView.findViewById(R.id.final_price);

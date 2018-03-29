@@ -1,10 +1,12 @@
 package com.bizsoft.fmcgv2.signalr.pojo;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.annotation.Generated;
 
-@Generated("com.robohorse.robopojogenerator")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Company{
 
 	@JsonProperty("CompanyName")
