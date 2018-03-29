@@ -114,6 +114,8 @@
         </activity>
         <activity android:name="com.bizsoft.fmcgv2.DealerActivity" >
         </activity>
+        <activity android:name="com.bizsoft.fmcgv2.ProductSpecActivity" >
+        </activity>
 
         <provider
             android:name="com.android.tools.ir.server.InstantRunContentProvider"

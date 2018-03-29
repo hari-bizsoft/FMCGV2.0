@@ -29,6 +29,7 @@ import com.bizsoft.fmcgv2.Tables.SalesReturn;
 import com.bizsoft.fmcgv2.Tables.TransactionType;
 import com.bizsoft.fmcgv2.dataobject.AccountGroup;
 import com.bizsoft.fmcgv2.dataobject.Company;
+import com.bizsoft.fmcgv2.dataobject.CompanyDetails;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.Tables.Sale;
@@ -67,6 +68,7 @@ import microsoft.aspnet.signalr.client.transport.ServerSentEventsTransport;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.bizsoft.fmcgv2.MainActivity.getLocalBluetoothName;
+import static com.bizsoft.fmcgv2.MainActivity.mHubProxyCaller;
 import static com.bizsoft.fmcgv2.dataobject.Store.SERVER_HUB_CHAT;
 import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
@@ -87,18 +89,46 @@ public class SignalRService {
     {
         ArrayList<LinkedTreeMap> companyCollection = new ArrayList<LinkedTreeMap>();
         try {
-            companyCollection = Store.getInstance().mHubProxyCaller.invoke(companyCollection.getClass(),"CompanyDetail_List").get();
+            companyCollection = mHubProxyCaller.invoke(companyCollection.getClass(),"CompanyDetail_List").get();
 
 
 
             System.out.println("Obj ---------"+companyCollection.size());
 
             ArrayList<Company> companyArrayList = new ArrayList<Company>();
-            for(int i=0;i<companyCollection.size();i++) {
-                LinkedTreeMap<Object, Object> map = new LinkedTreeMap<Object, Object>();
+
+
+            for(int i=0;i<companyCollection.size();i++)
+            {
                 Company company = new Company();
-                map = companyCollection.get(i);
-                System.out.println("----------0---->" + map);
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+                company  = mapper.convertValue(companyCollection.get(i),Company.class);
+
+                BizUtils.prettyJson("company i th = ",companyCollection.get(i));
+
+                System.out.println("Company Id"+company.getId());
+
+                if(company.isActive()) {
+                    System.out.println("adding---------" + "----" + i);
+                    companyArrayList.add(company);
+                }else
+                {
+                    System.out.println("removed---------" + "----" + i);
+
+                }
+
+
+
+
+
+            }
+
+        /*    for(int i=0;i<companyCollection.size();i++) {
+              //   LinkedTreeMap<Object, Object> map = new LinkedTreeMap<Object, Object>();
+                Company company = new Company();
+                //map = companyCollection.get(i);
+                //System.out.println("----------0---->" + map);
+
                 for (Map.Entry<Object, Object> entry : map.entrySet()) {
                     {
                         System.out.println(entry.getKey() + "/" + entry.getValue());
@@ -184,6 +214,7 @@ public class SignalRService {
 
                 }
 
+
                 if(company.isActive()) {
                     System.out.println("adding---------" + "----" + i);
                     companyArrayList.add(company);
@@ -198,6 +229,7 @@ public class SignalRService {
 
                 //displayDM(companyDetails);
             }
+            */
             Store.getInstance().companyList = companyArrayList;
             BizLogger.generateNoteOnSD( "Company Size : "+String.valueOf(Store.getInstance().companyList.size()));
 
@@ -254,15 +286,11 @@ public class SignalRService {
         Store.getInstance().dealerList.clear();
         for(int i=0;i<Store.getInstance().companyList.size();i++)
         {
-
-
             if(Store.getInstance().companyList.get(i).getUnderCompanyId()!=null && Store.getInstance().companyList.get(i).getCompanyType().toLowerCase().contains("dealer"))
             {
                 System.out.println("UnderCompanyId = "+Store.getInstance().companyList.get(i).getUnderCompanyId());
                 System.out.println("Dealer Name = "+Store.getInstance().companyList.get(i).getCompanyName());
                 Store.getInstance().dealerList.add(Store.getInstance().companyList.get(i));
-
-
 
             }
 
@@ -694,11 +722,12 @@ public class SignalRService {
         return customerResponse;
 
     }
-    public static Company saveCompany(Company company) {
+    public static boolean saveCompany(Company company) {
 
         Object o = new Object();
 
 
+        boolean status = false;
 
         Company customerResponse = new Company();
         Gson gson = new Gson();
@@ -706,16 +735,33 @@ public class SignalRService {
             //BizUtils.prettyJson("Customer",customer);
             System.out.println("---------------saving--"+company.getCompanyName());
 
-            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"CompanyDetail_Save",o).get();
+            CompanyDetails companyDetails = new CompanyDetails();
+            companyDetails.Id = company.getId().intValue();
+
+
+
+
+            prettyJson("company details",company);
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"CompanyDetail_Save",company).get();
+
+
             System.out.println("---------------class type--"+o.getClass());
+            System.out.println("---------------class value --"+o);
 
 
+            if((Double)o != 0)
+            {
+                System.out.println("---------------dealer saved --"+o);
 
-            final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-            customerResponse  = mapper.convertValue(o,Company.class);
-            System.out.println("company Id"+customerResponse.getId());
+                status = true;
+                BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | company saved Id :  "+customerResponse.getId());
 
-            BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | company saved Id :  "+customerResponse.getId());
+            }
+            else
+            {
+                System.out.println("---------------dealer not saved --"+o);
+            }
+
 
 
 
@@ -727,7 +773,7 @@ public class SignalRService {
         }
 
 
-        return customerResponse;
+        return status;
 
     }
     public static void   accountGroupList()

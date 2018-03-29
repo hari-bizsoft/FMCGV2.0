@@ -160,11 +160,18 @@ public class DownloadDataActivity extends AppCompatActivity {
             percentage.setText("100%");
 
 
+
+
             accounts.setText(String.valueOf(Store.getInstance().accountsGroupList.size()));
             textView.setText(result);
            // progressDialog.dismiss();
 
             SignalRService.getCompanyDetails(DownloadDataActivity.this);
+            Store.getInstance().dealer.init();
+            Store.getInstance().dealer.setSynced(true);
+
+
+
             finish();
             Intent intent = new Intent(DownloadDataActivity.this,DashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

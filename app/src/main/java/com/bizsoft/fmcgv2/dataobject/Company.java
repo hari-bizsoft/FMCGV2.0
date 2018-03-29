@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by shri on 8/8/17.
@@ -13,22 +15,70 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Company {
 
+
+    @JsonProperty("Id")
     Long Id;
+    @JsonProperty("CompanyName")
     public String CompanyName;
+    @JsonProperty("CompanyType")
     String CompanyType;
+    @JsonProperty("IsActive")
     boolean IsActive;
+    @JsonProperty("AddressLine1")
     String AddressLine1;
+    @JsonProperty("AddressLine2")
     String AddressLine2;
     @JsonProperty("PostalCode")
     String PostalCode;
-
-
+    @JsonProperty("TelephoneNo")
     String TelephoneNo;
+    @JsonProperty("EMailId")
     String EMailId;
+    @JsonProperty("GSTNo")
     String GSTNo;
+    @JsonProperty("CityName")
    String CityName;
     @JsonProperty("MobileNo")
    String MobileNo;
+    @JsonProperty("UnderCompanyId")
+    Long UnderCompanyId;
+    boolean synced ;
+
+    public boolean isSynced() {
+        return synced;
+    }
+
+    public void setSynced(boolean synced) {
+        this.synced = synced;
+    }
+
+    public void init()
+    {
+        this.synced = true;
+    }
+
+/*    @JsonProperty("Logo")
+    String Logo;
+    @JsonProperty("CFiles")
+    List<Object> CFiles;
+    @JsonProperty("lstValidation")
+    List<Object>lstValidation;
+
+    @JsonProperty("UserId")
+    String UserId;
+    @JsonProperty("Password")
+    String Password;
+    @JsonProperty("LoginAccYear")
+    String LoginAccYear;
+        @JsonProperty("IsReadOnly")
+    boolean IsReadOnly;
+    @JsonProperty("IsEnabled")
+   boolean IsEnabled;
+*/
+
+
+
+
 
     public String getMobileNo() {
         return MobileNo;
@@ -38,44 +88,17 @@ public class Company {
         MobileNo = mobileNo;
     }
 
-    boolean IsReadOnly;
-   boolean IsEnabled;
-    @JsonProperty("Logo")
-    String Logo;
 
-    public String getLogo() {
-        return Logo;
-    }
 
-    public void setLogo(String logo) {
-        Logo = logo;
-    }
-
-    public boolean isReadOnly() {
-        return IsReadOnly;
-    }
-
-    public void setReadOnly(boolean readOnly) {
-        IsReadOnly = readOnly;
-    }
-
-    public boolean isEnabled() {
-        return IsEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        IsEnabled = enabled;
-    }
-
-    public String getUnderCompanyId() {
+    public Long getUnderCompanyId() {
         return UnderCompanyId;
     }
 
-    public void setUnderCompanyId(String underCompanyId) {
+    public void setUnderCompanyId(Long underCompanyId) {
         UnderCompanyId = underCompanyId;
     }
 
-    String UnderCompanyId;
+
 
     public Long getId() {
         return Id;
