@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -21,11 +22,15 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bizsoft.fmcgv2.Tables.BankList;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
@@ -41,7 +46,8 @@ import java.io.IOException;
 public class DealerActivity extends AppCompatActivity {
     private static int SELECT_FILE = 1;
     Button save,clear;
-    EditText dealerName,addressLine1,addressLine2,city,mobileNumber,gstNumber,postalCode,telephone,email,bankName;
+    EditText dealerName,addressLine1,addressLine2,city,mobileNumber,gstNumber,postalCode,telephone,email;
+    AutoCompleteTextView bankName;
     ImageView logo;
     private String userChoosenTask;
 
@@ -49,6 +55,9 @@ public class DealerActivity extends AppCompatActivity {
     private int REQUEST_CAMERA;
     private boolean customImage;
     private String imageBase64;
+    FloatingActionButton menu;
+    private BankList currentBank;
+    private BankList choosedBank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,8 @@ public class DealerActivity extends AppCompatActivity {
         postalCode = (EditText) findViewById(R.id.postal_code);
         telephone = (EditText) findViewById(R.id.telephone);
         email = (EditText) findViewById(R.id.email);
-        bankName = (EditText) findViewById(R.id.bank_name);
+        bankName = (AutoCompleteTextView) findViewById(R.id.bank_name);
+        menu = (FloatingActionButton) findViewById(R.id.menu);
 
         save = (Button) findViewById(R.id.save);
         clear = (Button) findViewById(R.id.clear);
@@ -78,7 +88,18 @@ public class DealerActivity extends AppCompatActivity {
 
         logo.setImageResource(R.drawable.denariusoft64);
 
+
         logo.setImageBitmap(bmp);
+        if(bmp==null)
+        {
+
+            final int sdk = android.os.Build.VERSION.SDK_INT;
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                logo.setBackgroundDrawable(ContextCompat.getDrawable(DealerActivity.this, R.drawable.no_image) );
+            } else {
+                logo.setBackground(ContextCompat.getDrawable(DealerActivity.this, R.drawable.no_image));
+            }
+        }
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +110,15 @@ public class DealerActivity extends AppCompatActivity {
 
             }
         });
+        final BizUtils bizUtils = new BizUtils();
+        menu.bringToFront();
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                bizUtils.showMenu(DealerActivity.this);
+            }
+        });
 
 
         dealerName.setText(String.valueOf(Store.getInstance().dealer.getCompanyName()));
@@ -100,19 +129,57 @@ public class DealerActivity extends AppCompatActivity {
         gstNumber.setText(String.valueOf(Store.getInstance().dealer.getGSTNo()));
         postalCode.setText(String.valueOf(Store.getInstance().dealer.getPostalCode()));
         email.setText(String.valueOf(Store.getInstance().dealer.getEMailId()));
-
-        bankName.setEnabled(false);
-
         telephone.setText(String.valueOf(Store.getInstance().dealer.getTelephoneNo()));
+        final String[] bankNameList = new String[Store.getInstance().bankList.size()];
+
+
+
+
         if(Store.getInstance().bankList!=null) {
             if(Store.getInstance().bankList.size()>0) {
-                bankName.setText(String.valueOf(Store.getInstance().bankList.get(0).getLedger().getLedgerName()));
+
+                for(int i =0;i<Store.getInstance().bankList.size();i++) {
+                    bankNameList[i] = Store.getInstance().bankList.get(i).getLedger().getLedgerName();
+                    Log.d(this.getClass().getSimpleName(),Store.getInstance().dealer.getBankId()+" == "+Store.getInstance().bankList.get(i).getLedger().getId());
+                    if (Store.getInstance().dealer.getBankId().compareTo(Store.getInstance().bankList.get(i).getLedger().getId())==0) {
+
+                        currentBank = Store.getInstance().bankList.get(i);
+                        bankName.setText(String.valueOf(Store.getInstance().bankList.get(i).getLedger().getLedgerName()));
+                    }
+                }
         }
             else
             {
                 Toast.makeText(this, "No Bank Found..", Toast.LENGTH_SHORT).show();
             }
         }
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, bankNameList);
+        bankName.setAdapter(adapter);
+        bankName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) parent.getItemAtPosition(position);
+
+                for(int i =0;i<Store.getInstance().bankList.size();i++) {
+
+                    if(selected.equals(Store.getInstance().bankList.get(i).getLedger().getLedgerName()))
+                    {
+
+                        Toast.makeText(DealerActivity.this, selected+Store.getInstance().bankList.get(i).getLedger().getId(), Toast.LENGTH_SHORT).show();
+                        choosedBank = Store.getInstance().bankList.get(i);
+
+
+
+                    }
+                }
+
+
+            }
+        });
+
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +357,8 @@ public class DealerActivity extends AppCompatActivity {
         company.setTelephoneNo(String.valueOf(telephone.getText().toString()));
         company.setEMailId(String.valueOf(email.getText().toString()));
         company.setGSTNo(String.valueOf(gstNumber.getText().toString()));
+        System.out.println("Bank ID = "+currentBank.getLedger().getId());
+        company.setBankId(choosedBank.getLedger().getId());
 
 
         Toast.makeText(this, "Dealer profile updated offline", Toast.LENGTH_SHORT).show();

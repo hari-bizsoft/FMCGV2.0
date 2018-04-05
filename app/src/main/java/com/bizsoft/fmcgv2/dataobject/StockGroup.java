@@ -158,5 +158,6 @@ public class StockGroup {
         Company = company;
     }
 
+    @JsonProperty("IsSale")
     boolean IsSale;
 }

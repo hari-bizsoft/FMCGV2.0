@@ -782,6 +782,7 @@ com/fasterxml/jackson/core/base/GeneratorBase.class
 com/fasterxml/jackson/core/util/JsonParserDelegate.class
 com/fasterxml/jackson/databind/deser/std/NumberDeserializers$DoubleDeserializer.class
 com/fasterxml/jackson/databind/ser/BeanPropertyFilter.class
+com/bizsoft/fmcgv2/signalr/pojo/ProductSpec.class
 com/fasterxml/jackson/databind/jsontype/SubtypeResolver.class
 com/fasterxml/jackson/databind/ser/impl/IteratorSerializer.class
 com/fasterxml/jackson/databind/deser/std/NumberDeserializers$ShortDeserializer.class
@@ -809,6 +810,7 @@ android/support/v4/view/PagerTitleStrip.class
 com/google/gson/reflect/TypeToken.class
 com/fasterxml/jackson/databind/introspect/JacksonAnnotationIntrospector.class
 com/fasterxml/jackson/databind/ser/std/StdArraySerializers$ShortArraySerializer.class
+com/bizsoft/fmcgv2/signalr/pojo/PDetail.class
 com/fasterxml/jackson/databind/deser/std/NumberDeserializers$ByteDeserializer.class
 com/fasterxml/jackson/databind/type/MapType.class
 android/support/v7/app/AlertDialog$Builder.class
@@ -826,6 +828,7 @@ com/fasterxml/jackson/databind/deser/std/EnumMapDeserializer.class
 com/fasterxml/jackson/databind/exc/IgnoredPropertyException.class
 com/fasterxml/jackson/databind/ser/std/ObjectArraySerializer.class
 com/fasterxml/jackson/databind/deser/std/NumberDeserializers$NumberDeserializer.class
+com/bizsoft/fmcgv2/dataobject/CFiles.class
 org/apache/commons/collections4/MapUtils.class
 com/fasterxml/jackson/databind/ser/std/CalendarSerializer.class
 com/itextpdf/text/pdf/PdfArray.class
@@ -872,6 +875,7 @@ org/apache/commons/io/FileSystemUtils.class
 com/fasterxml/jackson/databind/type/CollectionType.class
 signal/gson/Ledger.class
 com/bizsoft/fmcgv2/signalr/pojo/Ledger.class
+com/bizsoft/fmcgv2/Tables/BankNameList.class
 com/fasterxml/jackson/databind/ser/std/ByteArraySerializer.class
 com/fasterxml/jackson/core/Version.class
 com/fasterxml/jackson/databind/ser/FilterProvider.class
@@ -882,6 +886,7 @@ com/fasterxml/jackson/databind/deser/std/StringCollectionDeserializer.class
 com/fasterxml/jackson/core/JsonStreamContext.class
 com/fasterxml/jackson/databind/deser/BeanDeserializer.class
 com/fasterxml/jackson/databind/ObjectMapper.class
+com/bizsoft/fmcgv2/signalr/pojo/PDetailsItem.class
 com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.class
 android/support/v4/media/TransportPerformer.class
 com/fasterxml/jackson/databind/introspect/AnnotatedConstructor.class

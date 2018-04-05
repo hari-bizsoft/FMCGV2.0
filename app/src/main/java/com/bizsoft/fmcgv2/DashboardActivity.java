@@ -267,6 +267,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+        //clearCategory.setVisibility(View.INVISIBLE);
         clearCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -294,7 +295,7 @@ public class DashboardActivity extends AppCompatActivity {
         Store.getInstance().waiter = waiter;
 
 
-        checkBluetoothConnection();
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -313,23 +314,25 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
+                if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
 
-                    if(!currentSaleType.toLowerCase().contains("order")) {
-                        save.setEnabled(false);
-                        save.setBackgroundColor(getResources().getColor(R.color.grey));
-                        preview.setEnabled(false);
-                        Log.d("Preview", "Disabled 2");
-                        preview.setBackgroundColor(getResources().getColor(R.color.grey));
+                    if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque"))) {
+
+                        if (!currentSaleType.toLowerCase().contains("order")) {
+                            save.setEnabled(false);
+                            save.setBackgroundColor(getResources().getColor(R.color.grey));
+                            preview.setEnabled(false);
+                            Log.d("Preview", "Disabled 2");
+                            preview.setBackgroundColor(getResources().getColor(R.color.grey));
+                        }
+                    } else {
+
+                        preview.setEnabled(true);
+                        Log.d("Preview", "Enabled 2.0");
+                        save.setEnabled(true);
+                        save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                        preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     }
-                }
-                else {
-
-                    preview.setEnabled(true);
-                    Log.d("Preview", "Enabled 2.0");
-                    save.setEnabled(true);
-                    save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                    preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 }
             }
 
@@ -343,7 +346,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
-                    if (!currentSaleType.toLowerCase().contains("order"))
+                    if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") ))
                     {
 
 
@@ -1167,8 +1170,6 @@ public class DashboardActivity extends AppCompatActivity {
                 status = true;
                 bizUtils.updateStock(sale);
 
-
-
             }
              writeToFile(sale.getRefCode());
 
@@ -1181,6 +1182,10 @@ public class DashboardActivity extends AppCompatActivity {
         try {
             BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
             System.out.println("DB Updated..on local storage");
+
+
+            BizUtils.syncStockProcessProductList();
+
         } catch (ClassNotFoundException e) {
 
             System.err.println("Unable to write to DB");
@@ -3736,8 +3741,10 @@ public class DashboardActivity extends AppCompatActivity {
         //We've got the permission, now we can proceed further
         if (v == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
             Toast.makeText(getBaseContext(), "We got the Storage Permission", Toast.LENGTH_SHORT).show();
+            checkBluetoothConnection();
         } else if (v == LOCATION_PERMISSION_CONSTANT) {
             Toast.makeText(getBaseContext(), "We got the Location Permission", Toast.LENGTH_SHORT).show();
+            checkBluetoothConnection();
         }
     }
 
@@ -4053,23 +4060,26 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
-                    if(!currentSaleType.toLowerCase().contains("order" )) {
-                        save.setEnabled(false);
-                        save.setBackgroundColor(getResources().getColor(R.color.grey));
-                        preview.setEnabled(false);
-                        Log.d("Preview", "Disabled 2");
-                        preview.setBackgroundColor(getResources().getColor(R.color.grey));
+                if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
+
+                    if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque"))) {
+
+                        if (!currentSaleType.toLowerCase().contains("order")) {
+                            save.setEnabled(false);
+                            save.setBackgroundColor(getResources().getColor(R.color.grey));
+                            preview.setEnabled(false);
+                            Log.d("Preview", "Disabled 2");
+                            preview.setBackgroundColor(getResources().getColor(R.color.grey));
+                        }
+                    } else {
+
+                        preview.setEnabled(true);
+                        Log.d("Preview", "Enabled 2.0");
+                        save.setEnabled(true);
+                        save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                        preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     }
-                }
-                else {
-
-                    preview.setEnabled(true);
-                    Log.d("Preview", "Enabled 2.0");
-                    save.setEnabled(true);
-                    save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                    preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 }
             }
 

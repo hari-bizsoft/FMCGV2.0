@@ -42,6 +42,17 @@ public class Company {
    String MobileNo;
     @JsonProperty("UnderCompanyId")
     Long UnderCompanyId;
+    @JsonProperty("BankId")
+    Long BankId;
+
+    public Long getBankId() {
+        return BankId;
+    }
+
+    public void setBankId(Long bankId) {
+        BankId = bankId;
+    }
+
     boolean synced ;
 
     public boolean isSynced() {

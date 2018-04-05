@@ -405,7 +405,7 @@ public class ProductAdapter extends BaseAdapter   {
                             if (x >= 1) {
                                 x--;
                                 holder.quantity.setText(String.valueOf(x));
-
+                                product.setQty(Long.valueOf(x));
                                 holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                             } else {
@@ -418,7 +418,7 @@ public class ProductAdapter extends BaseAdapter   {
                             if (x >= 1) {
                                 x--;
                                 holder.quantity.setText(String.valueOf(x));
-
+                                product.setQty(Long.valueOf(x));
                                 holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                             } else {

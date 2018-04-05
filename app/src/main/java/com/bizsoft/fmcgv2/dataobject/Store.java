@@ -99,7 +99,7 @@ public class Store {
     public Bitmap dealerLogoBitmap;
     public Waiter waiter;
     public Company dealer = new Company();
-    public ArrayList<BankNameList> bankList = new ArrayList<BankNameList>();
+    public ArrayList<BankList> bankList = new ArrayList<BankList>();
     public ArrayList<ProductSpec> productSpecList = new ArrayList<ProductSpec>();
     public ArrayList<ProductSpecProcess> prodcutSpecProcess = new ArrayList<ProductSpecProcess>();
 

@@ -1,9 +1,7 @@
 package com.bizsoft.fmcgv2;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.Tables.SOPending;
 import com.bizsoft.fmcgv2.Tables.SalesOrder;
@@ -31,18 +28,14 @@ import com.bizsoft.fmcgv2.dataobject.SaleOrder;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
-import com.bizsoft.fmcgv2.service.HttpHandler;
-import com.bizsoft.fmcgv2.service.SignalRService;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
-import static com.bizsoft.fmcgv2.DashboardActivity.BLUETOOTH_FLAG;
 import static com.bizsoft.fmcgv2.ReprintActivity.bizRound;
+import static com.bizsoft.fmcgv2.service.BizUtils.syncStockProcessProductList;
 
 public class STOSOActivity extends AppCompatActivity {
     Spinner customerSpinner,saleType,printItem;
@@ -158,6 +151,10 @@ public class STOSOActivity extends AppCompatActivity {
                                 try {
                                     BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
                                     System.out.println("DB Updated..on local storage");
+
+
+
+
                                 } catch (ClassNotFoundException e) {
                                     System.err.println("Unable to write to DB");
                                 }
@@ -230,7 +227,7 @@ public class STOSOActivity extends AppCompatActivity {
         Sale sale = new Sale();
         sale.setId(salesOrder.getId());
         sale.setBalance(0.00);
-        sale.setDiscountValue(0.00);
+        sale.setDiscountValue(salesOrder.getDiscountAmount());
         sale.setGrandTotal(salesOrder.getTotalAmount());
         sale.setPaymentMode("Cash");
         sale.setSubTotal(salesOrder.getItemAmount());
@@ -249,6 +246,7 @@ public class STOSOActivity extends AppCompatActivity {
             product.setId(salesOrderDetails.get(i).getId());
             product.setFinalPrice(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
             product.setMRP(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
+            product.setSellingRate(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
             product.setDiscountAmount(0.00);
             product.setQty((long) salesOrderDetails.get(i).getQuantity());
             product.setUOM("");
@@ -258,7 +256,28 @@ public class STOSOActivity extends AppCompatActivity {
         }
         sale.setProducts(products);
 
+        BizUtils.prettyJson("product json",products);
 
+        for (int k = 0; k < Store.getInstance().productList.size(); k++) {
+            Product actualProduct = Store.getInstance().productList.get(k);
+            ArrayList<SalesOrderDetails> sodetails = (ArrayList<SalesOrderDetails>) salesOrder.getSODetails();
+
+
+
+            for(int i=0;i<sodetails.size();i++)
+            {
+
+                if(actualProduct.getId() == sodetails.get(i).getProductId())
+                {
+                    actualProduct.setAvailableStock((long) (actualProduct.getAvailableStock() - sodetails.get(i).getQuantity()));
+                    synchronized(actualProduct){
+                        actualProduct.notify();
+                    }
+                }
+            }
+
+        }
+        syncStockProcessProductList();
 
         print(customer, "Sale Bill", products,sale, null, null);
 
@@ -682,7 +701,7 @@ public class STOSOActivity extends AppCompatActivity {
 
                 iq = String.valueOf(item.getQty());
             }
-            String itemP = String.valueOf(String.format("%.2f",item.getMRP()));
+            String itemP = String.valueOf(String.format("%.2f",item.getSellingRate()));
 
 
             if (itemP.length() >= 8) {

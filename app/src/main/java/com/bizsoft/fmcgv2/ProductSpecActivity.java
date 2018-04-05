@@ -2,6 +2,7 @@ package com.bizsoft.fmcgv2;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -51,6 +52,7 @@ public class ProductSpecActivity extends AppCompatActivity {
     private ProductSpec choosedProduct;
     ProductSpecAdapter productAdapter;
     private ArrayList<PDetailsItem> choosedOutputProd = new ArrayList<PDetailsItem>();
+    private FloatingActionButton menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +72,20 @@ public class ProductSpecActivity extends AppCompatActivity {
         productList = (ListView) findViewById(R.id.listView);
         clear = (Button) findViewById(R.id.clear);
         save= (Button) findViewById(R.id.save);
+        menu= (FloatingActionButton) findViewById(R.id.menu);
 
 
         init();
 
+        final BizUtils bizUtils = new BizUtils();
+        menu.bringToFront();
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                bizUtils.showMenu(ProductSpecActivity.this);
+            }
+        });
        productAdapter = new ProductSpecAdapter(ProductSpecActivity.this,choosedOutputProd);
         productList.setAdapter(productAdapter);
 
@@ -259,8 +270,12 @@ public class ProductSpecActivity extends AppCompatActivity {
         ProductSpecProcess productSpecProcess = new ProductSpecProcess();
         productSpecProcess.setAvailable(choosedProduct.getAvailable());
 
-
         Date date = BizUtils.getDateFromString(date_chooser.getText().toString(),"dd/MM/yyyy");
+        BizUtils.getCurrentDatAndTimeInDF();
+        Date date1 = new Date();
+
+
+
         productSpecProcess.setDate(date);
         productSpecProcess.setId((long) choosedProduct.getId());
         // productSpecProcess.setPDetails(choosedOutputProd);
@@ -288,12 +303,44 @@ public class ProductSpecActivity extends AppCompatActivity {
 
 
         productSpecProcess.setSynced(false);
+
+
         Store.getInstance().prodcutSpecProcess.add(productSpecProcess);
 
 
         try {
-            BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().dealer));
+            BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().prodcutSpecProcess));
             System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
+
+            for(int i=0;i<choosedOutputProd.size();i++) {
+                for (int k = 0; k < Store.getInstance().productList.size(); k++) {
+                    Product actualProduct = Store.getInstance().productList.get(k);
+
+                    System.out.println("Prod ID 1====" + choosedOutputProd.get(i).getId() + "=====" + choosedOutputProd.get(i).getProductId());
+                    System.out.println("Prod ID 2====" + actualProduct.getId());
+                    if (choosedOutputProd.get(i).getProductId() == actualProduct.getId()) {
+                        actualProduct.setAvailableStock((long) (choosedOutputProd.get(i).getAvailable()));
+
+                        synchronized(actualProduct){
+                            actualProduct.notify();
+                        }
+                    }
+                    if(choosedProduct.getProductId() == actualProduct.getId())
+                    {
+                        actualProduct.setAvailableStock(choosedProduct.getAvailable());
+                        synchronized(actualProduct){
+                            actualProduct.notify();
+                        }
+                    }
+
+                }
+            }
+
+
+
+
+
+
         } catch (ClassNotFoundException e) {
 
             System.err.println("Unable to write to DB");

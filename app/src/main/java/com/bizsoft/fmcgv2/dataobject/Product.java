@@ -130,9 +130,8 @@ public class Product {
         isAdded = added;
     }
     @JsonProperty("MRP")
-    public
-    double MRP;
-            boolean isAdded;
+    public double MRP;
+    boolean isAdded;
 
 
     public String getLedgerName() {
@@ -143,6 +142,7 @@ public class Product {
         LedgerName = ledgerName;
     }
 
+    @JsonProperty("LedgerName")
     String LedgerName;
 
     public double getAmount() {
@@ -153,6 +153,7 @@ public class Product {
         Amount = amount;
     }
 
+    @JsonProperty("Amount")
     double Amount;
 
     public boolean isReOrderLevel() {
@@ -172,9 +173,12 @@ public class Product {
     }
 
     double DiscountAmount;
+    @JsonProperty("OpeningStock")
             double OpeningStock;
+    @JsonProperty("ReOrderLevel")
             double ReOrderLevel;
             String ProductImage;
+    @JsonProperty("Qty")
             Long Qty;
 
     public Long getPOQty() {

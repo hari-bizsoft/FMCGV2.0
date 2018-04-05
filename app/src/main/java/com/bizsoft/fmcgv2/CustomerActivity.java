@@ -79,7 +79,7 @@ public class CustomerActivity extends AppCompatActivity {
 
                     for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
 
-                        if (Store.getInstance().customerList.get(i).getLedgerName().toLowerCase().contains(s)) {
+                        if (Store.getInstance().customerList.get(i).getLedgerName().toLowerCase().contains(s.toString().toLowerCase())) {
                             CustomerList.add(Store.getInstance().customerList.get(i));
                         }
                     }

@@ -180,7 +180,7 @@ public class ApplicationSheild {
 
 
             progressDialog.dismiss();
-            Toast.makeText(context, "Caller Connected....", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Caller Connected....", Toast.LENGTH_SHORT).show();
             recieveAllMsg("Caller");
 
             // getCompanyDetails();

@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.bizsoft.fmcgv2.DownloadDataActivity;
 import com.bizsoft.fmcgv2.LoginActivity;
 import com.bizsoft.fmcgv2.R;
-import com.bizsoft.fmcgv2.Tables.BankNameList;
+import com.bizsoft.fmcgv2.Tables.BankList;
 import com.bizsoft.fmcgv2.Tables.Receipt;
 import com.bizsoft.fmcgv2.Tables.SOPending;
 import com.bizsoft.fmcgv2.Tables.SalesOrder;
@@ -51,7 +51,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -587,6 +586,8 @@ public class SignalRService {
                 System.out.println("Product Id"+product.getId());
 
 
+                BizUtils.prettyJson("product ind item",product);
+
                 if(product.getStockGroup().isSale() && product.isDealer()) {
                     Store.getInstance().productList.add(product);
                 }
@@ -686,7 +687,7 @@ public class SignalRService {
     {
         ArrayList<LinkedTreeMap> companyCollection = new ArrayList<LinkedTreeMap>();
         try {
-            companyCollection = Store.getInstance().mHubProxyCaller.invoke(companyCollection.getClass(),"Product_Spec_master_List").get();
+            companyCollection = Store.getInstance().mHubProxyCaller.invoke(companyCollection.getClass(),"Product_Spec_Dispatch_List").get();
 
             Store.getInstance().productSpecList.clear();
             for(int i=0;i<companyCollection.size();i++)
@@ -808,6 +809,7 @@ public class SignalRService {
             System.out.println("---------------class type--"+o.getClass());
             System.out.println("---------------class value --"+o);
 
+            prettyJson("prod spec before save",productSpecProcess);
             if((boolean)o)
             {
                 System.out.println("---------------productSpecProcess saved --"+o);
@@ -960,7 +962,7 @@ public class SignalRService {
 
     }
 
-    public static void  bankNameList()
+    public static void  bankList()
     {
 
         ArrayList<LinkedTreeMap> collections = new ArrayList<LinkedTreeMap>();
@@ -972,13 +974,13 @@ public class SignalRService {
             Store.getInstance().bankList.clear();
             for(int i=0;i<collections.size();i++)
             {
-                BankNameList bankNameList = new BankNameList();
+                BankList bankList = new BankList();
                 final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-                bankNameList  = mapper.convertValue(collections.get(i),BankNameList.class);
-                System.out.println("Bank_Name_List-"+bankNameList);
+                bankList  = mapper.convertValue(collections.get(i),BankList.class);
+                System.out.println("Bank_Name_List-"+bankList);
 
                 // System.out.println("accountGroup Name-"+taxMaster.getGroupName());
-                Store.getInstance().bankList.add(bankNameList);
+                Store.getInstance().bankList.add(bankList);
 
             }
 
@@ -1028,6 +1030,11 @@ public class SignalRService {
                 soPending = mapper.convertValue(collections.get(i),SOPending.class);
                 System.out.println("sOPending_List-"+soPending.getStatus() + "   "+soPending.getRefNo());
 
+                for(int j=0;j<soPending.getSODetails().size();j++)
+                {
+                    System.out.println("sOPending_List-Prod ID"+soPending.getSODetails().get(j).getProductId());
+                    System.out.println("sOPending_List-Prod ID"+soPending.getSODetails().get(j).getQuantity());
+                }
 
 
 
@@ -1865,7 +1872,7 @@ public class SignalRService {
 
             try {
                 SignalRService.bankLedgerId();
-                SignalRService.bankNameList();
+                SignalRService.bankList();
                 SignalRService.SOPendingList();
                // SignalRService.Sales_getNewRefNo();
                 //SignalRService.SalesOrder_getNewRefNo();

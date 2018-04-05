@@ -56,7 +56,7 @@
 
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="108dp"
         android:background="#e53935"
         android:text="Close"
         android:textColor="#fff"
@@ -401,7 +401,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Load Offline"
+        android:text="Load Storage"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/load_offline"
@@ -453,5 +453,53 @@
         app:layout_constraintEnd_toEndOf="@+id/product_spec"
         app:layout_constraintStart_toStartOf="@+id/product_spec"
         app:layout_constraintTop_toBottomOf="@+id/product_spec"/>
+
+    <ImageButton
+        android:id="@+id/bank"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bank"
+        app:layout_constraintEnd_toStartOf="@+id/product"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/load_offline_text"/>
+
+    <TextView
+        android:id="@+id/textView90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Bank"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/bank"
+        app:layout_constraintStart_toStartOf="@+id/bank"
+        app:layout_constraintTop_toBottomOf="@+id/bank"/>
+
+    <ImageButton
+        android:id="@+id/product"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView83"
+        app:srcCompat="@drawable/product_bag"/>
+
+    <TextView
+        android:id="@+id/textView93"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Product"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintEnd_toEndOf="@+id/product"
+        app:layout_constraintStart_toStartOf="@+id/product"
+        app:layout_constraintTop_toBottomOf="@+id/product"/>
 </android.support.constraint.ConstraintLayout>
     </ScrollView>

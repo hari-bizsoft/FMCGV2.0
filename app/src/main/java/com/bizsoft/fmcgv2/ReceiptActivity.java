@@ -567,7 +567,7 @@ public class ReceiptActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Payment Mode :"+receipt.getPaymentMode());
 
 
-        BTPrint.PrintTextLine("Received     : RM "+String.format("%.2f",customer1.getLedger().getOPBal()));
+        BTPrint.PrintTextLine("OP Balance   : RM "+String.format("%.2f",customer1.getLedger().getOPBal()));
         BTPrint.PrintTextLine("Received     : RM "+String.format("%.2f",receipt.getAmount()));
 
         BTPrint.PrintTextLine("Outstanding  : RM "+ String.format("%.2f",(customer1.getLedger().getOPBal()- receipt.getAmount())));

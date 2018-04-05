@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.AppActivity;
+import com.bizsoft.fmcgv2.BankActivity;
 import com.bizsoft.fmcgv2.CustomerActivity;
 import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.DealerActivity;
@@ -53,11 +54,13 @@ import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.ProductModel;
 import com.bizsoft.fmcgv2.dataobject.ProductSaveResponse;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
+import com.bizsoft.fmcgv2.dataobject.ProductSpecProcessDetails;
 import com.bizsoft.fmcgv2.dataobject.Receipt;
 import com.bizsoft.fmcgv2.dataobject.Sale;
 import com.bizsoft.fmcgv2.dataobject.SaleOrder;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
+import com.bizsoft.fmcgv2.signalr.pojo.PDetailsItem;
 import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -328,6 +331,9 @@ public class BizUtils {
         ImageButton dealer = (ImageButton) dialog.findViewById(R.id.dealer);
         ImageButton productSpec = (ImageButton) dialog.findViewById(R.id.product_spec);
         Button activity = (Button) dialog.findViewById(R.id.activity);
+        ImageButton bank = (ImageButton) dialog.findViewById(R.id.bank);
+        ImageButton product = (ImageButton) dialog.findViewById(R.id.product);
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         activity.setOnClickListener(new View.OnClickListener() {
@@ -516,9 +522,53 @@ public class BizUtils {
                 context.startActivity(intent);
             }
         });
+        bank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Intent intent = new Intent(context,BankActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
+            }
+        });
+
+
     }
 
+    public static void syncStockProcessProductList() {
 
+
+            for (int k = 0; k < Store.getInstance().productList.size(); k++) {
+                Product actualProduct = Store.getInstance().productList.get(k);
+                ArrayList<ProductSpec> choosedOutputProd = Store.getInstance().productSpecList;
+                for(int i=0;i<choosedOutputProd.size();i++) {
+                    ProductSpec productprocess = choosedOutputProd.get(i);
+
+                    if(productprocess.getProductId()==actualProduct.getId())
+                    {
+                        productprocess.setAvailable(actualProduct.getAvailableStock());
+                        synchronized(productprocess){
+                            productprocess.notify();
+                        }
+                    }
+                    for(int j=0;j<productprocess.getPDetails().size();j++)
+                    {
+                        PDetailsItem product = productprocess.getPDetails().get(j);
+                        if(product.getProductId() == actualProduct.getId())
+                        {
+                            product.setAvailable(actualProduct.getAvailableStock());
+                            synchronized(product){
+                                product.notify();
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+    }
 
 
     public class SaveCustomer extends AsyncTask {
@@ -1616,7 +1666,7 @@ public class BizUtils {
 
                     System.out.println(aq + "< ==== >" + cq);
 
-                    aq = aq + cq;
+                    aq = aq - cq;
 
 
                     allProducts.get(i).setAvailableStock(aq);
@@ -1906,10 +1956,10 @@ public class BizUtils {
             {
                 if(SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i)))
                 {
-                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
                     Store.getInstance().prodcutSpecProcess.get(i).setSynced(true);
                     try {
-                        BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().dealer));
+                        BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().prodcutSpecProcess));
                         System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
                     } catch (ClassNotFoundException e) {
 
@@ -1920,7 +1970,8 @@ public class BizUtils {
                 }
                 else
                 {
-                    Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
+                    BizUtils.prettyJson("product Spec",Store.getInstance().prodcutSpecProcess.get(i));
                 }
                 sync = true;
             }
@@ -2063,7 +2114,7 @@ public class BizUtils {
                 Bitmap bmp = null;
                 if(Store.getInstance().dealerLogo!=null)
                 {
-                    bmp = Store.getInstance().dealerLogoBitmap;
+                    bmp = BizUtils.StringToBitMap(Store.getInstance().dealerLogo);
                 }
                 else
                 {
@@ -2103,11 +2154,7 @@ public class BizUtils {
             cn.setWidthPercentage(100);
 
             cn.addCell(getCell("Company Name :"+company.getCompanyName(), PdfPCell.ALIGN_LEFT));
-
             document.add(cn);
-
-
-
             document.add(new Paragraph("Address :"+company.getAddressLine1()+","+company.getAddressLine2()+","+company.getPostalCode()));
             document.add(new Paragraph("Ph No:"+company.getTelephoneNo()));
             document.add(new Paragraph("Email :"+company.getEMailId()));
@@ -2454,6 +2501,16 @@ public class BizUtils {
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         Gson gson = gsonBuilder.create();
         Type customerList = null;
+        Type dealerType = null;
+        Type productSpecList = null;
+
+
+        try {
+            initDB();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         File root = new File(Environment.getExternalStorageDirectory(), "FMCG_DB");
         if (!root.exists()) {
@@ -2465,17 +2522,37 @@ public class BizUtils {
         {
             Toast.makeText(context, "DB named "+DBName+" not found", Toast.LENGTH_SHORT).show();
         }
-        if (!root.exists()) {
 
-            Toast.makeText(context, "DB-root for "+root+" not found", Toast.LENGTH_SHORT).show();
-        }
         File file2 = new File(root, "ProductSpecProcessList");
         if(!file2.exists())
         {
             Toast.makeText(context, "DB named 'ProductSpecProcessList' not found", Toast.LENGTH_SHORT).show();
         }
+        else
+        {
+            try {
+                file2.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        File file3 = new File(root, "Dealer");
+        if(!file3.exists())
+        {
+            Toast.makeText(context, "DB named 'Dealer' not found", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            try {
+                file3.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         StringBuilder text = new StringBuilder();
         StringBuilder text2 = new StringBuilder();
+        StringBuilder text3 = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -2492,14 +2569,38 @@ public class BizUtils {
             br2.close();
 
 
+            BufferedReader br3 = new BufferedReader(new FileReader(file3));
+            String line3;
+            while ((line3 = br3.readLine()) != null) {
+                text3.append(line3);
+            }
+            br3.close();
+
+
             //reading customer list as json and storing again
             customerList = new TypeToken<Collection<Customer>>() {
             }.getType();
             ArrayList<Customer> customers = new ArrayList<Customer>();
-
-
-
             customers = gson.fromJson(text.toString(), customerList);
+
+            //reading customer list as json and storing again
+            productSpecList = new TypeToken<Collection<ProductSpecProcess>>() {
+            }.getType();
+            ArrayList<ProductSpecProcess> productSpecProcesses = new ArrayList<ProductSpecProcess>();
+            productSpecProcesses = gson.fromJson(text2.toString(), productSpecList);
+
+
+            //reading customer list as json and storing again
+            dealerType = new TypeToken<Company>() {
+            }.getType();
+            Company dealer = new Company();
+            dealer = gson.fromJson(text3.toString(), dealerType);
+
+
+
+
+
+
             final Dialog dialog = new Dialog(context);
 
             dialog.setContentView(R.layout.offline_data);
@@ -2508,12 +2609,14 @@ public class BizUtils {
             TextView salesReturn  = (TextView) dialog.findViewById(R.id.sale_return);
             TextView salesOrderPendingList = (TextView) dialog.findViewById(R.id.sales_order_pending_list);
             TextView receipt = (TextView) dialog.findViewById(R.id.receipt);
+            TextView dealr = (TextView) dialog.findViewById(R.id.dealer);
+            TextView prodctSpec = (TextView) dialog.findViewById(R.id.product_spec);
             Button load = (Button) dialog.findViewById(R.id.load);
 
 
 
-            int s=0,so=0,sopl=0,sr=0,r=0;
-            int s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0;
+            int s=0,so=0,sopl=0,sr=0,r=0,d=0,ps=0;
+            int s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0,d_synced=0,ps_synced = 0;
             for(int i=0;i<customers.size();i++)
             {
 
@@ -2522,10 +2625,11 @@ public class BizUtils {
                 {
                     if(!customers.get(i).getSalesOfCustomer().get(x).isSynced())
                     {
-                        s_synced++;
-                        BizUtils.prettyJson("unsaved sale",customers.get(i).getSalesOfCustomer().get(x));
+                        Log.d("SO","Unsaved");
+                       // BizUtils.prettyJson("unsaved sale",customers.get(i).getSalesOfCustomer().get(x));
                     }
                     else {
+                        s_synced++;
 
                         BizUtils.prettyJson("saved sale",customers.get(i).getSalesOfCustomer().get(x));
 
@@ -2538,6 +2642,10 @@ public class BizUtils {
                 {
                     if(!customers.get(i).getSaleOrdersOfCustomer().get(x).isSynced())
                     {
+                      Log.d("SO","Unsaved");
+                    }
+                    else
+                    {
                         so_synced++;
                     }
 
@@ -2547,6 +2655,9 @@ public class BizUtils {
                 {
                     if(!customers.get(i).getSaleReturnOfCustomer().get(x).isSynced())
                     {
+                        Log.d("SR","Unsaved");
+                    }
+                    else {
                         sr_synced++;
                     }
 
@@ -2555,6 +2666,10 @@ public class BizUtils {
                 for(int x=0;x<customers.get(i).getsOPendingList().size();x++)
                 {
                     if(!customers.get(i).getsOPendingList().get(x).isSynced())
+                    {
+                        Log.d("SOP","Unsaved");
+                    }
+                    else
                     {
                         sopl_synced++;
                     }
@@ -2565,26 +2680,63 @@ public class BizUtils {
                 {
                     if(!customers.get(i).getReceipts().get(x).isSynced())
                     {
+
+                    }
+                    else
+                    {
                         r_synced++;
                     }
 
                 }
+
+
+            }
+
+            if(dealer.isSynced())
+            {
+                d_synced++;
+            }
+
+            for(int i=0;i<productSpecProcesses.size();i++)
+            {
+
+                if(productSpecProcesses.get(i).isSynced())
+                {
+                    ps_synced++;
+                }
+                ps++;
             }
 
 
-            sale.setText(String.valueOf(s+"("+s_synced+")"));
-            saleOrder.setText(String.valueOf(so+"("+so_synced+")"));
-            salesReturn.setText(String.valueOf(sr+"("+sr_synced+")"));
-            salesOrderPendingList.setText(String.valueOf(sopl+"("+sopl_synced+")"));
-            receipt.setText(String.valueOf(r+"("+r_synced+")"));
+            sale.setText(String.valueOf(s+" of "+s_synced+" synced"));
+            saleOrder.setText(String.valueOf(so+" of "+so_synced+" synced"));
+            salesReturn.setText(String.valueOf(sr+" of "+sr_synced+" synced"));
+            salesOrderPendingList.setText(String.valueOf(sopl+" of "+sopl_synced+" synced"));
+            receipt.setText(String.valueOf(r+" of "+r_synced+" synced"));
+            if(d_synced==0)
+            {
+                dealr.setText(String.valueOf("not synced   "));
+            }
+            else
+            {
+                dealr.setText(String.valueOf("synced      "));
+            }
+            prodctSpec.setText(String.valueOf(ps+" of "+ps_synced+" synced"));
+
+
 
             final ArrayList<Customer> finalCustomers = customers;
+            final Company finalDealer = dealer;
+            final ArrayList<ProductSpecProcess> finalProductSpecProcesses = productSpecProcesses;
             load.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
 
                     Store.getInstance().customerList = finalCustomers;
+                    Store.getInstance().dealer= finalDealer;
+                    Store.getInstance().prodcutSpecProcess = finalProductSpecProcesses;
+
                     Toast.makeText(context, "Loaded..", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
@@ -2638,7 +2790,9 @@ public class BizUtils {
             productSpec = new TypeToken<Collection<ProductSpecProcess>>() {
             }.getType();
 
-            json = gson.toJson(Store.getInstance().productSpecList, productSpec);
+            json = gson.toJson(Store.getInstance().prodcutSpecProcess, productSpec);
+
+
 
 
         }
@@ -2697,8 +2851,9 @@ public class BizUtils {
     public static Date getDateFromString(String d,String format) throws ParseException {
 
 
+        d= d + " 4:30 pm";
         System.out.println("Input String : "+d);
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         Date d1 = df.parse(d);
         System.out.println("Date: " + d1);
@@ -2706,5 +2861,53 @@ public class BizUtils {
 
 
         return d1;
+    }
+    public static void initDB() throws IOException {
+        File root = new File(Environment.getExternalStorageDirectory(), "FMCG_DB");
+        if (!root.exists()) {
+
+            root.mkdirs();
+        }
+        File file = new File(root, "Dealer");
+        if(!file.exists())
+        {
+
+            file.createNewFile();
+            Log.d("DB","New DB- Dealer");
+            try {
+                BizUtils.storeAsJSON("Dealer",BizUtils.getJSON("dealer",Store.getInstance().dealer));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        File file2 = new File(root, "ProductSpecProcessList");
+        if(!file2.exists())
+        {
+            file2.createNewFile();
+            Log.d("DB","New DB- Prod Spec");
+            try {
+                BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().prodcutSpecProcess));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        File file3 = new File(root, "customerList");
+        if(!file3.exists())
+        {
+            file3.createNewFile();
+            Log.d("DB","New DB- CustomerList");
+            try {
+                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
     }
 }

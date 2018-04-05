@@ -1,35 +1,35 @@
 #Internal package file, do not edit.
-#Tue Mar 27 16:53:18 IST 2018
-7.path=classes.dex
-2.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\165
+#Sat Mar 31 14:22:11 IST 2018
+7.path=denariusoft64.png
+2.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\282
 5.set=DEX
 0.path=fmcglogo64.png
 2.baseType=DIRECTORY
-3.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\166
+3.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\280
 7.baseType=DIRECTORY
 2.set=DEX
 1.path=classes.dex
-4.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\169
-7.set=DEX
+4.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\283
+7.set=ASSET
 count=8
 5.baseType=DIRECTORY
 2.path=classes.dex
-5.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\164
+5.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\281
 4.set=DEX
 3.path=classes.dex
-6.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\assets\\debug
+6.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\279
 3.baseType=DIRECTORY
 1.set=DEX
 4.path=classes.dex
-7.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\167
-6.set=ASSET
+7.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\assets\\debug
+6.set=DEX
 1.baseType=DIRECTORY
 6.baseType=DIRECTORY
 5.path=classes.dex
 0.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\assets\\debug
 0.baseType=DIRECTORY
 3.set=DEX
-6.path=denariusoft64.png
-1.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\168
+6.path=classes.dex
+1.base=D\:\\R&D\\FMCGV22\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\278
 4.baseType=DIRECTORY
 0.set=ASSET

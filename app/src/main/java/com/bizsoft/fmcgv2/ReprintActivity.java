@@ -63,6 +63,8 @@ public class ReprintActivity extends AppCompatActivity {
     BizUtils bizUtils;
     FloatingActionButton menu;
     TextView discountValue;
+    private int currentPrintPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,17 +154,25 @@ public class ReprintActivity extends AppCompatActivity {
                         if (currentCustomer.getSale().size() > 0) {
 
 
+                            int position = currentPrintPosition;
 
-                            temp =   currentCustomer.getSalesOfCustomer().get(currentCustomer.getSalesOfCustomer().size()-1).getProducts();
+                            temp =   currentCustomer.getSalesOfCustomer().get(position).getProducts();
 
 
-                           print2(currentCustomer, "Sale Bill", temp,currentCustomer.getSalesOfCustomer().get(currentCustomer.getSalesOfCustomer().size()-1), null, null);
+                           print2(currentCustomer, "Sale Bill", temp,currentCustomer.getSalesOfCustomer().get(position), null, null);
                         } else if (customer.getSaleOrder().size() > 0) {
-                            temp =   currentCustomer.getSaleOrdersOfCustomer().get(currentCustomer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                            print2(currentCustomer, "Sale Order Bill", temp, null,currentCustomer.getSaleOrdersOfCustomer().get(currentCustomer.getSaleOrdersOfCustomer().size()-1), null);
+
+                            int position = currentPrintPosition;
+
+
+                            temp =   currentCustomer.getSaleOrdersOfCustomer().get(position).getProducts();
+
+                            print2(currentCustomer, "Sale Order Bill", temp, null,currentCustomer.getSaleOrdersOfCustomer().get(position), null);
                         } else if (customer.getSaleReturn().size() > 0) {
-                            temp =   currentCustomer.getSaleReturnOfCustomer().get(currentCustomer.getSaleReturnOfCustomer().size()-1).getProducts();
-                            print2(currentCustomer, "Sale Return Bill", temp, null, null, currentCustomer.getSaleReturnOfCustomer().get(currentCustomer.getSaleReturnOfCustomer().size()-1));
+                            int position = currentPrintPosition;
+
+                            temp =   currentCustomer.getSaleReturnOfCustomer().get(position).getProducts();
+                            print2(currentCustomer, "Sale Return Bill", temp, null, null, currentCustomer.getSaleReturnOfCustomer().get(position));
                         }
 
                     }
@@ -371,7 +381,7 @@ public class ReprintActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     System.out.println("Sale order Size"+products.size());
 
-                    generateBill();
+                    generateBill(position);
                 }
                 else
                 if(currentSaleType.toLowerCase().contains("return")) {
@@ -380,7 +390,7 @@ public class ReprintActivity extends AppCompatActivity {
                     products.clear();
                     products.addAll(currentSaleReturn.getProducts());
                     adapter.notifyDataSetChanged();
-                    generateBill();
+                    generateBill(position);
                     System.out.println("Sale  Return Size"+products.size());
                 }
                 else
@@ -389,7 +399,7 @@ public class ReprintActivity extends AppCompatActivity {
                     products.clear();
                     products.addAll(currentSales.getProducts());
                     adapter.notifyDataSetChanged();
-                    generateBill();
+                    generateBill(position);
                     System.out.println("Sale  Size"+products.size());
 
                 }
@@ -407,7 +417,7 @@ public class ReprintActivity extends AppCompatActivity {
                     products.clear();
                     products.addAll(currentSaleOrder.getProducts());
                     adapter.notifyDataSetChanged();
-                    generateBill();
+                    generateBill(currentPrintPosition);
                     System.out.println("Sale order Size"+products.size());
                 }
                 else
@@ -417,7 +427,7 @@ public class ReprintActivity extends AppCompatActivity {
                     products.clear();
                     products.addAll(currentSaleReturn.getProducts());
                     adapter.notifyDataSetChanged();
-                    generateBill();
+                    generateBill(currentPrintPosition);
                     System.out.println("Sale  Return Size"+products.size());
                 }
                 else
@@ -426,7 +436,7 @@ public class ReprintActivity extends AppCompatActivity {
                     products.clear();
                     products.addAll(currentSales.getProducts());
                     adapter.notifyDataSetChanged();
-                    generateBill();
+                    generateBill(currentPrintPosition);
                     System.out.println("Sale  Size"+products.size()+"=========");
 
                 }
@@ -442,13 +452,15 @@ public class ReprintActivity extends AppCompatActivity {
 
 
     }
-    public void generateBill()
+    public void generateBill(int position)
     {
          subTotal = 0;
          gst = 0;
          grandTotal = 0;
          fromCustomerValue = 0;
         tenderAmountValue = 0;
+
+        currentPrintPosition = position;
 
 
 

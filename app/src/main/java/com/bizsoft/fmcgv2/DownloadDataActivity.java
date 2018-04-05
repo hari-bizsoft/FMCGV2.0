@@ -6,17 +6,23 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizLogger;
 import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.SignalRService;
+
+import java.io.File;
+import java.io.IOException;
 
 public class DownloadDataActivity extends AppCompatActivity {
 
@@ -99,7 +105,7 @@ public class DownloadDataActivity extends AppCompatActivity {
 
            try {
                SignalRService.bankLedgerId();
-                SignalRService.bankNameList();
+               SignalRService.bankList();
                SignalRService.SOPendingList();
                SignalRService.Sales_getNewRefNo();
                SignalRService.SalesOrder_getNewRefNo();
@@ -174,6 +180,8 @@ public class DownloadDataActivity extends AppCompatActivity {
 
 
             finish();
+
+
             Intent intent = new Intent(DownloadDataActivity.this,DashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -192,4 +200,5 @@ public class DownloadDataActivity extends AppCompatActivity {
         progressBar.setProgress(values[0]);
     }
     }
+
 }

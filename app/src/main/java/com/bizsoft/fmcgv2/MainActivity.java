@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
             Platform.loadPlatformComponent( new AndroidPlatformComponent() );
             // Change to the IP address and matching port of your SignalR server.
 
+            Log.d("Host: ",host);
 
             mHubConnectionCaller = new HubConnection(host);
 
@@ -311,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             progressDialog.dismiss();
-            Toast.makeText(context, "Caller Connected....", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context, "Caller Connected....", Toast.LENGTH_SHORT).show();
             recieveAllMsg("Caller");
 
             // getnynyDetails();

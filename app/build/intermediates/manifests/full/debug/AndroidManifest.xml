@@ -116,6 +116,10 @@
         </activity>
         <activity android:name="com.bizsoft.fmcgv2.ProductSpecActivity" >
         </activity>
+        <activity android:name="com.bizsoft.fmcgv2.BankActivity" >
+        </activity>
+        <activity android:name="com.bizsoft.fmcgv2.CreateBankActivity" >
+        </activity>
     </application>
 
 </manifest>
