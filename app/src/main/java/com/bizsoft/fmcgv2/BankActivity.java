@@ -8,12 +8,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.Tables.BankList;
+import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.BankAdapter;
-import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
 
@@ -25,9 +26,9 @@ public class BankActivity extends AppCompatActivity {
     FloatingActionButton add,menu;
     BizUtils bizUtils;
     private EditText searchBar;
-    private ArrayList<BankList> bankList;
+    private ArrayList<Bank> bankList;
     private BankAdapter adapter;
-    private ArrayList<BankList> filterList = new ArrayList<>();
+    private ArrayList<Bank> filterList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,19 @@ public class BankActivity extends AppCompatActivity {
         filterList.addAll(Store.getInstance().bankList);
         adapter = new BankAdapter(BankActivity.this, filterList);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(BankActivity.this,CreateBankActivity.class);
+                intent.putExtra("myAction","edit");
+                intent.putExtra("position",position);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+
 
 
 
@@ -56,6 +70,8 @@ public class BankActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(BankActivity.this,CreateBankActivity.class);
+                intent.putExtra("myAction","add");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -76,7 +92,7 @@ public class BankActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                bankList = new ArrayList<BankList>();
+                bankList = new ArrayList<Bank>();
 
 
             }

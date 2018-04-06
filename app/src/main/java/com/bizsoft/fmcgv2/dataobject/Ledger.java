@@ -30,7 +30,16 @@ public class Ledger {
     String MobileNo;
     @JsonProperty("GSTNo")
     String GSTNo;
+    @JsonProperty("EMailId")
+    String EMailId;
 
+    public String getEMailId() {
+        return EMailId;
+    }
+
+    public void setEMailId(String EMailId) {
+        this.EMailId = EMailId;
+    }
 
     public String getPersonIncharge()
     {

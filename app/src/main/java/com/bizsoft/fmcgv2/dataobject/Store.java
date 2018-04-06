@@ -99,9 +99,11 @@ public class Store {
     public Bitmap dealerLogoBitmap;
     public Waiter waiter;
     public Company dealer = new Company();
-    public ArrayList<BankList> bankList = new ArrayList<BankList>();
+    public ArrayList<Bank> bankList = new ArrayList<Bank>();
     public ArrayList<ProductSpec> productSpecList = new ArrayList<ProductSpec>();
     public ArrayList<ProductSpecProcess> prodcutSpecProcess = new ArrayList<ProductSpecProcess>();
+    public ArrayList<Bank> newBankList = new ArrayList<Bank>();
+    public Long bankAccountGroupId;
 
 
     public static Store getInstance() {

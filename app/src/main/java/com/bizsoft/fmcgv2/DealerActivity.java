@@ -1,6 +1,5 @@
 package com.bizsoft.fmcgv2;
 
-import android.*;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -30,12 +29,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.Tables.BankList;
+import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
-import com.bizsoft.fmcgv2.service.Network;
-import com.bizsoft.fmcgv2.service.SignalRService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,8 +53,8 @@ public class DealerActivity extends AppCompatActivity {
     private boolean customImage;
     private String imageBase64;
     FloatingActionButton menu;
-    private BankList currentBank;
-    private BankList choosedBank;
+    private Bank currentBank;
+    private Bank choosedBank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -369,6 +366,7 @@ public class DealerActivity extends AppCompatActivity {
         try {
             BizUtils.storeAsJSON("Dealer",BizUtils.getJSON("dealer",Store.getInstance().dealer));
             System.out.println("DB 'Dealer' Updated..on local storage");
+            clear.performClick();
         } catch (ClassNotFoundException e) {
 
             System.err.println("Unable to write to DB");

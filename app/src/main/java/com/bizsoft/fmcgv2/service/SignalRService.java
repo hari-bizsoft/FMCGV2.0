@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.bizsoft.fmcgv2.DownloadDataActivity;
 import com.bizsoft.fmcgv2.LoginActivity;
 import com.bizsoft.fmcgv2.R;
-import com.bizsoft.fmcgv2.Tables.BankList;
+import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.Tables.Receipt;
 import com.bizsoft.fmcgv2.Tables.SOPending;
 import com.bizsoft.fmcgv2.Tables.SalesOrder;
@@ -31,6 +31,7 @@ import com.bizsoft.fmcgv2.dataobject.AccountGroup;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.CompanyDetails;
 import com.bizsoft.fmcgv2.dataobject.Customer;
+import com.bizsoft.fmcgv2.dataobject.Ledger;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.Tables.Sale;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
@@ -755,10 +756,7 @@ public class SignalRService {
     public static boolean saveCompany(Company company) {
 
         Object o = new Object();
-
-
         boolean status = false;
-
         Company customerResponse = new Company();
         Gson gson = new Gson();
         try {
@@ -767,13 +765,9 @@ public class SignalRService {
             prettyJson("company details",company);
             o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"CompanyDetail_Save",company).get();
 
-            System.out.println("---------------class type--"+o.getClass());
-            System.out.println("---------------class value --"+o);
-
             if((Double)o != 0)
             {
                 System.out.println("---------------dealer saved --"+o);
-
                 status = true;
                 BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | company saved Id :  "+customerResponse.getId());
             }
@@ -793,6 +787,57 @@ public class SignalRService {
         return status;
 
     }
+    public static boolean saveBank(Bank bank) {
+
+        Object o = new Object();
+        boolean status = false;
+
+        Gson gson = new Gson();
+
+        try {
+
+            if(bank.getId()==0)
+            {
+                System.out.println("---------------bank save--");
+            }
+            else
+            {
+                System.out.println("---------------bank updated--");
+            }
+
+
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"Bank_Save",bank).get();
+            prettyJson("bank save response",o);
+
+            try {
+
+
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+                bank = mapper.convertValue(o,Bank.class);
+                System.out.println("bank Id"+bank.getId());
+                if(bank.getId()!=0)
+                {
+                    status = true;
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exception=="+e);
+
+            }
+
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return status;
+
+    }
+
     public static boolean saveProductSpec(ProductSpecProcess productSpecProcess) {
 
         Object o = new Object();
@@ -850,6 +895,7 @@ public class SignalRService {
                 accountGroup  = mapper.convertValue(collections.get(i),AccountGroup.class);
                 System.out.println("accountGroup Id-"+accountGroup.getId());
                 System.out.println("accountGroup Name-"+accountGroup.getGroupName());
+                System.out.println("accountGroup company Id-" + accountGroup.getCompany().getId());
 
                 if(accountGroup.getGroupName()!=null) {
 
@@ -857,6 +903,12 @@ public class SignalRService {
                         Store.getInstance().currentAccGrpId = accountGroup.getId();
                         Store.getInstance().currentAccGrpName = accountGroup.getGroupName();
                         System.out.println("Current - accountGroup Name-" + accountGroup.getGroupName());
+
+                    }
+                    if(accountGroup.getGroupName().equals("Bank Accounts") && accountGroup.getCompany().getId().compareTo(Store.getInstance().dealer.getId())==0)
+                    {
+                        Store.getInstance().bankAccountGroupId =  accountGroup.getId();
+                        System.out.println("Bank Accounts - Group Id" + accountGroup.getGroupName());
                     }
                 }
                 Store.getInstance().accountsGroupList.add(accountGroup);
@@ -974,9 +1026,9 @@ public class SignalRService {
             Store.getInstance().bankList.clear();
             for(int i=0;i<collections.size();i++)
             {
-                BankList bankList = new BankList();
+                Bank bankList = new Bank();
                 final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-                bankList  = mapper.convertValue(collections.get(i),BankList.class);
+                bankList  = mapper.convertValue(collections.get(i),Bank.class);
                 System.out.println("Bank_Name_List-"+bankList);
 
                 // System.out.println("accountGroup Name-"+taxMaster.getGroupName());
@@ -1921,6 +1973,45 @@ public class SignalRService {
 
             System.out.println("----------Status-----------------------"+values[0]);
 
+        }
+    }
+    static class BankNew
+    {
+        int Id;
+        String AccountNo;
+        String BankAccountName;
+        Ledger Ledger;
+
+        public int getId() {
+            return Id;
+        }
+
+        public void setId(int id) {
+            Id = id;
+        }
+
+        public String getAccountNo() {
+            return AccountNo;
+        }
+
+        public void setAccountNo(String accountNo) {
+            AccountNo = accountNo;
+        }
+
+        public String getBankAccountName() {
+            return BankAccountName;
+        }
+
+        public void setBankAccountName(String bankAccountName) {
+            BankAccountName = bankAccountName;
+        }
+
+        public com.bizsoft.fmcgv2.dataobject.Ledger getLedger() {
+            return Ledger;
+        }
+
+        public void setLedger(com.bizsoft.fmcgv2.dataobject.Ledger ledger) {
+            Ledger = ledger;
         }
     }
 

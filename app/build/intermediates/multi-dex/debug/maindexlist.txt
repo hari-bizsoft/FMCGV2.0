@@ -875,9 +875,9 @@ org/apache/commons/io/FileSystemUtils.class
 com/fasterxml/jackson/databind/type/CollectionType.class
 signal/gson/Ledger.class
 com/bizsoft/fmcgv2/signalr/pojo/Ledger.class
-com/bizsoft/fmcgv2/Tables/BankNameList.class
 com/fasterxml/jackson/databind/ser/std/ByteArraySerializer.class
 com/fasterxml/jackson/core/Version.class
+com/bizsoft/fmcgv2/Tables/Bank.class
 com/fasterxml/jackson/databind/ser/FilterProvider.class
 com/fasterxml/jackson/databind/ser/std/NumberSerializer.class
 com/fasterxml/jackson/databind/PropertyMetadata.class

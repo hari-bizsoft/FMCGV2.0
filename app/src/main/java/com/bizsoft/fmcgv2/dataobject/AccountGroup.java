@@ -16,6 +16,16 @@ public class AccountGroup {
     String GroupName;
     @JsonProperty("UnderGroupId")
     Long UnderGroupId;
+    @JsonProperty("Company")
+    Company company;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
     public Long getId() {
         return Id;

@@ -191,14 +191,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryDark"
         android:text="Load"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/receipt"/>
+        app:layout_constraintTop_toBottomOf="@+id/banks"/>
 
     <TextView
         android:id="@+id/dealer"
@@ -220,7 +220,6 @@
         android:id="@+id/textView92"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
 
         android:padding="10dip"
         android:text="Dealer"
@@ -251,16 +250,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="Product Spec"
         android:padding="10dip"
+        android:text="Product Spec"
 
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/product_spec"
         app:layout_constraintEnd_toStartOf="@+id/product_spec"
         app:layout_constraintTop_toTopOf="@+id/product_spec"/>
+
+    <TextView
+        android:id="@+id/banks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textStyle="bold"
+        android:padding="10dip"
+        android:textColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/product_spec"/>
+
+    <TextView
+        android:id="@+id/textView97"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="10dip"
+        android:text="Banks"
+        android:textColor="#000"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/banks"
+        app:layout_constraintEnd_toStartOf="@+id/banks"
+        app:layout_constraintTop_toTopOf="@+id/banks"/>
 
 
 </android.support.constraint.ConstraintLayout>

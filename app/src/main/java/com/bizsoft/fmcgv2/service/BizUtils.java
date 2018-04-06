@@ -40,6 +40,7 @@ import com.bizsoft.fmcgv2.STOSOActivity;
 import com.bizsoft.fmcgv2.SalesActivity;
 import com.bizsoft.fmcgv2.SalesOrderActivity;
 import com.bizsoft.fmcgv2.SalesReturnActivity;
+import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.Tables.ReceiptDetail;
 import com.bizsoft.fmcgv2.Tables.SaleDetail;
 import com.bizsoft.fmcgv2.Tables.SalesOrderDetails;
@@ -333,6 +334,10 @@ public class BizUtils {
         Button activity = (Button) dialog.findViewById(R.id.activity);
         ImageButton bank = (ImageButton) dialog.findViewById(R.id.bank);
         ImageButton product = (ImageButton) dialog.findViewById(R.id.product);
+        TextView productLabel = (TextView) dialog.findViewById(R.id.textView93);
+       // productLabel.setVisibility(View.INVISIBLE);
+
+      //  product.setVisibility(View.INVISIBLE);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -1951,9 +1956,11 @@ public class BizUtils {
             {
                 System.out.println("No sync prod spec");
 
+
             }
             else
             {
+                sync = true;
                 if(SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i)))
                 {
 //                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
@@ -1973,10 +1980,32 @@ public class BizUtils {
                   //  Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
                     BizUtils.prettyJson("product Spec",Store.getInstance().prodcutSpecProcess.get(i));
                 }
-                sync = true;
+
             }
 
 
+        }
+        for(int i=0;i<Store.getInstance().newBankList.size();i++)
+        {
+            if(Store.getInstance().newBankList.get(i).isSynced())
+            {
+                System.out.println("Already synced...");
+            }
+            else
+            {
+                sync = true;
+             if(SignalRService.saveBank(Store.getInstance().newBankList.get(i)))
+             {
+                 Store.getInstance().newBankList.get(i).setSynced(true);
+                 try {
+                     BizUtils.storeAsJSON("NewBankList",BizUtils.getJSON("bankList",Store.getInstance().newBankList));
+                     System.out.println("DB 'NewBankList' Updated..on local storage");
+                 } catch (ClassNotFoundException e) {
+
+                     System.err.println("Unable to write to DB 'NewBankList'");
+                 }
+             }
+            }
         }
 
 
@@ -2503,6 +2532,7 @@ public class BizUtils {
         Type customerList = null;
         Type dealerType = null;
         Type productSpecList = null;
+        Type bankList = null;
 
 
         try {
@@ -2549,10 +2579,24 @@ public class BizUtils {
                 e.printStackTrace();
             }
         }
+        File file4 = new File(root, "NewBankList");
+        if(!file4.exists())
+        {
+            Toast.makeText(context, "DB named 'NewBankList' not found", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            try {
+                file4.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         StringBuilder text = new StringBuilder();
         StringBuilder text2 = new StringBuilder();
         StringBuilder text3 = new StringBuilder();
+        StringBuilder newBankJsonAsText = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -2577,6 +2621,14 @@ public class BizUtils {
             br3.close();
 
 
+            BufferedReader br4 = new BufferedReader(new FileReader(file4));
+            String line4;
+            while ((line4 = br4.readLine()) != null) {
+                newBankJsonAsText.append(line4);
+            }
+            br4.close();
+
+
             //reading customer list as json and storing again
             customerList = new TypeToken<Collection<Customer>>() {
             }.getType();
@@ -2598,6 +2650,12 @@ public class BizUtils {
 
 
 
+            //reading customer list as json and storing again
+            bankList = new TypeToken<Collection<Bank>>() {
+            }.getType();
+            ArrayList<Bank> bankArrayList = new ArrayList<Bank>();
+            bankArrayList = gson.fromJson(newBankJsonAsText.toString(), bankList);
+
 
 
 
@@ -2611,12 +2669,13 @@ public class BizUtils {
             TextView receipt = (TextView) dialog.findViewById(R.id.receipt);
             TextView dealr = (TextView) dialog.findViewById(R.id.dealer);
             TextView prodctSpec = (TextView) dialog.findViewById(R.id.product_spec);
+            TextView banks = (TextView) dialog.findViewById(R.id.banks);
             Button load = (Button) dialog.findViewById(R.id.load);
 
 
 
-            int s=0,so=0,sopl=0,sr=0,r=0,d=0,ps=0;
-            int s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0,d_synced=0,ps_synced = 0;
+            int s=0,so=0,sopl=0,sr=0,r=0,d=0,ps=0,b=0;
+            int s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0,d_synced=0,ps_synced = 0,b_synced=0;
             for(int i=0;i<customers.size();i++)
             {
 
@@ -2636,6 +2695,7 @@ public class BizUtils {
                     }
 
                 }
+
 
                 so = so + customers.get(i).getSaleOrdersOfCustomer().size();
                 for(int x=0;x<customers.get(i).getSaleOrdersOfCustomer().size();x++)
@@ -2706,6 +2766,15 @@ public class BizUtils {
                 }
                 ps++;
             }
+            for(int i=0;i<bankArrayList.size();i++)
+            {
+                if(bankArrayList.get(i).isSynced())
+                {
+                    b_synced++;
+                }
+                b++;
+            }
+
 
 
             sale.setText(String.valueOf(s+" of "+s_synced+" synced"));
@@ -2722,6 +2791,7 @@ public class BizUtils {
                 dealr.setText(String.valueOf("synced      "));
             }
             prodctSpec.setText(String.valueOf(ps+" of "+ps_synced+" synced"));
+            banks.setText(String.valueOf(b+" of "+b_synced+" synced"));
 
 
 
@@ -2760,6 +2830,7 @@ public class BizUtils {
         Type customerList = null;
         Type dealer = null;
         Type productSpec = null;
+        Type bankList = null;
         String json = "";
         if(db.equals("company"))
         {
@@ -2782,20 +2853,23 @@ public class BizUtils {
             }.getType();
             json = gson.toJson(Store.getInstance().dealer, dealer);
 
-
         }
 
         if(db.equals("productspecprocess"))
         {
             productSpec = new TypeToken<Collection<ProductSpecProcess>>() {
             }.getType();
-
             json = gson.toJson(Store.getInstance().prodcutSpecProcess, productSpec);
 
-
-
+        }
+        if(db.equals("bankList"))
+        {
+            bankList = new TypeToken<Collection<Bank>>() {
+            }.getType();
+            json = gson.toJson(Store.getInstance().newBankList, bankList);
 
         }
+
 
         System.out.println(json);
 

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.bizsoft.fmcgv2.R;
-import com.bizsoft.fmcgv2.Tables.BankList;
+import com.bizsoft.fmcgv2.Tables.Bank;
 
 import java.util.ArrayList;
 
@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class BankAdapter extends BaseAdapter{
     Context context;
     LayoutInflater layoutInflater= null;
-    public ArrayList<BankList> bankLists = new ArrayList<>();
+    public ArrayList<Bank> bankLists = new ArrayList<>();
 
 
 
-    public BankAdapter(Context context, ArrayList<BankList> bankLists) {
+    public BankAdapter(Context context, ArrayList<Bank> bankLists) {
         this.context = context;
         this.layoutInflater = (LayoutInflater.from(context));
         this.bankLists = bankLists;
