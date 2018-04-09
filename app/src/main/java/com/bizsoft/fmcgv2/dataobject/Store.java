@@ -14,6 +14,7 @@ import com.bizsoft.fmcgv2.service.Waiter;
 import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import microsoft.aspnet.signalr.client.SignalRFuture;
 import microsoft.aspnet.signalr.client.hubs.HubConnection;
@@ -104,6 +105,10 @@ public class Store {
     public ArrayList<ProductSpecProcess> prodcutSpecProcess = new ArrayList<ProductSpecProcess>();
     public ArrayList<Bank> newBankList = new ArrayList<Bank>();
     public Long bankAccountGroupId;
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    public ArrayList<UOM> UOM = new ArrayList<UOM>();
 
 
     public static Store getInstance() {

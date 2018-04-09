@@ -19,6 +19,10 @@ import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.SignalRService;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+
+import static com.bizsoft.fmcgv2.dataobject.Store.VALID_EMAIL_ADDRESS_REGEX;
+import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
 public class CreateBankActivity extends AppCompatActivity {
 
@@ -91,19 +95,20 @@ public class CreateBankActivity extends AppCompatActivity {
         myAction = getIntent().getExtras().getString("myAction");
         position = getIntent().getExtras().getInt("position");
 
+        System.out.println("Action : "+myAction);
         if(myAction!=null)
         {
             if(myAction.equals("edit"))
             {
 
-                bank =    Store.getInstance().bankList.get(position);
+                bank =    BankActivity.adapter.bankLists.get(position);
 
                 setValues(bank);
-
+                getSupportActionBar().setTitle("Edit Bank");
             }
             else  if(myAction.equals("add"))
             {
-
+                getSupportActionBar().setTitle("Add Bank");
             }
 
         }
@@ -125,17 +130,14 @@ public class CreateBankActivity extends AppCompatActivity {
         opBalance.setText(String.valueOf(bank.getLedger().getOPBal()));
 
 
-        for(int i=0;i<accTypeList.size();i++)
-        {
-            if(bank.getLedger().getACType().equals(accTypeList.get(i)))
-            {
-                accType.setSelection(i);
+        if(bank.getLedger().getACType()!=null) {
+            for (int i = 0; i < accTypeList.size(); i++) {
+                if (bank.getLedger().getACType().equals(accTypeList.get(i))) {
+                    accType.setSelection(i);
+                }
+
             }
-
         }
-
-
-
 
 
     }
@@ -172,6 +174,17 @@ public class CreateBankActivity extends AppCompatActivity {
             accNumber.setError("Please Enter a valid account number only..!");
             status = false;
         }
+        if(!TextUtils.isEmpty(email.getText()))
+        {
+            if(!validateEmail(email.getText().toString()))
+            {
+                email.setError("Please Enter a valid mail id");
+                status = false;
+            }
+
+        }
+
+
 
         if(status)
         {
@@ -190,7 +203,8 @@ public class CreateBankActivity extends AppCompatActivity {
 
         if(myAction.equals("edit"))
         {
-            bank = Store.getInstance().bankList.get(position);
+            bank = BankActivity.adapter.bankLists.get(position);
+
         }
         else
         {
@@ -227,6 +241,8 @@ public class CreateBankActivity extends AppCompatActivity {
         ledger.setACType(chooosedAcType);
         bank.setLedger(ledger);
         bank.setSynced(false);
+
+        prettyJson("",bank);
 
         Store.getInstance().newBankList.add(bank);
 
@@ -293,5 +309,9 @@ public class CreateBankActivity extends AppCompatActivity {
         clear = (Button) findViewById(R.id.clear);
 
 
+    }
+    public static boolean validateEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
     }
 }

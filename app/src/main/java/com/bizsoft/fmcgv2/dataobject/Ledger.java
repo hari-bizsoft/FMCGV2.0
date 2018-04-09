@@ -147,15 +147,12 @@ public class Ledger {
 
     public Long getId() {
 
-        if(Id==null)
-        {
-            Id =0.0;
-        }
-        return Id.longValue();
+
+        return Long.valueOf(((Integer) Id));
     }
 
     public void setId(Long id) {
-        Id = id.doubleValue();
+        Id = id.intValue();
     }
 
     public String getLedgerName() {
@@ -166,7 +163,7 @@ public class Ledger {
         LedgerName = ledgerName;
     }
     @JsonProperty("Id")
-    Double Id;
+    int Id;
     @JsonProperty("LedgerName")
            String LedgerName;
 

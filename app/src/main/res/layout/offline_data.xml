@@ -45,7 +45,7 @@
 
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:padding="10dip"
         android:text="0"
@@ -53,7 +53,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView84"/>
+        app:layout_constraintTop_toBottomOf="@+id/customers"/>
 
 
     <TextView
@@ -289,6 +289,37 @@
         app:layout_constraintBottom_toBottomOf="@+id/banks"
         app:layout_constraintEnd_toStartOf="@+id/banks"
         app:layout_constraintTop_toTopOf="@+id/banks"/>
+
+    <TextView
+        android:id="@+id/customers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+
+        android:padding="10dip"
+        android:text="0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView84"/>
+
+    <TextView
+        android:id="@+id/textView98"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Customers"
+        android:padding="10dip"
+
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/customers"
+        app:layout_constraintEnd_toStartOf="@+id/customers"
+        app:layout_constraintTop_toTopOf="@+id/customers"/>
 
 
 </android.support.constraint.ConstraintLayout>

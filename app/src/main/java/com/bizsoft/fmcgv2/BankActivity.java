@@ -27,7 +27,7 @@ public class BankActivity extends AppCompatActivity {
     BizUtils bizUtils;
     private EditText searchBar;
     private ArrayList<Bank> bankList;
-    private BankAdapter adapter;
+    public static BankAdapter adapter;
     private ArrayList<Bank> filterList = new ArrayList<>();
 
     @Override
@@ -51,6 +51,7 @@ public class BankActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 
                 Intent intent = new Intent(BankActivity.this,CreateBankActivity.class);
                 intent.putExtra("myAction","edit");

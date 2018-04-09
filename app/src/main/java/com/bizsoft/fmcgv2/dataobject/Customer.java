@@ -25,7 +25,7 @@ public class Customer {
         Byte[] Logo;
 
     @JsonProperty("Id")
-        Long Id;
+        int Id;
 
 
 
@@ -48,10 +48,15 @@ public class Customer {
 
 
     @JsonProperty("LedgerId")
-    int ledgerId;
+    int LedgerId;
 
+    public int getLedgerId() {
+        return LedgerId;
+    }
 
-
+    public void setLedgerId(int ledgerId) {
+        LedgerId = ledgerId;
+    }
 
     public ArrayList<SalesOrder> getsOPendingList() {
         return sOPendingList;
@@ -251,11 +256,11 @@ public class Customer {
     }
 
     public Long getId() {
-        return Id;
+        return Long.valueOf(Id);
     }
 
     public void setId(Long id) {
-        Id = id;
+        Id = id.intValue();
     }
 
     public String getLedgerName() {

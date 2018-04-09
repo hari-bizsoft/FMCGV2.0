@@ -31,6 +31,7 @@ import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.DealerActivity;
 import com.bizsoft.fmcgv2.InvoiceListActivity;
 import com.bizsoft.fmcgv2.MainActivity;
+import com.bizsoft.fmcgv2.ProductListActivity;
 import com.bizsoft.fmcgv2.ProductSpecActivity;
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.ReceiptActivity;
@@ -335,9 +336,9 @@ public class BizUtils {
         ImageButton bank = (ImageButton) dialog.findViewById(R.id.bank);
         ImageButton product = (ImageButton) dialog.findViewById(R.id.product);
         TextView productLabel = (TextView) dialog.findViewById(R.id.textView93);
-       // productLabel.setVisibility(View.INVISIBLE);
+     //  productLabel.setVisibility(View.INVISIBLE);
 
-      //  product.setVisibility(View.INVISIBLE);
+      // product.setVisibility(View.INVISIBLE);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -537,6 +538,16 @@ public class BizUtils {
                 context.startActivity(intent);
             }
         });
+        product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Intent intent = new Intent(context,ProductListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
+            }
+        });
 
 
     }
@@ -636,16 +647,9 @@ public class BizUtils {
 
 
                     this.customers.setId(customerResponse.getId());
-
-
-
                     int size = Store.getInstance().customerList.size();
-
                     System.out.println("Received ID " + customerResponse.getId());
-
                     Store.getInstance().customerList.get(position).setId(customerResponse.getId());
-
-
                     Customer customer = SignalRService.getCustomer(customerResponse.getId());
 
                     System.out.println("Size " + Store.getInstance().customerList.size());
@@ -657,6 +661,15 @@ public class BizUtils {
                         {
                             System.out.println("setting led if for cus id : " + Store.getInstance().customerList.get(i).getId());
                             Store.getInstance().customerList.get(i).getLedger().setId(customer.getLedger().getId());
+                            Store.getInstance().customerList.get(i).setSynced(true);
+                            //Saving to local storage as JSON
+                            try {
+                                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                                System.out.println("DB Updated..on local storage");
+                            } catch (ClassNotFoundException e) {
+
+                                System.err.println("Unable to write to DB");
+                            }
                             break;
                         }
                     }
@@ -1763,7 +1776,7 @@ public class BizUtils {
         }
         for (int i = 0; i < customerList.size(); i++) {
             System.out.println("OBJ =" + customerList.get(i));
-            if (customerList.get(i).getId() == null) {
+            if (!customerList.get(i).isSynced()) {
                 sync = true;
 
                 newcustomer = true;
@@ -1773,6 +1786,8 @@ public class BizUtils {
 
                 customerStatus = new SaveCustomer(context, customer,i,from).execute();
             }
+
+
         }
 
 
@@ -2662,6 +2677,7 @@ public class BizUtils {
             final Dialog dialog = new Dialog(context);
 
             dialog.setContentView(R.layout.offline_data);
+            TextView customer = (TextView) dialog.findViewById(R.id.customers);
             TextView sale = (TextView) dialog.findViewById(R.id.sale);
             TextView saleOrder = (TextView) dialog.findViewById(R.id.sale_order);
             TextView salesReturn  = (TextView) dialog.findViewById(R.id.sale_return);
@@ -2674,11 +2690,16 @@ public class BizUtils {
 
 
 
-            int s=0,so=0,sopl=0,sr=0,r=0,d=0,ps=0,b=0;
-            int s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0,d_synced=0,ps_synced = 0,b_synced=0;
+            int c=0,s=0,so=0,sopl=0,sr=0,r=0,d=0,ps=0,b=0;
+            int c_synced=0,s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0,d_synced=0,ps_synced = 0,b_synced=0;
             for(int i=0;i<customers.size();i++)
             {
 
+                c++;
+                if(customers.get(i).isSynced())
+                {
+                    c_synced++;
+                }
                 s = s + customers.get(i).getSalesOfCustomer().size();
                 for(int x=0;x<customers.get(i).getSalesOfCustomer().size();x++)
                 {
@@ -2776,7 +2797,7 @@ public class BizUtils {
             }
 
 
-
+            customer.setText(String.valueOf(c+" of "+c_synced+" synced"));
             sale.setText(String.valueOf(s+" of "+s_synced+" synced"));
             saleOrder.setText(String.valueOf(so+" of "+so_synced+" synced"));
             salesReturn.setText(String.valueOf(sr+" of "+sr_synced+" synced"));
@@ -2890,6 +2911,8 @@ public class BizUtils {
     public Customer createCustomer(Customer customer_)
     {
         Customer customer = new Customer();
+        customer.setId(customer_.getId());
+        customer.setLedgerId(customer_.getLedgerId());
         customer.setLedgerName(customer_.getLedger().getLedgerName());
         customer.setPersonIncharge(customer_.getLedger().getPersonIncharge());
         customer.setAddressLine1(customer_.getLedger().getAddressLine1());
@@ -2900,6 +2923,7 @@ public class BizUtils {
 
 
         Ledger ledger = new Ledger();
+        ledger.setId(customer_.getLedger().getId());
         ledger.setLedgerName(customer_.getLedger().getLedgerName());
         ledger.setPersonIncharge(customer_.getLedger().getPersonIncharge());
         ledger.setAddressLine1(customer_.getLedger().getAddressLine1());
@@ -2907,6 +2931,10 @@ public class BizUtils {
         ledger.setCityName(customer_.getLedger().getCityName());
         ledger.setMobileNo(customer_.getLedger().getMobileNo());
         ledger.setGSTNo(customer_.getLedger().getGSTNo());
+        ledger.setTelephoneNo(customer_.getLedger().getTelephoneNo());
+        ledger.setEMailId(customer_.getLedger().getEMailId());
+        ledger.setOPBal(Double.valueOf(customer_.getLedger().getOPBal()));
+        ledger.setACType(customer_.getLedger().getACType());
 
 
 

@@ -39,6 +39,7 @@ import com.bizsoft.fmcgv2.dataobject.ReceiverResponse;
 import com.bizsoft.fmcgv2.dataobject.StockGroup;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.dataobject.TaxMaster;
+import com.bizsoft.fmcgv2.dataobject.UOM;
 import com.bizsoft.fmcgv2.dataobject.User;
 import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -486,6 +487,7 @@ public class SignalRService {
 
 
                 //BizUtils.prettyJson("Customer ",customer);
+                customer.setSynced(true);
 
 
                 Store.getInstance().customerList.add(customer);
@@ -726,8 +728,8 @@ public class SignalRService {
         Customer customerResponse = new Customer();
         Gson gson = new Gson();
         try {
-            //BizUtils.prettyJson("Customer",customer);
-            System.out.println("---------------saving--"+customer.getLedgerName());
+            BizUtils.prettyJson("Customer",customer);
+            System.out.println("---------------saving--"+customer.getLedger().getLedgerName());
 
             o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"Customer_Save",customer).get();
             System.out.println("---------------class type--"+o.getClass());
@@ -948,6 +950,35 @@ public class SignalRService {
             e.printStackTrace();
         }
         System.out.println("taxmaster----"+Store.getInstance().taxMasterList.size());
+    }
+    public static void   UOMList()
+    {
+
+        ArrayList<LinkedTreeMap> collections = new ArrayList<LinkedTreeMap>();
+        try {
+            collections = Store.getInstance().mHubProxyCaller.invoke(collections.getClass(),"UOM_List").get();
+
+            Store.getInstance().UOM.clear();
+
+            prettyJson("UOM LIst",collections);
+            for(int i=0;i<collections.size();i++)
+            {
+                UOM uom = new UOM();
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+                uom  = mapper.convertValue(collections.get(i),UOM.class);
+                System.out.println("uom Id-"+uom.getId());
+                Store.getInstance().UOM.add(uom);
+                // System.out.println("accountGroup Name-"+taxMaster.getGroupName());
+
+            }
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("uom----"+Store.getInstance().UOM.size());
     }
 
     public static boolean salesSave(Sale sale)

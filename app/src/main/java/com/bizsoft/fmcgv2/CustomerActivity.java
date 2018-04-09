@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,14 +25,11 @@ public class CustomerActivity extends AppCompatActivity {
 
     ListView customerListView;
     FloatingActionButton add,menu;
-    private ImageView sync;
-    private ImageButton sales;
-    private ImageButton salesOrder;
-    private ImageButton home;
+
     EditText searchBar;
     ArrayList<Customer> CustomerList;
     ArrayList<Customer> AllCustomerList = new ArrayList<Customer>();
-    private CustomerAdapter customerAdapter;
+    public static CustomerAdapter customerAdapter;
     BizUtils bizUtils;
 
     @Override
@@ -54,6 +52,19 @@ public class CustomerActivity extends AppCompatActivity {
 
         customerAdapter = new CustomerAdapter(CustomerActivity.this, AllCustomerList);
         customerListView.setAdapter(customerAdapter);
+        customerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Intent intent = new Intent(CustomerActivity.this,AddCustomerActivity.class);
+                intent.putExtra("myAction","edit");
+                intent.putExtra("position",position);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
         searchBar.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -108,6 +119,8 @@ public class CustomerActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(CustomerActivity.this,AddCustomerActivity.class);
+                intent.putExtra("myAction","add");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });

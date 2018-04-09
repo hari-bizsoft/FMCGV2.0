@@ -111,6 +111,7 @@ public class DownloadDataActivity extends AppCompatActivity {
                SignalRService.SalesOrder_getNewRefNo();
                SignalRService.SalesReturn_getNewRefNo();
                SignalRService.Receipt_getNewRefNo();
+               SignalRService.UOMList();
            }
            catch (Exception e)
            {

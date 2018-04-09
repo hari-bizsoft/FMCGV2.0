@@ -3,6 +3,8 @@ package com.bizsoft.fmcgv2.dataobject;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+
 /**
  * Created by shri on 9/8/17.
  */
@@ -160,4 +162,20 @@ public class StockGroup {
 
     @JsonProperty("IsSale")
     boolean IsSale;
+
+
+    public static ArrayList<String> getNames()
+    {
+        ArrayList<StockGroup> stockGroup = Store.getInstance().stockGroupList;
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i=0;i<stockGroup.size();i++)
+        {
+
+
+            strings.add(stockGroup.get(i).getStockGroupName());
+
+
+        }
+        return strings;
+    }
 }

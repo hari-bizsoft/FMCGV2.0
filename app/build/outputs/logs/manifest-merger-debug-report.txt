@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\71d885df9ec37b5a45b102d69abc0833\AndroidManifest.xml:2:1-11:12
 MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\408f02c7fab32e9c94aef47ed02ff7cc\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\95b3307335b8575c0b645cb648c56022\AndroidManifest.xml:17:1-31:12
@@ -19,20 +19,20 @@ MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b08bfe8e23bf8e848822a5b8053c0451\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\aa07006479b4dae77931d33564eb28ff\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\20bc1304a04578617397b825adcb2dc3\AndroidManifest.xml:17:1-31:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
 	package
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:3:11-39
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-112:12
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:11-69
@@ -105,7 +105,7 @@ ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:26:5-79
 	android:name
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:26:22-77
 application
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:28:5-110:19
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:28:5-114:19
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\71d885df9ec37b5a45b102d69abc0833\AndroidManifest.xml:9:5-20
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\71d885df9ec37b5a45b102d69abc0833\AndroidManifest.xml:9:5-20
 MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\408f02c7fab32e9c94aef47ed02ff7cc\AndroidManifest.xml:29:5-20
@@ -286,6 +286,14 @@ activity#com.bizsoft.fmcgv2.CreateBankActivity
 ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:108:9-109:20
 	android:name
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:108:19-53
+activity#com.bizsoft.fmcgv2.ProductListActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:110:9-111:20
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:110:19-54
+activity#com.bizsoft.fmcgv2.AddProductActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:112:9-113:20
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:112:19-53
 uses-sdk
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
