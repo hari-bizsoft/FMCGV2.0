@@ -51,6 +51,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -592,6 +593,7 @@ public class SignalRService {
                 BizUtils.prettyJson("product ind item",product);
 
                 if(product.getStockGroup().isSale() && product.isDealer()) {
+                    product.setSynced(true);
                     Store.getInstance().productList.add(product);
                 }
                 ((Activity)context).runOnUiThread(new Runnable() {
@@ -607,8 +609,9 @@ public class SignalRService {
             for(int c=0;c<Store.getInstance().productList.size();c++)
             {
 
-                System.out.println("Item code"+Store.getInstance().productList.get(c).getId());
+                System.out.println("Item id"+Store.getInstance().productList.get(c).getId());
                 System.out.println("Item code"+Store.getInstance().productList.get(c).getItemCode());
+                System.out.println("item uom code"+Store.getInstance().productList.get(c).getUOMId());
             }
             for(int c=0;c<Store.getInstance().productList.size();c++)
             {
@@ -1103,7 +1106,7 @@ public class SignalRService {
 
             Store.getInstance().SOPendingList.clear();
 
-            System.out.println("Collection = "+collections);
+            System.out.println("SO P Collection = "+collections);
 
             ArrayList<SOPending> soPendings = new ArrayList<SOPending>();
             for(int i=0;i<collections.size();i++)
@@ -1153,6 +1156,21 @@ public class SignalRService {
             String json = gson.toJson(sale);
             System.out.println("JSON : " + json);
 
+            prettyJson("SalesReturn",sale);
+            Dummy  temp = new Dummy();
+
+            Dummydetails dummydetails = new Dummydetails();
+            dummydetails.ProductId = 123;
+            dummydetails.Quantity= 54;
+            dummydetails.UOMId =7987;
+            dummydetails.DiscountAmount = Double.valueOf(456);
+            dummydetails.UnitPrice = Double.valueOf(566);
+            dummydetails.GSTAmount = Double.valueOf(82);
+            dummydetails.Amount = 0.0;
+
+            temp.SRDetails.add(dummydetails);
+
+            prettyJson("dummy details",temp);
 
             //System.out.println(" ---------Sales  details size "+sale.getSDetail().size());
             o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"SalesReturn_Save",sale).get();
@@ -1186,6 +1204,41 @@ public class SignalRService {
             System.out.println(" ---------Receipt_Save save"+o.getClass());
 
             status = (boolean) o;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return status;
+
+    }
+    public static boolean productSave(Product product)
+    {
+        Object o = new Object();
+
+        boolean status = false;
+        try {
+            Gson gson = new Gson();
+            String json = gson.toJson(product);
+            System.out.println("JSON : " + json);
+
+
+            //System.out.println(" ---------Sales  details size "+sale.getSDetail().size());
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"Product_Save",product).get();
+
+            System.out.println(" ---------Product_Save save"+o.getClass());
+
+            Product productResult = new Product();
+            final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+            productResult  = mapper.convertValue(o,Product.class);
+            System.out.println("Product Id"+productResult.getId());
+
+            if(productResult.getId()!=0)
+            {
+                status = true;
+            }
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -2044,6 +2097,26 @@ public class SignalRService {
         public void setLedger(com.bizsoft.fmcgv2.dataobject.Ledger ledger) {
             Ledger = ledger;
         }
+    }
+
+    public static class Dummydetails
+    {
+        long Id;
+        int ProductId;
+        int UOMId;
+        float Quantity;
+        Double UnitPrice;
+        Double DiscountAmount;
+        Double GSTAmount;
+        Double Amount;
+
+    }
+    public static class Dummy
+    {
+        int Id;
+        Collection<Dummydetails> SRDetails = new ArrayList<Dummydetails>();
+
+
     }
 
 }

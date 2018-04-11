@@ -2,6 +2,7 @@ package com.bizsoft.fmcgv2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.StockGroup;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.dataobject.UOM;
+import com.bizsoft.fmcgv2.service.SignalRService;
 
 import java.util.ArrayList;
 
@@ -56,7 +59,16 @@ public class AddProductActivity extends AppCompatActivity {
         UOM = (Spinner) findViewById(R.id.uom);
         save = (Button) findViewById(R.id.save);
 
+        //disabled field
         MRP.setEnabled(false);
+        stockGroup.setEnabled(false);
+        purchaseRate.setEnabled(false);
+        sellingRate.setEnabled(false);
+        minSellingRate.setEnabled(false);
+        maxSellingRate.setEnabled(false);
+        UOM.setEnabled(false);
+
+
 
       try {
           setStockGroupTypeList();
@@ -104,6 +116,52 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void validate() {
+
+
+        boolean status = true;
+
+        if(!TextUtils.isEmpty(openingStock.getText()))
+        {
+
+            String regex = "^[1-9]\\d*(\\.\\d+)?$";
+            if(!openingStock.getText().toString().trim().matches(regex))
+            {
+                openingStock.setError("Please Enter a valid opening stock entry..!");
+                status = false;
+            }
+        }
+        else
+        {
+            status = false;
+        }
+        if(!TextUtils.isEmpty(reorderLevel.getText()))
+        {
+
+            String regex = "^[1-9]\\d*(\\.\\d+)?$";
+            if(!reorderLevel.getText().toString().trim().matches(regex))
+            {
+                reorderLevel.setError("Please Enter a valid opening stock entry..!");
+                status = false;
+            }
+        }
+        else
+        {
+            status = false;
+        }
+
+        if(status)
+        {
+            modelDate();
+        }
+
+    }
+
+    private void modelDate() {
+
+        product.setOpeningStock(Double.parseDouble(openingStock.getText().toString()));
+        product.setReOrderLevel(Double.parseDouble(reorderLevel.getText().toString()));
+        product.setSynced(false);
+
 
 
     }
@@ -186,7 +244,7 @@ public class AddProductActivity extends AppCompatActivity {
 
             }
         }
-        if(product.getUOMName()!=null) {
+        if(product.getUOMId()!=null) {
             for (int i = 0; i < Store.getInstance().UOM.size(); i++) {
                 if (product.getUOMId().compareTo(Long.valueOf(Store.getInstance().UOM.get(i).getId()))==0) {
 

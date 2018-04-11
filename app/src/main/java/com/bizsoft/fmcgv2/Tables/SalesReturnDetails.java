@@ -7,8 +7,6 @@ package com.bizsoft.fmcgv2.Tables;
 public class SalesReturnDetails {
 
     Long Id;
-    Long SRId;
-    Long SDId;
     int ProductId;
     int UOMId;
     float Quantity;
@@ -27,21 +25,6 @@ public class SalesReturnDetails {
         Id = id;
     }
 
-    public Long getSRId() {
-        return SRId;
-    }
-
-    public void setSRId(Long SRId) {
-        this.SRId = SRId;
-    }
-
-    public Long getSDId() {
-        return SDId;
-    }
-
-    public void setSDId(Long SDId) {
-        this.SDId = SDId;
-    }
 
     public int getProductId() {
         return ProductId;

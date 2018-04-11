@@ -56,7 +56,6 @@ import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.ProductModel;
 import com.bizsoft.fmcgv2.dataobject.ProductSaveResponse;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
-import com.bizsoft.fmcgv2.dataobject.ProductSpecProcessDetails;
 import com.bizsoft.fmcgv2.dataobject.Receipt;
 import com.bizsoft.fmcgv2.dataobject.Sale;
 import com.bizsoft.fmcgv2.dataobject.SaleOrder;
@@ -117,105 +116,101 @@ public class BizUtils {
     private String billDateValue;
 
 
-
     public boolean isNetworkConnected(Context context) {
-        ConnectivityManager conMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         boolean status = false;
-        if ( conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
-                || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED ) {
+        if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
+                || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
 
             // notify user you are online
-            Log.d("NET STAT","ONLINE");
+            Log.d("NET STAT", "ONLINE");
             status = true;
-        }
-        else if ( conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
+        } else if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
 
             // notify user you are not online
-            Log.d("NET STAT","OFFLINE");
+            Log.d("NET STAT", "OFFLINE");
             status = false;
         }
         return status;
     }
-    public HashMap<String, String> setTodayDate()
-    {
-        HashMap<String,String> map = new HashMap<>();
-        String fromDate,toDate;
+
+    public HashMap<String, String> setTodayDate() {
+        HashMap<String, String> map = new HashMap<>();
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
-        fromDate = dateFormat.format(date)+" 00:00:00";
-        toDate =  dateFormat.format(date)+" 23:59:59";
+        fromDate = dateFormat.format(date) + " 00:00:00";
+        toDate = dateFormat.format(date) + " 23:59:59";
 
 
-        Store.getInstance().fromDate =  fromDate;
-        Store.getInstance().toDate =  toDate;
+        Store.getInstance().fromDate = fromDate;
+        Store.getInstance().toDate = toDate;
 
-        System.out.println("From = "+fromDate+" To :"+toDate);
-        map.put("fromDate",fromDate);
-        map.put("toDate",toDate);
+        System.out.println("From = " + fromDate + " To :" + toDate);
+        map.put("fromDate", fromDate);
+        map.put("toDate", toDate);
 
         return map;
 
 
     }
 
-    public String getCurrentTime()
-    {
+    public String getCurrentTime() {
 
-        String fromDate,toDate;
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
         Date date = new Date();
         fromDate = dateFormat.format(date);
 
-        return  fromDate;
+        return fromDate;
     }
-    public static String getCurrentYearAndMonth()
-    {
-        String fromDate,toDate;
+
+    public static String getCurrentYearAndMonth() {
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
         Date date = new Date();
         fromDate = dateFormat.format(date);
 
-        return  fromDate;
+        return fromDate;
     }
-    public static String getCurrentDate()
-    {
-        String fromDate,toDate;
+
+    public static String getCurrentDate() {
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         fromDate = dateFormat.format(date);
 
-        return  fromDate;
+        return fromDate;
     }
-    public static Date getCurrentDatAndTimeInDF()
-    {
-        String fromDate,toDate;
+
+    public static Date getCurrentDatAndTimeInDF() {
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
         Date date = new Date();
         fromDate = dateFormat.format(date);
 
-        System.out.println("Date format ----"+date);
-        return  date;
+        System.out.println("Date format ----" + date);
+        return date;
     }
-    public static String getCurrentYear()
-    {
 
-        String fromDate,toDate;
+    public static String getCurrentYear() {
+
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         Date date = new Date();
         fromDate = dateFormat.format(date);
 
-        return  fromDate;
+        return fromDate;
     }
-    public HashMap<String, String> setCurrentMonth()
-    {
-        HashMap<String,String> map = new HashMap<>();
+
+    public HashMap<String, String> setCurrentMonth() {
+        HashMap<String, String> map = new HashMap<>();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();   // this takes current date
         c.set(Calendar.DAY_OF_MONTH, 1);
         Date fromDate = c.getTime();
-
 
 
         Calendar calendar = getCalendarForNow();
@@ -224,95 +219,86 @@ public class BizUtils {
 
         Date toDate = calendar.getTime();
 
-        System.out.println("Date =========="+dateFormat.format(calendar.getTime()));
+        System.out.println("Date ==========" + dateFormat.format(calendar.getTime()));
 
         calendar.set(Calendar.DAY_OF_MONTH,
                 calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        System.out.println("Date =========="+dateFormat.format(calendar.getTime()));
+        System.out.println("Date ==========" + dateFormat.format(calendar.getTime()));
 
 
-
-        String fd  = dateFormat.format(fromDate)+" 00:00:00";
-        String ld = dateFormat.format(toDate)+" 23:59:59";
-
+        String fd = dateFormat.format(fromDate) + " 00:00:00";
+        String ld = dateFormat.format(toDate) + " 23:59:59";
 
 
-
-        Store.getInstance().fromDate =  fd;
-        Store.getInstance().toDate =  ld;
-
-
-        System.out.println("From = "+fd+" To :"+ld);
+        Store.getInstance().fromDate = fd;
+        Store.getInstance().toDate = ld;
 
 
-        map.put("fromDate",fd);
-        map.put("toDate",ld);
+        System.out.println("From = " + fd + " To :" + ld);
+
+
+        map.put("fromDate", fd);
+        map.put("toDate", ld);
 
 
         return map;
 
     }
-    public  void setCurrentYear()
-    {
 
-        String fromDate,toDate;
+    public void setCurrentYear() {
+
+        String fromDate, toDate;
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         Date date = new Date();
-        fromDate = "01/01/"+dateFormat.format(date)+" 00:00:00";
-        toDate =  "31/12/"+dateFormat.format(date)+" 23:59:59";
+        fromDate = "01/01/" + dateFormat.format(date) + " 00:00:00";
+        toDate = "31/12/" + dateFormat.format(date) + " 23:59:59";
 
 
-        Store.getInstance().fromDate =  fromDate;
-        Store.getInstance().toDate =  toDate;
+        Store.getInstance().fromDate = fromDate;
+        Store.getInstance().toDate = toDate;
 
-        System.out.println("From = "+fromDate+" To :"+toDate);
+        System.out.println("From = " + fromDate + " To :" + toDate);
     }
+
     private static Calendar getCalendarForNow() {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(new Date());
         return calendar;
     }
-    public HashMap<String, String> setCurrentWeek()
-    {
-        HashMap<String,String> map = new HashMap<>();
+
+    public HashMap<String, String> setCurrentWeek() {
+        HashMap<String, String> map = new HashMap<>();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();   // this takes current date
 
         Date fromDate = c.getTime();
-         System.out.println("Date =========="+dateFormat.format(c.getTime()));
+        System.out.println("Date ==========" + dateFormat.format(c.getTime()));
 
 
-
-
-        String fd  = dateFormat.format(fromDate)+" 00:00:00";
+        String fd = dateFormat.format(fromDate) + " 00:00:00";
 
 
         c.add(Calendar.DATE, -7);
         Date toDate = c.getTime();
 
-        String ld = dateFormat.format(toDate)+" 23:59:59";
+        String ld = dateFormat.format(toDate) + " 23:59:59";
 
 
+        Store.getInstance().fromDate = fd;
+        Store.getInstance().toDate = ld;
 
 
-        Store.getInstance().fromDate =  fd;
-        Store.getInstance().toDate =  ld;
+        System.out.println("From = " + fd + " To :" + ld);
 
 
-        System.out.println("From = "+fd+" To :"+ld);
-
-
-
-
-
-        map.put("fromDate",ld);
-        map.put("toDate",fd);
+        map.put("fromDate", ld);
+        map.put("toDate", fd);
 
         return map;
     }
-    public void showMenu(final Context context)
-    {
+
+    public void showMenu(final Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.menu_layout);
@@ -336,16 +322,16 @@ public class BizUtils {
         ImageButton bank = (ImageButton) dialog.findViewById(R.id.bank);
         ImageButton product = (ImageButton) dialog.findViewById(R.id.product);
         TextView productLabel = (TextView) dialog.findViewById(R.id.textView93);
-     //  productLabel.setVisibility(View.INVISIBLE);
+        //  productLabel.setVisibility(View.INVISIBLE);
 
-      // product.setVisibility(View.INVISIBLE);
+        // product.setVisibility(View.INVISIBLE);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,AppActivity.class);
+                Intent intent = new Intent(context, AppActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -357,7 +343,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context,DashboardActivity.class);
+                Intent intent = new Intent(context, DashboardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -368,7 +354,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context,ReportActivity.class);
+                Intent intent = new Intent(context, ReportActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -379,7 +365,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context,ReprintActivity.class);
+                Intent intent = new Intent(context, ReprintActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -390,7 +376,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context,CustomerActivity.class);
+                Intent intent = new Intent(context, CustomerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -403,11 +389,11 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
-                if(Store.getInstance().waiter!=null) {
+                if (Store.getInstance().waiter != null) {
                     Store.getInstance().waiter.touch();
                 }
 
-                sync(context,"manual");
+                sync(context, "manual");
 
 
                 dialog.dismiss();
@@ -415,8 +401,6 @@ public class BizUtils {
 
             }
         });
-
-
 
 
         close.setOnClickListener(new View.OnClickListener() {
@@ -429,7 +413,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(context,SalesActivity.class);
+                Intent intent = new Intent(context, SalesActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 context.startActivity(intent);
@@ -439,7 +423,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(context,SalesOrderActivity.class);
+                Intent intent = new Intent(context, SalesOrderActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -448,7 +432,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(context,SalesReturnActivity.class);
+                Intent intent = new Intent(context, SalesReturnActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -457,7 +441,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(context,InvoiceListActivity.class);
+                Intent intent = new Intent(context, InvoiceListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -470,7 +454,7 @@ public class BizUtils {
                 prefs.edit().clear().commit();
 
                 ((Activity) context).finish();
-                Intent intent = new Intent(context.getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -481,7 +465,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Intent intent = new Intent(context,ReceiptActivity.class);
+                Intent intent = new Intent(context, ReceiptActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -492,7 +476,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Intent intent = new Intent(context,STOSOActivity.class);
+                Intent intent = new Intent(context, STOSOActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
 
@@ -503,7 +487,7 @@ public class BizUtils {
             @Override
             public void onClick(View v) {
 
-                BizUtils.readAsJSON("customerList",context);
+                BizUtils.readAsJSON("customerList", context);
                 dialog.dismiss();
 
             }
@@ -513,7 +497,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Intent intent = new Intent(context,DealerActivity.class);
+                Intent intent = new Intent(context, DealerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -523,7 +507,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Intent intent = new Intent(context,ProductSpecActivity.class);
+                Intent intent = new Intent(context, ProductSpecActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -533,7 +517,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Intent intent = new Intent(context,BankActivity.class);
+                Intent intent = new Intent(context, BankActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -543,7 +527,7 @@ public class BizUtils {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Intent intent = new Intent(context,ProductListActivity.class);
+                Intent intent = new Intent(context, ProductListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
@@ -555,41 +539,37 @@ public class BizUtils {
     public static void syncStockProcessProductList() {
 
 
-            for (int k = 0; k < Store.getInstance().productList.size(); k++) {
-                Product actualProduct = Store.getInstance().productList.get(k);
-                ArrayList<ProductSpec> choosedOutputProd = Store.getInstance().productSpecList;
-                for(int i=0;i<choosedOutputProd.size();i++) {
-                    ProductSpec productprocess = choosedOutputProd.get(i);
+        for (int k = 0; k < Store.getInstance().productList.size(); k++) {
+            Product actualProduct = Store.getInstance().productList.get(k);
+            ArrayList<ProductSpec> choosedOutputProd = Store.getInstance().productSpecList;
+            for (int i = 0; i < choosedOutputProd.size(); i++) {
+                ProductSpec productprocess = choosedOutputProd.get(i);
 
-                    if(productprocess.getProductId()==actualProduct.getId())
-                    {
-                        productprocess.setAvailable(actualProduct.getAvailableStock());
-                        synchronized(productprocess){
-                            productprocess.notify();
-                        }
-                    }
-                    for(int j=0;j<productprocess.getPDetails().size();j++)
-                    {
-                        PDetailsItem product = productprocess.getPDetails().get(j);
-                        if(product.getProductId() == actualProduct.getId())
-                        {
-                            product.setAvailable(actualProduct.getAvailableStock());
-                            synchronized(product){
-                                product.notify();
-                            }
-
-                        }
-
+                if (productprocess.getProductId() == actualProduct.getId()) {
+                    productprocess.setAvailable(actualProduct.getAvailableStock());
+                    synchronized (productprocess) {
+                        productprocess.notify();
                     }
                 }
+                for (int j = 0; j < productprocess.getPDetails().size(); j++) {
+                    PDetailsItem product = productprocess.getPDetails().get(j);
+                    if (product.getProductId() == actualProduct.getId()) {
+                        product.setAvailable(actualProduct.getAvailableStock());
+                        synchronized (product) {
+                            product.notify();
+                        }
+
+                    }
+
+                }
             }
+        }
 
     }
 
 
     public class SaveCustomer extends AsyncTask {
         Context context;
-
 
 
         Customer customers = new Customer();
@@ -599,7 +579,7 @@ public class BizUtils {
         boolean status;
         private String from;
 
-        public SaveCustomer(Context context, Customer customers,int position,String from) {
+        public SaveCustomer(Context context, Customer customers, int position, String from) {
             this.context = context;
 
             this.customers = customers;
@@ -620,11 +600,11 @@ public class BizUtils {
         protected Object doInBackground(Object[] params) {
 
             HttpHandler httpHandler = new HttpHandler();
-          //  jsonStr = httpHandler.makeServiceCall(this.url, this.params);
+            //  jsonStr = httpHandler.makeServiceCall(this.url, this.params);
 
 
-
-           customerResponse =  SignalRService.saveCustomer(customers);;
+            customerResponse = SignalRService.saveCustomer(customers);
+            ;
 
             return true;
         }
@@ -637,13 +617,12 @@ public class BizUtils {
             System.out.println("JSON :" + customerResponse.getId());
             if (customerResponse != null) {
 
-                if (customerResponse.getId()==0) {
+                if (customerResponse.getId() == 0) {
                     Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
 
 
                 } else {
                     Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
-
 
 
                     this.customers.setId(customerResponse.getId());
@@ -657,14 +636,13 @@ public class BizUtils {
                     for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
                         System.out.println("cus id : " + Store.getInstance().customerList.get(i).getId());
                         System.out.println("Position " + i);
-                        if(Store.getInstance().customerList.get(i).getId().compareTo(customer.getId())==0)
-                        {
+                        if (Store.getInstance().customerList.get(i).getId().compareTo(customer.getId()) == 0) {
                             System.out.println("setting led if for cus id : " + Store.getInstance().customerList.get(i).getId());
                             Store.getInstance().customerList.get(i).getLedger().setId(customer.getLedger().getId());
                             Store.getInstance().customerList.get(i).setSynced(true);
                             //Saving to local storage as JSON
                             try {
-                                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                                BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                                 System.out.println("DB Updated..on local storage");
                             } catch (ClassNotFoundException e) {
 
@@ -674,7 +652,7 @@ public class BizUtils {
                         }
                     }
 
-                    BizUtils.prettyJson("customer",customer);
+                    BizUtils.prettyJson("customer", customer);
 
 
 
@@ -763,7 +741,7 @@ public class BizUtils {
 
                         */
 
-                   saveDetails(context,from);
+                    saveDetails(context, from);
                 }
                 syncStatus = true;
             } else {
@@ -778,8 +756,7 @@ public class BizUtils {
     }
 
 
-
-    private void saveDetails(Context context,String from) {
+    private void saveDetails(Context context, String from) {
 
         boolean sync = false;
 
@@ -807,14 +784,13 @@ public class BizUtils {
                 System.out.println("Cus id " + customerList.get(i).getId());
 
 
-
                 if (customerList.get(i).getSale().size() > 0) {
                     newcustomer = false;
 
                     for (int y = 0; y < customerList.get(i).getSalesOfCustomer().size(); y++) {
 
-                        if(!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
-                             new Save(context, "sale/save", "SODetails", customerList.get(i).getSalesOfCustomer().get(y).getProducts(), customerList.get(i).getId(), customerList.get(i).getSalesOfCustomer().get(y), null, null, customerList.get(i)).execute();
+                        if (!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
+                            new Save(context, "sale/save", "SODetails", customerList.get(i).getSalesOfCustomer().get(y).getProducts(), customerList.get(i).getId(), customerList.get(i).getSalesOfCustomer().get(y), null, null, customerList.get(i)).execute();
 
                             sync = true;
 
@@ -827,8 +803,8 @@ public class BizUtils {
 
 
                     for (int y = 0; y < customerList.get(i).getSaleOrdersOfCustomer().size(); y++) {
-                        if(!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
-                             new Save(context, "SaleOrder/save", "SaleOrderDetails", customerList.get(i).getSaleOrdersOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, customerList.get(i).getSaleOrdersOfCustomer().get(y), null, customerList.get(i)).execute();
+                        if (!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
+                            new Save(context, "SaleOrder/save", "SaleOrderDetails", customerList.get(i).getSaleOrdersOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, customerList.get(i).getSaleOrdersOfCustomer().get(y), null, customerList.get(i)).execute();
                             sync = true;
                         }
                     }
@@ -838,9 +814,9 @@ public class BizUtils {
                 if (customerList.get(i).getSaleReturn().size() > 0) {
 
                     for (int y = 0; y < customerList.get(i).getSaleReturnOfCustomer().size(); y++) {
-                        if(!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
+                        if (!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
                             newcustomer = false;
-                             new Save(context, "SalesReturn/save", "SaleReturnDetails", customerList.get(i).getSaleReturnOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, null, customerList.get(i).getSaleReturnOfCustomer().get(y), customerList.get(i)).execute();
+                            new Save(context, "SalesReturn/save", "SaleReturnDetails", customerList.get(i).getSaleReturnOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, null, customerList.get(i).getSaleReturnOfCustomer().get(y), customerList.get(i)).execute();
                             sync = true;
                         }
                     }
@@ -851,14 +827,11 @@ public class BizUtils {
                     System.out.println("Called save receipt");
                     for (int z = 0; z < customerList.get(i).getReceipts().size(); z++) {
 
-                        if( customerList.get(i).getReceipts().get(z).isSynced())
-                        {
+                        if (customerList.get(i).getReceipts().get(z).isSynced()) {
                             System.out.println("Receipt already synced");
-                        }
-                        else
-                        {
-                            System.out.println("Customer Ledger Id "+customerList.get(i).getLedger().getId());
-                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(),customerList.get(i)).execute();
+                        } else {
+                            System.out.println("Customer Ledger Id " + customerList.get(i).getLedger().getId());
+                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(), customerList.get(i)).execute();
 
                             sync = true;
                         }
@@ -872,12 +845,10 @@ public class BizUtils {
                 System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
                 System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
                 if (customerList.get(i).getsOPendingList().size() > 0) {
-                    for(int x = 0;x<customerList.get(i).getsOPendingList().size();x++)
-                    {
-                        if(customerList.get(i).getsOPendingList().get(x).isSynced()) {
+                    for (int x = 0; x < customerList.get(i).getsOPendingList().size(); x++) {
+                        if (customerList.get(i).getsOPendingList().get(x).isSynced()) {
                             System.out.println("SO pendling  already synced");
-                        }
-                        else {
+                        } else {
                             boolean status = SignalRService.saleOrderMakeSales(customerList.get(i).getsOPendingList().get(x));
                             if (status) {
                                 System.out.println("SO pending saved");
@@ -897,12 +868,9 @@ public class BizUtils {
                     for (int z = 0; z < customerList.get(i).getPayments().size(); z++) {
 
 
-                        if( customerList.get(i).getPayments().get(z).isSynced())
-                        {
+                        if (customerList.get(i).getPayments().get(z).isSynced()) {
                             System.out.println("Payment already synced");
-                        }
-                        else
-                        {
+                        } else {
                             new SaveReceipt(context, "Sale/Payment_Save", customerList.get(i).getPayments().get(z), customerList.get(i).getId()).execute();
                             sync = true;
                         }
@@ -923,16 +891,11 @@ public class BizUtils {
         }
 
 
-
-
         System.out.println("Sync required = " + sync);
 
 
-
-
         if (!sync) {
-            if(from.toLowerCase().contains("auto"))
-            {
+            if (from.toLowerCase().contains("auto")) {
                 // System.out.print("No Data to sync...");
                 Store.getInstance().messageList.add("Auto Sync invoked");
                 Notification notification = new Notification();
@@ -940,9 +903,7 @@ public class BizUtils {
                 notification.setMessage("Auto Sync invoked:No data to Sync");
                 //  Store.getInstance().notificationList.add(notification);
 
-            }
-            else
-            {
+            } else {
                 Notification notification = new Notification();
                 notification.setMessage("Manual Sync invoked:No data to Sync");
                 notification.setTime(getCurrentTime());
@@ -960,19 +921,15 @@ public class BizUtils {
                     Store.getInstance().messageList.add("Manual Sync invoked");
 
                     showToast("No Data to sync...", context);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
 
                 }
             }
 
 
-        }
-        else
-        {
+        } else {
             try {
-                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                 System.err.println("DB Updated..on local storage");
             } catch (ClassNotFoundException e) {
 
@@ -999,9 +956,9 @@ public class BizUtils {
         String payMode;
         Customer customer;
         double grandTotal;
-        com.bizsoft.fmcgv2.Tables.Sale salex ;
-        com.bizsoft.fmcgv2.Tables.SalesOrder salesOrderx ;
-        com.bizsoft.fmcgv2.Tables.SalesReturn salesReturnx ;
+        com.bizsoft.fmcgv2.Tables.Sale salex;
+        com.bizsoft.fmcgv2.Tables.SalesOrder salesOrderx;
+        com.bizsoft.fmcgv2.Tables.SalesReturn salesReturnx;
         private boolean status;
 
 
@@ -1056,7 +1013,6 @@ public class BizUtils {
                     saleDetails.add(saleDetail);
 
 
-
                     SalesOrderDetails salesODetails = new SalesOrderDetails();
                     salesODetails.setProductId(input.get(i).getId().intValue());
                     salesODetails.setQuantity(input.get(i).getQty());
@@ -1074,14 +1030,14 @@ public class BizUtils {
                     productModel.setRate((long) input.get(i).getMRP());
                     productModel.setAmount(amount);
                     productModel.setUOMId(input.get(i).getUOMId());
-                    System.out.println("REASON="+input.get(i).getParticulars());
-                    System.out.println("Resale="+input.get(i).isResale());
+                    System.out.println("REASON=" + input.get(i).getParticulars());
+                    System.out.println("Resale=" + input.get(i).isResale());
                     productModel.setReason(input.get(i).getParticulars());
                     productModel.setResale(input.get(i).isResale());
                     productModel.setDiscountAmount(input.get(i).getDiscountAmount());
                     productModels.add(productModel);
 
-                     SalesReturnDetails saleReturnDetail = new SalesReturnDetails();
+                    SalesReturnDetails saleReturnDetail = new SalesReturnDetails();
                     saleReturnDetail.setProductId(input.get(i).getId().intValue());
                     saleReturnDetail.setQuantity(input.get(i).getQty());
                     saleReturnDetail.setAmount(amount);
@@ -1089,14 +1045,8 @@ public class BizUtils {
                     saleReturnDetail.setGSTAmount(Double.valueOf(0));
                     saleReturnDetail.setUnitPrice(input.get(i).getMRP());
                     saleReturnDetail.setUOMId(input.get(i).getUOMId().intValue());
+                    saleReturnDetail.setResale(input.get(i).isResale());
                     salesReturnDetails.add(saleReturnDetail);
-
-
-
-
-
-
-
 
 
                 }
@@ -1109,7 +1059,7 @@ public class BizUtils {
 
 
             String json = gson.toJson(productModels);
-           // System.out.println("JSON : " + json);
+            // System.out.println("JSON : " + json);
 
 
             if (url.toLowerCase().contains("order")) {
@@ -1143,10 +1093,8 @@ public class BizUtils {
                 salesOrderx.setTotalAmount(saleOrder.getGrandTotal());
 
 
-
                 salesOrderx.SODetails.clear();
                 salesOrderx.SODetails.addAll(saleOrderDetails);
-
 
 
             } else if (url.toLowerCase().contains("return")) {
@@ -1168,26 +1116,21 @@ public class BizUtils {
                 //Signal R params
 
 
-
                 //------------cheque details---------------
                 salesReturnx.setId((long) 0);
                 salesReturnx.setSRDate(BizUtils.getCurrentDatAndTimeInDF());
                 salesReturnx.setRefNo(saleReturn.getRefCode());
                 salesReturnx.setLedgerId(customer.getLedger().getId().intValue());
-                for(int i=0;i<Store.getInstance().transactionTypeList.size();i++)
-                {
+                for (int i = 0; i < Store.getInstance().transactionTypeList.size(); i++) {
 
-                    if(Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains(saleReturn.getPaymentMode().toLowerCase()))
-                    {
+                    if (Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains(saleReturn.getPaymentMode().toLowerCase())) {
 
                         salesReturnx.setTransactionTypeId((int) Store.getInstance().transactionTypeList.get(i).getId());
                     }
-                    if(saleReturn.getPaymentMode().contains("PNT"))
-                    {
-                        System.out.println("Payment mode value ----"+saleReturn.getPaymentMode());
-                        if(Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains("credit"))
-                        {
-                            System.out.println("Payment mode value ----"+saleReturn.getPaymentMode()+"----------"+Store.getInstance().transactionTypeList.get(i).getType()+"----------"+Store.getInstance().transactionTypeList.get(i).getId());
+                    if (saleReturn.getPaymentMode().contains("PNT")) {
+                        System.out.println("Payment mode value ----" + saleReturn.getPaymentMode());
+                        if (Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains("credit")) {
+                            System.out.println("Payment mode value ----" + saleReturn.getPaymentMode() + "----------" + Store.getInstance().transactionTypeList.get(i).getType() + "----------" + Store.getInstance().transactionTypeList.get(i).getId());
                             salesReturnx.setTransactionTypeId((int) Store.getInstance().transactionTypeList.get(i).getId());
                         }
 
@@ -1198,7 +1141,7 @@ public class BizUtils {
 
 
                 salesReturnx.setChequeNo(saleReturn.getChequeNo());
-                String date = saleReturn.getChequeDate()+" 01-01-01";
+                String date = saleReturn.getChequeDate() + " 01-01-01";
                 DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH-mm-ss");
                 try {
                     Date date1 = format.parse(date);
@@ -1210,9 +1153,6 @@ public class BizUtils {
                 salesReturnx.setItemAmount(saleReturn.getSubTotal());
                 //-----------------------------
                 salesReturnx.setDiscountAmount(saleReturn.getDiscountValue());
-
-
-
 
 
                 if (saleReturn.getGstType().toLowerCase().contains("no")) {
@@ -1229,40 +1169,26 @@ public class BizUtils {
                 salesReturnx.setTotalAmount(saleReturn.getGrandTotal());
 
 
+                System.out.println("Payment mode value ----" + saleReturn.getPaymentMode());
 
 
+                salesReturnx.SRDetails.clear();
 
 
-
-
-                System.out.println("Payment mode value ----"+saleReturn.getPaymentMode());
-
-
-
-
-
-
-                salesReturnx.SRetails.clear();
-
-
-
-
-                salesReturnx.SRetails.addAll(saleDetails);
+                salesReturnx.SRDetails.addAll(salesReturnDetails);
 
 
             } else {
 
 
-
-
-              //------------cheque details---------------
+                //------------cheque details---------------
                 salex.setBankName(sale.getChequeBankName());
                 salex.setChequeNo(sale.getChequeNo());
 
-                String date = sale.getChequeDate()+" 01-01-01";
+                String date = sale.getChequeDate() + " 01-01-01";
                 DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH-mm-ss");
                 try {
-                    if(sale.getChequeDate()!=null) {
+                    if (sale.getChequeDate() != null) {
                         Date date1 = format.parse(date);
                         salex.setChequeDate(date1);
                     }
@@ -1283,30 +1209,24 @@ public class BizUtils {
                 }
 
 
-
-
                 salex.setTotalAmount(sale.getGrandTotal());
                 salex.setRefNo(sale.getRefCode());
                 salex.setItemAmount(sale.getSubTotal());
                 salex.setSalesDate(BizUtils.getCurrentDatAndTimeInDF());
 
 
-                System.out.println("Payment mode value ----"+sale.getPaymentMode());
+                System.out.println("Payment mode value ----" + sale.getPaymentMode());
 
-                for(int i=0;i<Store.getInstance().transactionTypeList.size();i++)
-                {
+                for (int i = 0; i < Store.getInstance().transactionTypeList.size(); i++) {
 
-                    if(Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains(sale.getPaymentMode().toLowerCase()))
-                    {
+                    if (Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains(sale.getPaymentMode().toLowerCase())) {
 
                         salex.setTransactionTypeId((int) Store.getInstance().transactionTypeList.get(i).getId());
                     }
-                    if(sale.getPaymentMode().contains("PNT"))
-                    {
-                        System.out.println("Payment mode value ----"+sale.getPaymentMode());
-                        if(Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains("credit"))
-                        {
-                            System.out.println("Payment mode value ----"+sale.getPaymentMode()+"----------"+Store.getInstance().transactionTypeList.get(i).getType()+"----------"+Store.getInstance().transactionTypeList.get(i).getId());
+                    if (sale.getPaymentMode().contains("PNT")) {
+                        System.out.println("Payment mode value ----" + sale.getPaymentMode());
+                        if (Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains("credit")) {
+                            System.out.println("Payment mode value ----" + sale.getPaymentMode() + "----------" + Store.getInstance().transactionTypeList.get(i).getType() + "----------" + Store.getInstance().transactionTypeList.get(i).getId());
                             salex.setTransactionTypeId((int) Store.getInstance().transactionTypeList.get(i).getId());
                         }
 
@@ -1349,32 +1269,24 @@ public class BizUtils {
             if (productModels.size() != 0) {
                 HttpHandler httpHandler = new HttpHandler();
                 //jsonStr = httpHandler.makeServiceCall(this.url, this.params);
-                System.out.println("URL==================="+url);
-                if(url.toLowerCase().contains("order"))
-                {
-                    status =  SignalRService.salesOrder(salesOrderx);
+                System.out.println("URL===================" + url);
+                if (url.toLowerCase().contains("order")) {
+                    status = SignalRService.salesOrder(salesOrderx);
                     //BizUtils.prettyJson("Sale Order === ",salesOrderx);
 
-                    if(status)
-                    {
+                    if (status) {
                         saleOrder.setSynced(true);
-                        BizLogger.generateNoteOnSD( BizUtils.getCurrentDatAndTimeInDF()+" | Sale saved ref code :  "+salesOrderx.getRefCode());
+                        BizLogger.generateNoteOnSD(BizUtils.getCurrentDatAndTimeInDF() + " | Sale saved ref code :  " + salesOrderx.getRefCode());
 
                     }
 
-                }
-                else if (url.toLowerCase().contains("return"))
-                {
-                    status =  SignalRService.salesReturn(salesReturnx);
+                } else if (url.toLowerCase().contains("return")) {
+                    status = SignalRService.salesReturn(salesReturnx);
                     saleReturn.setSynced(true);
-                }
-                else
-                {
-                    status =  SignalRService.salesSave(salex);
+                } else {
+                    status = SignalRService.salesSave(salex);
                     sale.setSynced(true);
                 }
-
-
 
 
             } else {
@@ -1389,7 +1301,7 @@ public class BizUtils {
 
             System.out.println("JSON RESPONSE" + jsonStr);
 
-            if (status || jsonStr!=null) {
+            if (status || jsonStr != null) {
 
 
                 GsonBuilder gsonBuilder = new GsonBuilder();
@@ -1421,17 +1333,16 @@ public class BizUtils {
 
 
                     System.out.println("URL saved to " + this.url);
-                    System.out.println("payMode ="+ payMode);
+                    System.out.println("payMode =" + payMode);
                     if (url.toLowerCase().contains("order")) {
                         Toast.makeText(context, "Sale order saved", Toast.LENGTH_SHORT).show();
 
-                        if(payMode.contains("PNT"))
-                        {
-                            double x =0;
+                        if (payMode.contains("PNT")) {
+                            double x = 0;
                             x = customer.getLedger().getOPBal() + grandTotal;
                             customer.setOPBal(x);
 
-                            System.out.println("OP ="+ x);
+                            System.out.println("OP =" + x);
                         }
                         syncStatus = true;
 
@@ -1439,29 +1350,27 @@ public class BizUtils {
                         Toast.makeText(context, "Sale return saved", Toast.LENGTH_SHORT).show();
 
 
-
                         syncStatus = true;
                     } else {
                         Toast.makeText(context, "sale  saved", Toast.LENGTH_SHORT).show();
-                        System.out.println("payMode ="+ payMode);
-                        if(payMode.contains("PNT"))
-                        {
+                        System.out.println("payMode =" + payMode);
+                        if (payMode.contains("PNT")) {
 
 
-                            double x =0;
+                            double x = 0;
 
-                            System.out.println("GT ==="+grandTotal);
+                            System.out.println("GT ===" + grandTotal);
 
-                            x = customer.getLedger().getOPBal() +grandTotal;
+                            x = customer.getLedger().getOPBal() + grandTotal;
 
-                            System.out.println("OP ="+ x);
+                            System.out.println("OP =" + x);
                             customer.setOPBal(x);
                         }
                         syncStatus = true;
                     }
                 }
                 try {
-                    BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                     System.err.println("DB Updated..on local storage");
                 } catch (ClassNotFoundException e) {
 
@@ -1473,6 +1382,7 @@ public class BizUtils {
 
 
     }
+
     private class SaveReceipt extends AsyncTask {
 
         Context context;
@@ -1488,7 +1398,8 @@ public class BizUtils {
         private boolean status;
 
         Customer customer;
-        public SaveReceipt(Context context, String url, Receipt receipt, Long cusId,Customer customer) {
+
+        public SaveReceipt(Context context, String url, Receipt receipt, Long cusId, Customer customer) {
             this.context = context;
             this.url = url;
             this.receipt_ = receipt;
@@ -1524,7 +1435,7 @@ public class BizUtils {
 
 
                 params.put("Amount", String.valueOf(receipt_.getAmount()));
-                System.out.println("Receipt ledger id : "+customer.getLedger().getId());
+                System.out.println("Receipt ledger id : " + customer.getLedger().getId());
                 params.put("LedgerId", String.valueOf(customer.getLedger().getId()));
                 params.put("PayMode", String.valueOf(receipt_.getPaymentMode()));
 
@@ -1533,35 +1444,31 @@ public class BizUtils {
                 this.params.put("ChqBankName", receipt_.getChequeBankName());
 
 
-                 receipt = new com.bizsoft.fmcgv2.Tables.Receipt();
+                receipt = new com.bizsoft.fmcgv2.Tables.Receipt();
                 receipt.setId((long) 0);
-                System.out.println("ID================"+receipt.getId());
+                System.out.println("ID================" + receipt.getId());
                 int invce = 1;
-                for(int i=0;i<Store.getInstance().customerList.size();i++)
-                {
+                for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
 
                     invce = invce + Store.getInstance().customerList.get(i).getReceipts().size();
 
                 }
 
 
-                receipt.setEntryNo(String.valueOf(BizUtils.calculateShortCode("receipt")+DashboardActivity.calculateRefCode(Store.getInstance().user.getRTRefCode(),invce)));
-                System.out.println("ENTRY NO================"+receipt.getEntryNo());
+                receipt.setEntryNo(String.valueOf(BizUtils.calculateShortCode("receipt") + DashboardActivity.calculateRefCode(Store.getInstance().user.getRTRefCode(), invce)));
+                System.out.println("ENTRY NO================" + receipt.getEntryNo());
                 receipt.setReceiptDate(BizUtils.getCurrentDatAndTimeInDF());
                 //Ledger id need to be set
-                System.out.println("RDATE================"+receipt.getReceiptDate());
-                System.out.println("Pay Mode================"+receipt_.getPaymentMode());
-                if(this.receipt_.getPaymentMode().toLowerCase().contains("cash"))
-                {
+                System.out.println("RDATE================" + receipt.getReceiptDate());
+                System.out.println("Pay Mode================" + receipt_.getPaymentMode());
+                if (this.receipt_.getPaymentMode().toLowerCase().contains("cash")) {
                     receipt.setLedgerId((long) Store.getInstance().cashLedgerId);
-                }
-                else
-                {
+                } else {
                     receipt.setLedgerId((long) Store.getInstance().bankLedgerId);
                 }
 
 
-                System.out.println("LEDGER ID================"+receipt.getLedgerId());
+                System.out.println("LEDGER ID================" + receipt.getLedgerId());
                 receipt.setReceiptMode(this.receipt_.getPaymentMode());
                 receipt.setAmount(receipt_.getAmount());
                 receipt.setChequeNo(this.receipt_.getChequeNo());
@@ -1570,8 +1477,8 @@ public class BizUtils {
                 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                 Date chqdate = new Date();
                 try {
-                    chqdate =  dateFormat.parse(this.receipt_.getChequeDate());
-                    System.out.println("Date format ----"+chqdate);
+                    chqdate = dateFormat.parse(this.receipt_.getChequeDate());
+                    System.out.println("Date format ----" + chqdate);
                     receipt.setChequeDate(chqdate);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -1580,13 +1487,12 @@ public class BizUtils {
                 ReceiptDetail receiptDetail = new ReceiptDetail();
                 receiptDetail.setId(Long.valueOf(0));
                 receiptDetail.setReceiptId(Long.valueOf(0));
-                System.out.println("Receipt ledger Cash/Cheque ----"+receipt_.getLegerId());
+                System.out.println("Receipt ledger Cash/Cheque ----" + receipt_.getLegerId());
                 receiptDetail.setLedgerId(customer.getLedger().getId());
                 receiptDetail.setAmount(this.receipt_.getAmount());
 
 
                 receipt.getRDetails().add(receiptDetail);
-
 
 
             }
@@ -1598,8 +1504,8 @@ public class BizUtils {
             HttpHandler httpHandler = new HttpHandler();
             System.out.println("URL ================== " + this.url);
 
-             status = SignalRService.receiptSave(receipt);
-           // jsonStr = httpHandler.makeServiceCall(this.url, this.params);
+            status = SignalRService.receiptSave(receipt);
+            // jsonStr = httpHandler.makeServiceCall(this.url, this.params);
             return true;
 
         }
@@ -1620,8 +1526,7 @@ public class BizUtils {
             } else {
                 method = "Receipt";
             }
-            if(status)
-            {
+            if (status) {
                 Toast.makeText(context, method + " Saved", Toast.LENGTH_SHORT).show();
                 if (this.url.toLowerCase().contains("payment")) {
 
@@ -1632,19 +1537,17 @@ public class BizUtils {
                     receipt_.setSynced(true);
                     refReceipt.setSynced(true);
 
-                     receipt.getAmount();
+                    receipt.getAmount();
 
                 }
                 try {
-                    BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                     System.err.println("DB Updated..on local storage");
                 } catch (ClassNotFoundException e) {
 
                     System.err.println("Unable to write to DB");
                 }
-            }
-            else
-            {
+            } else {
                 Toast.makeText(context, method + " not Saved", Toast.LENGTH_SHORT).show();
 
             }
@@ -1655,53 +1558,47 @@ public class BizUtils {
     }
 
 
-
     public void updateStock(SaleReturn saleReturn) {
 
 
-
-
         ArrayList<Product> allProducts = Store.getInstance().productList;
-        for(int i=0;i<allProducts.size();i++)
-        {
-            System.out.println("qty ->"+allProducts.get(i).getAvailableStock());
+        for (int i = 0; i < allProducts.size(); i++) {
+            System.out.println("qty ->" + allProducts.get(i).getAvailableStock());
         }
         ArrayList<Product> currentProductsInCart = saleReturn.getProducts();
-        for(int i=0;i<allProducts.size();i++)
-        {
-            for(int j=0;j<currentProductsInCart.size();j++)
-            {
+        for (int i = 0; i < allProducts.size(); i++) {
+            for (int j = 0; j < currentProductsInCart.size(); j++) {
 
-                if(allProducts.get(i).getId()==currentProductsInCart.get(j).getId()) {
+                if (allProducts.get(i).getId() == currentProductsInCart.get(j).getId()) {
 
-                    if (allProducts.get(i).isResale())
-                    {
+                    if (allProducts.get(i).isResale()) {
 
 
                         Long aq = allProducts.get(i).getAvailableStock();
 
-                    Long cq = currentProductsInCart.get(j).getQty();
+                        Long cq = currentProductsInCart.get(j).getQty();
 
-                    System.out.println(aq + "< ==== >" + cq);
+                        System.out.println(aq + "< ==== >" + cq);
 
-                    aq = aq - cq;
-
-
-                    allProducts.get(i).setAvailableStock(aq);
-
-                    System.out.println("AQ ====" + aq);
-                    System.out.println("CQ ====" + cq);
+                        aq = aq - cq;
 
 
-                    //  allProducts.get(i).setRQty(aq);
+                        allProducts.get(i).setAvailableStock(aq);
 
-                }
+                        System.out.println("AQ ====" + aq);
+                        System.out.println("CQ ====" + cq);
+
+
+                        //  allProducts.get(i).setRQty(aq);
+
+                    }
 
                 }
 
             }
+        }
     }
-    }
+
     public void updateStock(Sale sale) {
 
         ArrayList<Product> allProducts = Store.getInstance().productList;
@@ -1739,27 +1636,23 @@ public class BizUtils {
         }
     }
 
-    public void sync(Context context,String from)
-    {
+    public void sync(Context context, String from) {
 
-        if(Store.getInstance().mHubConnectionReceiver !=null)
-        {
+        if (Store.getInstance().mHubConnectionReceiver != null) {
 
 
-            if(Store.getInstance().mHubConnectionReceiver.getState().toString().toLowerCase().contains("disconnected"))
-            {
+            if (Store.getInstance().mHubConnectionReceiver.getState().toString().toLowerCase().contains("disconnected")) {
 
-                Network.Check_Internet(context,"Check network","Please Turn on Internet connectivity..");
+                Network.Check_Internet(context, "Check network", "Please Turn on Internet connectivity..");
 
                 System.out.println("----re login attempt");
 
-               SignalRService.reconnect(context);
+                SignalRService.reconnect(context);
 
 
             }
 
         }
-
 
 
         boolean sync = false;
@@ -1772,7 +1665,7 @@ public class BizUtils {
 
 
         if (customerList.size() == 0) {
-           // Toast.makeText(context, "Nothing to sync...", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Nothing to sync...", Toast.LENGTH_SHORT).show();
         }
         for (int i = 0; i < customerList.size(); i++) {
             System.out.println("OBJ =" + customerList.get(i));
@@ -1784,14 +1677,14 @@ public class BizUtils {
                 Customer customer = createCustomer(customerList.get(i));
                 //BizUtils.prettyJson("new customer \n",customer);
 
-                customerStatus = new SaveCustomer(context, customer,i,from).execute();
+                customerStatus = new SaveCustomer(context, customer, i, from).execute();
             }
 
 
         }
 
 
-        int syncCount=0;
+        int syncCount = 0;
         for (int i = 0; i < customerList.size(); i++) {
             System.out.println("OBJ =" + customerList.get(i).getSale().size());
 
@@ -1815,13 +1708,12 @@ public class BizUtils {
                 System.out.println("Customer Id " + customerList.get(i).getId());
 
 
-
                 if (customerList.get(i).getSale().size() > 0) {
                     newcustomer = false;
 
                     for (int y = 0; y < customerList.get(i).getSalesOfCustomer().size(); y++) {
 
-                        if(!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
+                        if (!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
                             saleStatus = new Save(context, "sale/save", "SODetails", customerList.get(i).getSalesOfCustomer().get(y).getProducts(), customerList.get(i).getId(), customerList.get(i).getSalesOfCustomer().get(y), null, null, customerList.get(i)).execute();
                             System.out.println("Status === " + saleStatus.getStatus());
                             sync = true;
@@ -1831,14 +1723,13 @@ public class BizUtils {
                     }
 
 
-
                 }
                 if (customerList.get(i).getSaleOrder().size() > 0) {
                     newcustomer = false;
 
 
                     for (int y = 0; y < customerList.get(i).getSaleOrdersOfCustomer().size(); y++) {
-                        if(!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
+                        if (!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
                             saleOrderStatus = new Save(context, "SaleOrder/save", "SaleOrderDetails", customerList.get(i).getSaleOrdersOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, customerList.get(i).getSaleOrdersOfCustomer().get(y), null, customerList.get(i)).execute();
                             sync = true;
                         }
@@ -1849,7 +1740,7 @@ public class BizUtils {
                 if (customerList.get(i).getSaleReturn().size() > 0) {
 
                     for (int y = 0; y < customerList.get(i).getSaleReturnOfCustomer().size(); y++) {
-                        if(!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
+                        if (!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
                             newcustomer = false;
                             saleReturnStatus = new Save(context, "SalesReturn/save", "SaleReturnDetails", customerList.get(i).getSaleReturnOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, null, customerList.get(i).getSaleReturnOfCustomer().get(y), customerList.get(i)).execute();
                             sync = true;
@@ -1862,16 +1753,12 @@ public class BizUtils {
                     System.out.println("Called save receipt");
                     for (int z = 0; z < customerList.get(i).getReceipts().size(); z++) {
 
-                        if( customerList.get(i).getReceipts().get(z).isSynced())
-                        {
+                        if (customerList.get(i).getReceipts().get(z).isSynced()) {
                             System.out.println("Receipt already synced");
-                        }
-                        else
-                        {
-                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(),customerList.get(i)).execute();
+                        } else {
+                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(), customerList.get(i)).execute();
                             sync = true;
                         }
-
 
                     }
                     System.out.println("Closing save receipt");
@@ -1881,19 +1768,17 @@ public class BizUtils {
                 System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
                 System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
                 if (customerList.get(i).getsOPendingList().size() > 0) {
-                    for(int x = 0;x<customerList.get(i).getsOPendingList().size();x++)
-                    {
-                        if(customerList.get(i).getsOPendingList().get(x).isSynced()) {
+                    for (int x = 0; x < customerList.get(i).getsOPendingList().size(); x++) {
+                        if (customerList.get(i).getsOPendingList().get(x).isSynced()) {
                             System.out.println("SO pendling  already synced");
-                        }
-                        else {
+                        } else {
                             boolean status = SignalRService.saleOrderMakeSales(customerList.get(i).getsOPendingList().get(x));
                             if (status) {
                                 System.out.println("SO pending saved");
                                 customerList.get(i).getsOPendingList().get(x).setSynced(true);
                                 sync = true;
                                 try {
-                                    BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                                     System.err.println("DB Updated..on local storage");
                                 } catch (ClassNotFoundException e) {
 
@@ -1912,12 +1797,9 @@ public class BizUtils {
                     for (int z = 0; z < customerList.get(i).getPayments().size(); z++) {
 
 
-                        if( customerList.get(i).getPayments().get(z).isSynced())
-                        {
+                        if (customerList.get(i).getPayments().get(z).isSynced()) {
                             System.out.println("Payment already synced");
-                        }
-                        else
-                        {
+                        } else {
                             new SaveReceipt(context, "Sale/Payment_Save", customerList.get(i).getPayments().get(z), customerList.get(i).getId()).execute();
                             sync = true;
                         }
@@ -1938,10 +1820,10 @@ public class BizUtils {
         }
 
 
-        System.out.println("Sync dealer = "+Store.getInstance().dealer.isSynced());
+        System.out.println("Sync dealer = " + Store.getInstance().dealer.isSynced());
 
 
-        if(!Store.getInstance().dealer.isSynced()) {
+        if (!Store.getInstance().dealer.isSynced()) {
             if (SignalRService.saveCompany(Store.getInstance().dealer)) {
 
                 Toast.makeText(context, "Dealer Updated", Toast.LENGTH_SHORT).show();
@@ -1949,7 +1831,7 @@ public class BizUtils {
                 sync = true;
 
                 try {
-                    BizUtils.storeAsJSON("Dealer",BizUtils.getJSON("dealer",Store.getInstance().dealer));
+                    BizUtils.storeAsJSON("Dealer", BizUtils.getJSON("dealer", Store.getInstance().dealer));
                     System.out.println("DB 'Dealer' Updated..on local storage");
                 } catch (ClassNotFoundException e) {
 
@@ -1959,29 +1841,23 @@ public class BizUtils {
             } else {
                 Toast.makeText(context, "Dealer not Updated", Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
+        } else {
             System.out.println("Dealer already synced");
         }
 
-        for(int i=0;i<Store.getInstance().prodcutSpecProcess.size();i++)
-        {
-            System.out.println("Sync prod spec = "+Store.getInstance().prodcutSpecProcess.get(i).isSynced());
-            if(Store.getInstance().prodcutSpecProcess.get(i).isSynced())
-            {
+        for (int i = 0; i < Store.getInstance().prodcutSpecProcess.size(); i++) {
+            System.out.println("Sync prod spec = " + Store.getInstance().prodcutSpecProcess.get(i).isSynced());
+            if (Store.getInstance().prodcutSpecProcess.get(i).isSynced()) {
                 System.out.println("No sync prod spec");
 
 
-            }
-            else
-            {
+            } else {
                 sync = true;
-                if(SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i)))
-                {
+                if (SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i))) {
 //                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
                     Store.getInstance().prodcutSpecProcess.get(i).setSynced(true);
                     try {
-                        BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().prodcutSpecProcess));
+                        BizUtils.storeAsJSON("ProductSpecProcessList", BizUtils.getJSON("productspecprocess", Store.getInstance().prodcutSpecProcess));
                         System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
                     } catch (ClassNotFoundException e) {
 
@@ -1989,91 +1865,98 @@ public class BizUtils {
                     }
 
 
-                }
-                else
-                {
-                  //  Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
-                    BizUtils.prettyJson("product Spec",Store.getInstance().prodcutSpecProcess.get(i));
+                } else {
+                    //  Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
+                    BizUtils.prettyJson("product Spec", Store.getInstance().prodcutSpecProcess.get(i));
                 }
 
             }
 
 
         }
-        for(int i=0;i<Store.getInstance().newBankList.size();i++)
-        {
-            if(Store.getInstance().newBankList.get(i).isSynced())
-            {
+        for (int i = 0; i < Store.getInstance().newBankList.size(); i++) {
+            if (Store.getInstance().newBankList.get(i).isSynced()) {
                 System.out.println("Already synced...");
+            } else {
+                sync = true;
+                if (SignalRService.saveBank(Store.getInstance().newBankList.get(i))) {
+                    Store.getInstance().newBankList.get(i).setSynced(true);
+                    try {
+                        BizUtils.storeAsJSON("NewBankList", BizUtils.getJSON("bankList", Store.getInstance().newBankList));
+                        System.out.println("DB 'NewBankList' Updated..on local storage");
+                    } catch (ClassNotFoundException e) {
+
+                        System.err.println("Unable to write to DB 'NewBankList'");
+                    }
+                }
+            }
+        }
+        for(int i=0;i<Store.getInstance().productList.size();i++)
+        {
+            if(Store.getInstance().productList.get(i).isSynced())
+            {
+                System.out.println("Product : Already synced...");
             }
             else
             {
+                System.out.println("Product : syncing now...");
                 sync = true;
-             if(SignalRService.saveBank(Store.getInstance().newBankList.get(i)))
-             {
-                 Store.getInstance().newBankList.get(i).setSynced(true);
-                 try {
-                     BizUtils.storeAsJSON("NewBankList",BizUtils.getJSON("bankList",Store.getInstance().newBankList));
-                     System.out.println("DB 'NewBankList' Updated..on local storage");
-                 } catch (ClassNotFoundException e) {
+                if (SignalRService.productSave(Store.getInstance().productList.get(i))) {
+                    Store.getInstance().productList.get(i).setSynced(true);
 
-                     System.err.println("Unable to write to DB 'NewBankList'");
-                 }
-             }
+
+                    try {
+                        BizUtils.storeAsJSON("ProductList", BizUtils.getJSON("productList", Store.getInstance().productList));
+                        System.out.println("DB 'ProductList' Updated..on local storage");
+                    } catch (ClassNotFoundException e) {
+
+                        System.err.println("Unable to write to DB 'ProductList'");
+                    }
+
+                }
             }
         }
-
-
 
 
         System.out.println("Sync required = " + sync);
 
 
-
-
         if (!sync) {
-          if(from.toLowerCase().contains("auto"))
-            {
-               // System.out.print("No Data to sync...");
-                    Store.getInstance().messageList.add("Auto Sync invoked");
+            if (from.toLowerCase().contains("auto")) {
+                // System.out.print("No Data to sync...");
+                Store.getInstance().messageList.add("Auto Sync invoked");
                 Notification notification = new Notification();
                 notification.setTime(getCurrentTime());
                 notification.setMessage("Auto Sync invoked:No data to Sync");
-              //  Store.getInstance().notificationList.add(notification);
+                //  Store.getInstance().notificationList.add(notification);
 
-            }
-            else
-            {
+            } else {
                 Notification notification = new Notification();
                 notification.setMessage("Manual Sync invoked:No data to Sync");
                 notification.setTime(getCurrentTime());
                 Store.getInstance().notificationList.add(notification);
 
 
-             try {
-                 Snackbar snackbar = null;
+                try {
+                    Snackbar snackbar = null;
 
-                 View notifier = DashboardActivity.customActionBar.findViewById(R.id.notify);
-                 snackbar = Snackbar
-                         .make(notifier, "Manual sync: No Data ", Snackbar.LENGTH_LONG);
+                    View notifier = DashboardActivity.customActionBar.findViewById(R.id.notify);
+                    snackbar = Snackbar
+                            .make(notifier, "Manual sync: No Data ", Snackbar.LENGTH_LONG);
 
-                // snackbar.show();
-                 Store.getInstance().messageList.add("Manual Sync invoked");
+                    // snackbar.show();
+                    Store.getInstance().messageList.add("Manual Sync invoked");
 
-                 showToast("No Data to sync...", context);
-             }
-             catch (Exception e)
-             {
+                    showToast("No Data to sync...", context);
+                } catch (Exception e) {
 
-             }
+                }
             }
 
 
-        }
-        else
-        {
+        } else {
             try {
-                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                 System.err.println("DB Updated..on local storage");
             } catch (ClassNotFoundException e) {
 
@@ -2081,29 +1964,29 @@ public class BizUtils {
             }
         }
     }
-    public void showToast(final String toast, final Context context)
-    {
-        ((Activity)context).runOnUiThread(new Runnable() {
-            public void run()
-            {
+
+    public void showToast(final String toast, final Context context) {
+        ((Activity) context).runOnUiThread(new Runnable() {
+            public void run() {
                 Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
             }
         });
     }
-    public static Company getCompany()
-    {
+
+    public static Company getCompany() {
 
         Company company = null;
-        for(Company company1 : Store.getInstance().companyList) {
+        for (Company company1 : Store.getInstance().companyList) {
 
-            if(company1.getId().equals(Store.getInstance().companyID)) {
+            if (company1.getId().equals(Store.getInstance().companyID)) {
 
-                company  = company1;
+                company = company1;
                 return company;
             }
         }
         return company;
     }
+
     public Boolean write(Context context, String fname, Company company, Customer customer, ArrayList<Product> productList, String refCode) {
         try {
 
@@ -2121,20 +2004,20 @@ public class BizUtils {
             }
             if (success) {
                 // Do something on success
-                Log.d("FOLDER CREATED","TRUE");
+                Log.d("FOLDER CREATED", "TRUE");
             } else {
                 // Do something else on failure
-                Log.d("FOLDER CREATED","FALSE");
+                Log.d("FOLDER CREATED", "FALSE");
             }
             folder.getAbsolutePath();
-            Log.d("ABS PATH",folder.getAbsolutePath());
+            Log.d("ABS PATH", folder.getAbsolutePath());
 
             //Create file path for Pdf
-            fpath = folder.getAbsolutePath()+"/" + fname + ".pdf";
+            fpath = folder.getAbsolutePath() + "/" + fname + ".pdf";
 
             File file = new File(fpath);
 
-            System.out.println("fpath = "+fpath);
+            System.out.println("fpath = " + fpath);
 
             if (!file.exists()) {
                 file.createNewFile();
@@ -2156,14 +2039,11 @@ public class BizUtils {
             try {
                 // get receipt stream
                 Bitmap bmp = null;
-                if(Store.getInstance().dealerLogo!=null)
-                {
+                if (Store.getInstance().dealerLogo != null) {
                     bmp = BizUtils.StringToBitMap(Store.getInstance().dealerLogo);
-                }
-                else
-                {
+                } else {
                     InputStream ims = context.getAssets().open("fmcglogo64.png");
-                     bmp = BitmapFactory.decodeStream(ims);
+                    bmp = BitmapFactory.decodeStream(ims);
                 }
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -2179,10 +2059,8 @@ public class BizUtils {
                 document.add(logo);
 
 
-            }
-            catch(IOException ex)
-            {
-                System.out.println("Logo Exception = "+ex);
+            } catch (IOException ex) {
+                System.out.println("Logo Exception = " + ex);
                 ex.getStackTrace();
             }
 
@@ -2197,15 +2075,15 @@ public class BizUtils {
             PdfPTable cn = new PdfPTable(1);
             cn.setWidthPercentage(100);
 
-            cn.addCell(getCell("Company Name :"+company.getCompanyName(), PdfPCell.ALIGN_LEFT));
+            cn.addCell(getCell("Company Name :" + company.getCompanyName(), PdfPCell.ALIGN_LEFT));
             document.add(cn);
-            document.add(new Paragraph("Address :"+company.getAddressLine1()+","+company.getAddressLine2()+","+company.getPostalCode()));
-            document.add(new Paragraph("Ph No:"+company.getTelephoneNo()));
-            document.add(new Paragraph("Email :"+company.getEMailId()));
-            document.add(new Paragraph("GST No:"+company.getGSTNo()));
+            document.add(new Paragraph("Address :" + company.getAddressLine1() + "," + company.getAddressLine2() + "," + company.getPostalCode()));
+            document.add(new Paragraph("Ph No:" + company.getTelephoneNo()));
+            document.add(new Paragraph("Email :" + company.getEMailId()));
+            document.add(new Paragraph("GST No:" + company.getGSTNo()));
             document.add(new Paragraph("_____________________________________________________________________________"));
-            document.add(new Paragraph("Bill Id :"+billIdValue));
-            document.add(new Paragraph("Bill Date :"+billDateValue));
+            document.add(new Paragraph("Bill Id :" + billIdValue));
+            document.add(new Paragraph("Bill Date :" + billDateValue));
 
 
             PdfPTable cn1 = new PdfPTable(1);
@@ -2217,15 +2095,15 @@ public class BizUtils {
 
             document.add(cn1);
 
-            document.add(new Paragraph("ID: "+customer.getId()));
-            document.add(new Paragraph("Name: "+customer.getLedgerName()));
-            document.add(new Paragraph("Person In Charge: "+customer.getLedgerName()));
+            document.add(new Paragraph("ID: " + customer.getId()));
+            document.add(new Paragraph("Name: " + customer.getLedgerName()));
+            document.add(new Paragraph("Person In Charge: " + customer.getLedgerName()));
 
-            document.add(new Paragraph("Ph No: "+customer.getMobileNo()));
-            document.add(new Paragraph("Address : "+customer.getAddressLine1()+","+customer.getAddressLine2()));
+            document.add(new Paragraph("Ph No: " + customer.getMobileNo()));
+            document.add(new Paragraph("Address : " + customer.getAddressLine1() + "," + customer.getAddressLine2()));
 
 
-            document.add(new Paragraph("GST No: "+customer.getGSTNo()));
+            document.add(new Paragraph("GST No: " + customer.getGSTNo()));
             document.add(new Paragraph("_____________________________________________________________________________"));
             PdfPTable cn2 = new PdfPTable(1);
             cn2.setWidthPercentage(100);
@@ -2237,8 +2115,8 @@ public class BizUtils {
             PdfPTable pm = new PdfPTable(2);
             pm.setWidthPercentage(100);
 
-            pm.addCell(getCell("Sale/Sale Order/Sale Return: "+ DashboardActivity.currentSaleType,PdfPTable.ALIGN_LEFT));
-            pm.addCell(getCell("Payment Mode: "+ paymentModeValue,PdfPTable.ALIGN_RIGHT));
+            pm.addCell(getCell("Sale/Sale Order/Sale Return: " + DashboardActivity.currentSaleType, PdfPTable.ALIGN_LEFT));
+            pm.addCell(getCell("Payment Mode: " + paymentModeValue, PdfPTable.ALIGN_RIGHT));
             document.add(pm);
 
             PdfPTable cn3 = new PdfPTable(1);
@@ -2246,7 +2124,6 @@ public class BizUtils {
             cn3.addCell(getCell("Item Details", PdfPCell.ALIGN_CENTER));
             cn2.addCell(getCell("_____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
             document.add(cn3);
-
 
 
             PdfPTable line = new PdfPTable(1);
@@ -2272,18 +2149,17 @@ public class BizUtils {
             line1.addCell(getCell("_____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
             document.add(line1);
 
-            for(int i=0;i<productList.size();i++)
-            {
+            for (int i = 0; i < productList.size(); i++) {
                 PdfPTable table1 = new PdfPTable(7);
                 table1.setWidthPercentage(100);
 
-                table1.addCell(getCell(String.valueOf(i+1), PdfPCell.ALIGN_LEFT));
-                table1.addCell(getCell(String.valueOf(productList.get(i).getId()),PdfPCell.ALIGN_LEFT));
+                table1.addCell(getCell(String.valueOf(i + 1), PdfPCell.ALIGN_LEFT));
+                table1.addCell(getCell(String.valueOf(productList.get(i).getId()), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(productList.get(i).getProductName(), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(productList.get(i).getQty()), PdfPCell.ALIGN_LEFT));
-                table1.addCell(getCell(String.valueOf(String.format("%.2f",productList.get(i).getMRP())), PdfPCell.ALIGN_LEFT));
-                table1.addCell(getCell(String.valueOf(String.format("%.2f",productList.get(i).getDiscountAmount())), PdfPCell.ALIGN_LEFT));
-                table1.addCell(getCell(String.valueOf(String.format("%.2f",productList.get(i).getFinalPrice())), PdfPCell.ALIGN_RIGHT));
+                table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getMRP())), PdfPCell.ALIGN_LEFT));
+                table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getDiscountAmount())), PdfPCell.ALIGN_LEFT));
+                table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getFinalPrice())), PdfPCell.ALIGN_RIGHT));
 
                 document.add(table1);
 
@@ -2292,13 +2168,11 @@ public class BizUtils {
 
             String gstSpace = "";
 
-            String st= String.valueOf(subTotal.getText().toString());
+            String st = String.valueOf(subTotal.getText().toString());
             int subTotalLength = st.length();
 
-            String gstx = String.valueOf( Store.getInstance().GST.getText().toString());
+            String gstx = String.valueOf(Store.getInstance().GST.getText().toString());
             int gstLength = gstx.length();
-
-
 
 
             int c = subTotalLength - gstLength;
@@ -2310,20 +2184,17 @@ public class BizUtils {
             double s = Double.parseDouble(subTotal.getText().toString());
 
             double rrm = 0;
-            if(TextUtils.isEmpty(fromCustomer.getText().toString()))
-            {
+            if (TextUtils.isEmpty(fromCustomer.getText().toString())) {
                 rrm = 0;
-            }
-            else
-            {
-                 rrm = Double.parseDouble(fromCustomer.getText().toString());
+            } else {
+                rrm = Double.parseDouble(fromCustomer.getText().toString());
             }
 
             double brm = Double.parseDouble(DashboardActivity.tenderAmount.getText().toString());
 
-            String mgt = String.valueOf(String.format("%.2f",s ));
-            String ra = String.valueOf(String.format("%.2f",rrm));
-            String ba = String.valueOf(String.format("%.2f",brm));
+            String mgt = String.valueOf(String.format("%.2f", s));
+            String ra = String.valueOf(String.format("%.2f", rrm));
+            String ba = String.valueOf(String.format("%.2f", brm));
 
             int mgtL = mgt.length();
             int raL = ra.length();
@@ -2360,7 +2231,6 @@ public class BizUtils {
             }
 
 
-
             PdfPTable line3 = new PdfPTable(1);
             line3.setWidthPercentage(100);
             line3.addCell(getCell("_____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
@@ -2370,13 +2240,13 @@ public class BizUtils {
             PdfPTable stx = new PdfPTable(1);
             stx.setWidthPercentage(97);
 
-            stx.addCell(getCell("Sub Total RM "+subTotal.getText().toString()+"  ",PdfPCell.ALIGN_RIGHT));
-            stx.addCell(getCell("  ",PdfPCell.ALIGN_LEFT));
+            stx.addCell(getCell("Sub Total RM " + subTotal.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            stx.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
             document.add(stx);
             PdfPTable gst = new PdfPTable(1);
             gst.setWidthPercentage(97);
 
-            gst.addCell(getCell("GST RM "+gstSpace+ Store.getInstance().GST.getText().toString()+"  ",PdfPCell.ALIGN_RIGHT));
+            gst.addCell(getCell("GST RM " + gstSpace + Store.getInstance().GST.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
             document.add(gst);
 
 
@@ -2385,41 +2255,32 @@ public class BizUtils {
 
 
             double disAmnt = 0;
-            if(TextUtils.isEmpty(DashboardActivity.discountValue.getText().toString()))
-            {
+            if (TextUtils.isEmpty(DashboardActivity.discountValue.getText().toString())) {
                 disAmnt = 0;
-            }
-            else
-            {
+            } else {
                 disAmnt = Double.parseDouble(DashboardActivity.discountValue.getText().toString());
             }
 
-            gt.addCell(getCell("  ",PdfPCell.ALIGN_LEFT));
-            gt.addCell(getCell("Discount ( "+disAmnt+") % "+gstSpace+appDiscount.getText().toString()+"  ",PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
+            gt.addCell(getCell("Discount ( " + disAmnt + ") % " + gstSpace + appDiscount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
 
-            gt.addCell(getCell("      ",PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("      ", PdfPCell.ALIGN_RIGHT));
 
-            gt.addCell(getCell("Grand Total RM "+mgSpace+DashboardActivity.grandTotal.getText().toString()+"  ",PdfPCell.ALIGN_RIGHT));
-            gt.addCell(getCell("____________________________________________________________________________",PdfPCell.ALIGN_LEFT));
+            gt.addCell(getCell("Grand Total RM " + mgSpace + DashboardActivity.grandTotal.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
 
-            gt.addCell(getCell("  ",PdfPCell.ALIGN_RIGHT));
-            System.out.println("Pay Mode ===="+ paymentModeValue);
-            if(paymentModeValue.contains("PNT") || paymentModeValue.contains("cheque")) {
-            }
-            else
-            {
-                if(TextUtils.isEmpty(fromCustomer.getText().toString()))
-                {
-                    gt.addCell(getCell("Received RM "+raSpace+String.format("%.2f",Double.parseDouble("0"))+"  ",PdfPCell.ALIGN_RIGHT));
-                }
-                else
-                {
-                    gt.addCell(getCell("Received RM "+raSpace+String.format("%.2f",Double.parseDouble(fromCustomer.getText().toString()))+"  ",PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("  ", PdfPCell.ALIGN_RIGHT));
+            System.out.println("Pay Mode ====" + paymentModeValue);
+            if (paymentModeValue.contains("PNT") || paymentModeValue.contains("cheque")) {
+            } else {
+                if (TextUtils.isEmpty(fromCustomer.getText().toString())) {
+                    gt.addCell(getCell("Received RM " + raSpace + String.format("%.2f", Double.parseDouble("0")) + "  ", PdfPCell.ALIGN_RIGHT));
+                } else {
+                    gt.addCell(getCell("Received RM " + raSpace + String.format("%.2f", Double.parseDouble(fromCustomer.getText().toString())) + "  ", PdfPCell.ALIGN_RIGHT));
                 }
 
 
-                gt.addCell(getCell("  ",PdfPCell.ALIGN_LEFT));
-
+                gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
 
 
                 gt.addCell(getCell("Balance RM " + baSpace + DashboardActivity.tenderAmount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
@@ -2432,14 +2293,12 @@ public class BizUtils {
             document.add(gt);
 
 
-
             PdfPTable thank1 = new PdfPTable(1);
             thank1.setWidthPercentage(100);
             thank1.addCell(getCell(" ", PdfPCell.ALIGN_CENTER));
             thank1.addCell(getCell("***Thank You***", PdfPCell.ALIGN_CENTER));
             document.add(new Paragraph("_____________________________________________________________________________"));
             document.add(thank1);
-
 
 
             // close document
@@ -2453,6 +2312,7 @@ public class BizUtils {
             return false;
         }
     }
+
     public PdfPCell getCell(String text, int alignment) {
         PdfPCell cell = new PdfPCell(new Phrase(text));
         cell.setPadding(0);
@@ -2460,69 +2320,56 @@ public class BizUtils {
         cell.setBorder(PdfPCell.NO_BORDER);
         return cell;
     }
-    public static String calculateShortCode(String saleType)
-    {
-      String result = "";
 
-        System.out.print("---Sale type -----"+saleType);
-        System.out.print("---current month -----"+getCurrentYearAndMonth());
+    public static String calculateShortCode(String saleType) {
+        String result = "";
+
+        System.out.print("---Sale type -----" + saleType);
+        System.out.print("---current month -----" + getCurrentYearAndMonth());
 
 
+        String month = Integer.toHexString(Integer.parseInt(getCurrentYearAndMonth().substring(0, 2)));
+        String year = getCurrentYearAndMonth().substring(5, 7);
 
-        String month = Integer.toHexString(Integer.parseInt(getCurrentYearAndMonth().substring(0,2)));
-        String year = getCurrentYearAndMonth().substring(5,7);
-
-        if(saleType.toLowerCase().contains("return"))
-        {
+        if (saleType.toLowerCase().contains("return")) {
 
             result = "SR";
 
 
-
-            result = result +  year + month.toUpperCase();
-
+            result = result + year + month.toUpperCase();
 
 
-        }
-        else
-        if(saleType.toLowerCase().contains("receipt"))
-        {
+        } else if (saleType.toLowerCase().contains("receipt")) {
 
             result = "RT";
 
 
-
-            result = result +  year + month.toUpperCase();
-
+            result = result + year + month.toUpperCase();
 
 
-        }
-        else
-        if(saleType.toLowerCase().contains("order"))
-        {
+        } else if (saleType.toLowerCase().contains("order")) {
             result = "SO";
-            result = result +  year + month.toUpperCase();
+            result = result + year + month.toUpperCase();
 
 
-        }
-        else
-        {
+        } else {
             result = "SA";
-            result = result +  year + month.toUpperCase();
+            result = result + year + month.toUpperCase();
 
         }
 
-        System.out.println("OUT = >"+result);
+        System.out.println("OUT = >" + result);
         return result;
 
     }
-    public static void prettyJson(String TAG,Object object)
-    {
+
+    public static void prettyJson(String TAG, Object object) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(object);
-        System.out.println(TAG+" = "+json);
+        System.out.println(TAG + " = " + json);
     }
-    public static void storeAsJSON(String DBName,String sBody) {
+
+    public static void storeAsJSON(String DBName, String sBody) {
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "FMCG_DB");
             if (!root.exists()) {
@@ -2538,8 +2385,8 @@ public class BizUtils {
             e.printStackTrace();
         }
     }
-    public static void readAsJSON(String DBName, final Context context)
-    {
+
+    public static void readAsJSON(String DBName, final Context context) {
         //Customer Type
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
@@ -2560,21 +2407,17 @@ public class BizUtils {
         File root = new File(Environment.getExternalStorageDirectory(), "FMCG_DB");
         if (!root.exists()) {
 
-            Toast.makeText(context, "DB-root for "+DBName+" not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "DB-root for " + DBName + " not found", Toast.LENGTH_SHORT).show();
         }
         File file = new File(root, DBName);
-        if(!file.exists())
-        {
-            Toast.makeText(context, "DB named "+DBName+" not found", Toast.LENGTH_SHORT).show();
+        if (!file.exists()) {
+            Toast.makeText(context, "DB named " + DBName + " not found", Toast.LENGTH_SHORT).show();
         }
 
         File file2 = new File(root, "ProductSpecProcessList");
-        if(!file2.exists())
-        {
+        if (!file2.exists()) {
             Toast.makeText(context, "DB named 'ProductSpecProcessList' not found", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             try {
                 file2.createNewFile();
             } catch (IOException e) {
@@ -2582,12 +2425,9 @@ public class BizUtils {
             }
         }
         File file3 = new File(root, "Dealer");
-        if(!file3.exists())
-        {
+        if (!file3.exists()) {
             Toast.makeText(context, "DB named 'Dealer' not found", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             try {
                 file3.createNewFile();
             } catch (IOException e) {
@@ -2595,12 +2435,9 @@ public class BizUtils {
             }
         }
         File file4 = new File(root, "NewBankList");
-        if(!file4.exists())
-        {
+        if (!file4.exists()) {
             Toast.makeText(context, "DB named 'NewBankList' not found", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             try {
                 file4.createNewFile();
             } catch (IOException e) {
@@ -2664,14 +2501,11 @@ public class BizUtils {
             dealer = gson.fromJson(text3.toString(), dealerType);
 
 
-
             //reading customer list as json and storing again
             bankList = new TypeToken<Collection<Bank>>() {
             }.getType();
             ArrayList<Bank> bankArrayList = new ArrayList<Bank>();
             bankArrayList = gson.fromJson(newBankJsonAsText.toString(), bankList);
-
-
 
 
             final Dialog dialog = new Dialog(context);
@@ -2680,7 +2514,7 @@ public class BizUtils {
             TextView customer = (TextView) dialog.findViewById(R.id.customers);
             TextView sale = (TextView) dialog.findViewById(R.id.sale);
             TextView saleOrder = (TextView) dialog.findViewById(R.id.sale_order);
-            TextView salesReturn  = (TextView) dialog.findViewById(R.id.sale_return);
+            TextView salesReturn = (TextView) dialog.findViewById(R.id.sale_return);
             TextView salesOrderPendingList = (TextView) dialog.findViewById(R.id.sales_order_pending_list);
             TextView receipt = (TextView) dialog.findViewById(R.id.receipt);
             TextView dealr = (TextView) dialog.findViewById(R.id.dealer);
@@ -2689,29 +2523,23 @@ public class BizUtils {
             Button load = (Button) dialog.findViewById(R.id.load);
 
 
-
-            int c=0,s=0,so=0,sopl=0,sr=0,r=0,d=0,ps=0,b=0;
-            int c_synced=0,s_synced=0,so_synced=0,sopl_synced=0,sr_synced=0,r_synced=0,d_synced=0,ps_synced = 0,b_synced=0;
-            for(int i=0;i<customers.size();i++)
-            {
+            int c = 0, s = 0, so = 0, sopl = 0, sr = 0, r = 0, d = 0, ps = 0, b = 0,p=0;
+            int c_synced = 0, s_synced = 0, so_synced = 0, sopl_synced = 0, sr_synced = 0, r_synced = 0, d_synced = 0, ps_synced = 0, b_synced = 0,p_synced=0;
+            for (int i = 0; i < customers.size(); i++) {
 
                 c++;
-                if(customers.get(i).isSynced())
-                {
+                if (customers.get(i).isSynced()) {
                     c_synced++;
                 }
                 s = s + customers.get(i).getSalesOfCustomer().size();
-                for(int x=0;x<customers.get(i).getSalesOfCustomer().size();x++)
-                {
-                    if(!customers.get(i).getSalesOfCustomer().get(x).isSynced())
-                    {
-                        Log.d("SO","Unsaved");
-                       // BizUtils.prettyJson("unsaved sale",customers.get(i).getSalesOfCustomer().get(x));
-                    }
-                    else {
+                for (int x = 0; x < customers.get(i).getSalesOfCustomer().size(); x++) {
+                    if (!customers.get(i).getSalesOfCustomer().get(x).isSynced()) {
+                        Log.d("SO", "Unsaved");
+                        // BizUtils.prettyJson("unsaved sale",customers.get(i).getSalesOfCustomer().get(x));
+                    } else {
                         s_synced++;
 
-                        BizUtils.prettyJson("saved sale",customers.get(i).getSalesOfCustomer().get(x));
+                        BizUtils.prettyJson("saved sale", customers.get(i).getSalesOfCustomer().get(x));
 
                     }
 
@@ -2719,114 +2547,93 @@ public class BizUtils {
 
 
                 so = so + customers.get(i).getSaleOrdersOfCustomer().size();
-                for(int x=0;x<customers.get(i).getSaleOrdersOfCustomer().size();x++)
-                {
-                    if(!customers.get(i).getSaleOrdersOfCustomer().get(x).isSynced())
-                    {
-                      Log.d("SO","Unsaved");
-                    }
-                    else
-                    {
+                for (int x = 0; x < customers.get(i).getSaleOrdersOfCustomer().size(); x++) {
+                    if (!customers.get(i).getSaleOrdersOfCustomer().get(x).isSynced()) {
+                        Log.d("SO", "Unsaved");
+                    } else {
                         so_synced++;
                     }
 
                 }
                 sr = sr + customers.get(i).getSaleReturnOfCustomer().size();
-                for(int x=0;x< customers.get(i).getSaleReturnOfCustomer().size();x++)
-                {
-                    if(!customers.get(i).getSaleReturnOfCustomer().get(x).isSynced())
-                    {
-                        Log.d("SR","Unsaved");
-                    }
-                    else {
+                for (int x = 0; x < customers.get(i).getSaleReturnOfCustomer().size(); x++) {
+                    if (!customers.get(i).getSaleReturnOfCustomer().get(x).isSynced()) {
+                        Log.d("SR", "Unsaved");
+                    } else {
                         sr_synced++;
                     }
 
                 }
                 sopl = sopl + customers.get(i).getsOPendingList().size();
-                for(int x=0;x<customers.get(i).getsOPendingList().size();x++)
-                {
-                    if(!customers.get(i).getsOPendingList().get(x).isSynced())
-                    {
-                        Log.d("SOP","Unsaved");
-                    }
-                    else
-                    {
+                for (int x = 0; x < customers.get(i).getsOPendingList().size(); x++) {
+                    if (!customers.get(i).getsOPendingList().get(x).isSynced()) {
+                        Log.d("SOP", "Unsaved");
+                    } else {
                         sopl_synced++;
                     }
 
                 }
-                r = r +  customers.get(i).getReceipts().size();
-                for(int x=0;x<customers.get(i).getReceipts().size();x++)
-                {
-                    if(!customers.get(i).getReceipts().get(x).isSynced())
-                    {
+                r = r + customers.get(i).getReceipts().size();
+                for (int x = 0; x < customers.get(i).getReceipts().size(); x++) {
+                    if (!customers.get(i).getReceipts().get(x).isSynced()) {
 
-                    }
-                    else
-                    {
+                    } else {
                         r_synced++;
                     }
 
                 }
 
 
+
             }
 
-            if(dealer.isSynced())
-            {
+            if (dealer.isSynced()) {
                 d_synced++;
             }
 
-            for(int i=0;i<productSpecProcesses.size();i++)
-            {
+            for (int i = 0; i < productSpecProcesses.size(); i++) {
 
-                if(productSpecProcesses.get(i).isSynced())
-                {
+                if (productSpecProcesses.get(i).isSynced()) {
                     ps_synced++;
                 }
                 ps++;
             }
-            for(int i=0;i<bankArrayList.size();i++)
-            {
-                if(bankArrayList.get(i).isSynced())
-                {
+            for (int i = 0; i < bankArrayList.size(); i++) {
+                if (bankArrayList.get(i).isSynced()) {
                     b_synced++;
                 }
                 b++;
             }
 
 
-            customer.setText(String.valueOf(c+" of "+c_synced+" synced"));
-            sale.setText(String.valueOf(s+" of "+s_synced+" synced"));
-            saleOrder.setText(String.valueOf(so+" of "+so_synced+" synced"));
-            salesReturn.setText(String.valueOf(sr+" of "+sr_synced+" synced"));
-            salesOrderPendingList.setText(String.valueOf(sopl+" of "+sopl_synced+" synced"));
-            receipt.setText(String.valueOf(r+" of "+r_synced+" synced"));
-            if(d_synced==0)
-            {
+            customer.setText(String.valueOf(c + " of " + c_synced + " synced"));
+            sale.setText(String.valueOf(s + " of " + s_synced + " synced"));
+            saleOrder.setText(String.valueOf(so + " of " + so_synced + " synced"));
+            salesReturn.setText(String.valueOf(sr + " of " + sr_synced + " synced"));
+            salesOrderPendingList.setText(String.valueOf(sopl + " of " + sopl_synced + " synced"));
+            receipt.setText(String.valueOf(r + " of " + r_synced + " synced"));
+            if (d_synced == 0) {
                 dealr.setText(String.valueOf("not synced   "));
-            }
-            else
-            {
+            } else {
                 dealr.setText(String.valueOf("synced      "));
             }
-            prodctSpec.setText(String.valueOf(ps+" of "+ps_synced+" synced"));
-            banks.setText(String.valueOf(b+" of "+b_synced+" synced"));
-
+            prodctSpec.setText(String.valueOf(ps + " of " + ps_synced + " synced"));
+            banks.setText(String.valueOf(b + " of " + b_synced + " synced"));
 
 
             final ArrayList<Customer> finalCustomers = customers;
             final Company finalDealer = dealer;
             final ArrayList<ProductSpecProcess> finalProductSpecProcesses = productSpecProcesses;
+            final ArrayList<Bank> finalBankArrayList = bankArrayList;
             load.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
 
                     Store.getInstance().customerList = finalCustomers;
-                    Store.getInstance().dealer= finalDealer;
+                    Store.getInstance().dealer = finalDealer;
                     Store.getInstance().prodcutSpecProcess = finalProductSpecProcesses;
+                    Store.getInstance().bankList = finalBankArrayList;
 
                     Toast.makeText(context, "Loaded..", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
@@ -2834,14 +2641,14 @@ public class BizUtils {
             });
 
             dialog.show();
-            BizUtils.prettyJson("FROM DB UPDATED -- ",Store.getInstance().customerList);
+            BizUtils.prettyJson("FROM DB UPDATED -- ", Store.getInstance().customerList);
 
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             //You'll need to add proper error handling here
         }
     }
+
     public static String getJSON(String db, final Object o) throws ClassNotFoundException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
@@ -2852,64 +2659,67 @@ public class BizUtils {
         Type dealer = null;
         Type productSpec = null;
         Type bankList = null;
+        Type productList = null;
         String json = "";
-        if(db.equals("company"))
-        {
-             companyType = new TypeToken<Collection<Company>>() {
+        if (db.equals("company")) {
+            companyType = new TypeToken<Collection<Company>>() {
             }.getType();
 
             json = gson.toJson(Store.getInstance().companyList, companyType);
         }
-        if(db.equals("customer"))
-        {
+        if (db.equals("customer")) {
             customerList = new TypeToken<Collection<Customer>>() {
             }.getType();
             json = gson.toJson(Store.getInstance().customerList, customerList);
 
 
         }
-        if(db.equals("dealer"))
-        {
+        if (db.equals("dealer")) {
             dealer = new TypeToken<Company>() {
             }.getType();
             json = gson.toJson(Store.getInstance().dealer, dealer);
 
         }
 
-        if(db.equals("productspecprocess"))
-        {
+        if (db.equals("productspecprocess")) {
             productSpec = new TypeToken<Collection<ProductSpecProcess>>() {
             }.getType();
             json = gson.toJson(Store.getInstance().prodcutSpecProcess, productSpec);
 
         }
-        if(db.equals("bankList"))
-        {
+        if (db.equals("bankList")) {
             bankList = new TypeToken<Collection<Bank>>() {
             }.getType();
             json = gson.toJson(Store.getInstance().newBankList, bankList);
+
+        }
+        if (db.equals("productList")) {
+            productList = new TypeToken<Collection<Product>>() {
+            }.getType();
+            json = gson.toJson(Store.getInstance().productList, productList);
 
         }
 
 
         System.out.println(json);
 
-        return  json;
+        return json;
 
 
     }
-    public static Bitmap StringToBitMap(String encodedString){
+
+    public static Bitmap StringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
     }
-    public Customer createCustomer(Customer customer_)
-    {
+
+    public Customer createCustomer(Customer customer_) {
         Customer customer = new Customer();
         customer.setId(customer_.getId());
         customer.setLedgerId(customer_.getLedgerId());
@@ -2937,9 +2747,8 @@ public class BizUtils {
         ledger.setACType(customer_.getLedger().getACType());
 
 
-
-        System.out.println("Account group Id "+currentAccGrpId);
-        System.out.println("Account group name "+currentAccGrpName);
+        System.out.println("Account group Id " + currentAccGrpId);
+        System.out.println("Account group name " + currentAccGrpName);
         ledger.setAccountGroupId(currentAccGrpId);
         ledger.setAccountName(currentAccGrpName);
 
@@ -2947,23 +2756,24 @@ public class BizUtils {
         customer.setLedger(ledger);
 
 
-
         return customer;
     }
-    public static Date getDateFromString(String d,String format) throws ParseException {
+
+    public static Date getDateFromString(String d, String format) throws ParseException {
 
 
-        d= d + " 4:30 pm";
-        System.out.println("Input String : "+d);
+        d = d + " 4:30 pm";
+        System.out.println("Input String : " + d);
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         Date d1 = df.parse(d);
         System.out.println("Date: " + d1);
-        System.out.println("Date in MM/dd/yyyy format is: "+df.format(d1));
+        System.out.println("Date in MM/dd/yyyy format is: " + df.format(d1));
 
 
         return d1;
     }
+
     public static void initDB() throws IOException {
         File root = new File(Environment.getExternalStorageDirectory(), "FMCG_DB");
         if (!root.exists()) {
@@ -2971,44 +2781,39 @@ public class BizUtils {
             root.mkdirs();
         }
         File file = new File(root, "Dealer");
-        if(!file.exists())
-        {
+        if (!file.exists()) {
 
             file.createNewFile();
-            Log.d("DB","New DB- Dealer");
+            Log.d("DB", "New DB- Dealer");
             try {
-                BizUtils.storeAsJSON("Dealer",BizUtils.getJSON("dealer",Store.getInstance().dealer));
+                BizUtils.storeAsJSON("Dealer", BizUtils.getJSON("dealer", Store.getInstance().dealer));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
         File file2 = new File(root, "ProductSpecProcessList");
-        if(!file2.exists())
-        {
+        if (!file2.exists()) {
             file2.createNewFile();
-            Log.d("DB","New DB- Prod Spec");
+            Log.d("DB", "New DB- Prod Spec");
             try {
-                BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().prodcutSpecProcess));
+                BizUtils.storeAsJSON("ProductSpecProcessList", BizUtils.getJSON("productspecprocess", Store.getInstance().prodcutSpecProcess));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
         File file3 = new File(root, "customerList");
-        if(!file3.exists())
-        {
+        if (!file3.exists()) {
             file3.createNewFile();
-            Log.d("DB","New DB- CustomerList");
+            Log.d("DB", "New DB- CustomerList");
             try {
-                BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
+                BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
-
-
 
 
     }

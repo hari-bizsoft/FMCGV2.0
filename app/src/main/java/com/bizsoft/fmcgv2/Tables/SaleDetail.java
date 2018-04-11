@@ -17,6 +17,15 @@ public class SaleDetail {
     Double DiscountAmount;
     Double GSTAmount;
     Double Amount;
+    boolean IsResale;
+
+    public boolean isResale() {
+        return IsResale;
+    }
+
+    public void setResale(boolean resale) {
+        IsResale = resale;
+    }
 
     public Long getId() {
         return Id;

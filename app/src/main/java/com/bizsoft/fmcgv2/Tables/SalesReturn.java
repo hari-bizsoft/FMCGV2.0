@@ -25,6 +25,7 @@ public class SalesReturn {
     Double ExtraAmount;
     Double TotalAmount;
 
+
     public Double getGSTAmount() {
         return GSTAmount;
     }
@@ -49,15 +50,16 @@ public class SalesReturn {
         TotalAmount = totalAmount;
     }
 
-    public Collection<SaleDetail> getSRetails() {
-        return SRetails;
+
+    public Collection<SalesReturnDetails> getSRDetails() {
+        return SRDetails;
     }
 
-    public void setSRetails(Collection<SaleDetail> SRetails) {
-        this.SRetails = SRetails;
+    public void setSRDetails(Collection<SalesReturnDetails> SRDetails) {
+        this.SRDetails = SRDetails;
     }
 
-    public Collection<SaleDetail> SRetails = new ArrayList<SaleDetail>();
+    public Collection<SalesReturnDetails> SRDetails = new ArrayList<SalesReturnDetails>();
 
     public Long getId() {
         return Id;
