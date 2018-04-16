@@ -50,7 +50,12 @@ public class BizLogger implements Thread.UncaughtExceptionHandler {
             if (!root.exists()) {
                 root.mkdirs();
             }
+
             File gpxfile = new File(root, "fmcglog");
+            if(!gpxfile.exists())
+            {
+                gpxfile.createNewFile();
+            }
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(sBody);
             writer.flush();

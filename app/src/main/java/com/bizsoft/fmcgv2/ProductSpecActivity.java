@@ -473,14 +473,13 @@ public class ProductSpecActivity extends AppCompatActivity {
 
               //  BizUtils.prettyJson("Product details ",choosedProduct.getPDetails());
 
-
-
-
                 choosedOutputProd = (ArrayList<PDetailsItem>) choosedProduct.getPDetails();
                 System.out.println("Product details size == "+choosedProduct.getPDetails().size());
                 productAdapter.productList =choosedOutputProd;
                 productAdapter.notifyDataSetChanged();
                 dialog.dismiss();
+
+
             }
         });
 

@@ -181,10 +181,9 @@
         android:ems="10"
         android:hint="GST  Number"
         android:inputType="number"
-        android:text="123456789012345"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"/>
+        app:layout_constraintTop_toBottomOf="@+id/email" />
     <EditText
         android:id="@+id/op_bal"
         android:layout_width="0dp"

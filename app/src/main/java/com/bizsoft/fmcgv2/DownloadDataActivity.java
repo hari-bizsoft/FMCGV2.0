@@ -156,6 +156,7 @@ public class DownloadDataActivity extends AppCompatActivity {
             });
 
             SignalRService.accountGroupList();
+            SignalRService.getCompanyDetails(DownloadDataActivity.this);
             progressBar.setProgress(100);
 
           //  SignalRService.taxMasterList();
@@ -174,7 +175,7 @@ public class DownloadDataActivity extends AppCompatActivity {
             textView.setText(result);
            // progressDialog.dismiss();
 
-            SignalRService.getCompanyDetails(DownloadDataActivity.this);
+
             Store.getInstance().dealer.init();
             Store.getInstance().dealer.setSynced(true);
 

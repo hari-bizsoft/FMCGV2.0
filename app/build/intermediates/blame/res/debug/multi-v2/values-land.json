@@ -4,7 +4,7 @@
             "outputFile": "D:\\R&D\\FMCGV22\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-land\\values-land.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\GopiKing\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\95b3307335b8575c0b645cb648c56022\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\GopiKing\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\ee3eb408ee17b3f5c8c2598174d27303\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\GopiKing\\.gradle\\caches\\transforms-1\\files-1.1\\design-25.3.1.aar\\408f02c7fab32e9c94aef47ed02ff7cc\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\GopiKing\\.gradle\\caches\\transforms-1\\files-1.1\\design-25.3.1.aar\\fe51a3db0062585325529428c82dbc46\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

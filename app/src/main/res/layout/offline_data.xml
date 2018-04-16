@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside"/>
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
 
     <TextView
@@ -36,7 +35,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/sale"
         app:layout_constraintEnd_toStartOf="@+id/sale"
-        app:layout_constraintTop_toTopOf="@+id/sale"/>
+        app:layout_constraintTop_toTopOf="@+id/sale" />
 
     <TextView
         android:id="@+id/sale"
@@ -53,7 +52,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customers"/>
+        app:layout_constraintTop_toBottomOf="@+id/customers" />
 
 
     <TextView
@@ -68,7 +67,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/sale_order"
         app:layout_constraintEnd_toStartOf="@+id/sale_order"
-        app:layout_constraintTop_toTopOf="@+id/sale_order"/>
+        app:layout_constraintTop_toTopOf="@+id/sale_order" />
 
     <TextView
         android:id="@+id/sale_order"
@@ -85,7 +84,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sale"/>
+        app:layout_constraintTop_toBottomOf="@+id/sale" />
 
 
     <TextView
@@ -100,7 +99,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/sale_return"
         app:layout_constraintEnd_toStartOf="@+id/sale_return"
-        app:layout_constraintTop_toTopOf="@+id/sale_return"/>
+        app:layout_constraintTop_toTopOf="@+id/sale_return" />
 
     <TextView
         android:id="@+id/sale_return"
@@ -117,7 +116,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sale_order"/>
+        app:layout_constraintTop_toBottomOf="@+id/sale_order" />
 
 
     <TextView
@@ -132,7 +131,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/sales_order_pending_list"
         app:layout_constraintEnd_toStartOf="@+id/sales_order_pending_list"
-        app:layout_constraintTop_toTopOf="@+id/sales_order_pending_list"/>
+        app:layout_constraintTop_toTopOf="@+id/sales_order_pending_list" />
 
     <TextView
         android:id="@+id/sales_order_pending_list"
@@ -149,7 +148,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sale_return"/>
+        app:layout_constraintTop_toBottomOf="@+id/sale_return" />
 
 
     <TextView
@@ -165,7 +164,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/receipt"
         app:layout_constraintEnd_toStartOf="@+id/receipt"
-        app:layout_constraintTop_toTopOf="@+id/receipt"/>
+        app:layout_constraintTop_toTopOf="@+id/receipt" />
 
     <TextView
         android:id="@+id/receipt"
@@ -183,7 +182,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sales_order_pending_list"/>
+        app:layout_constraintTop_toBottomOf="@+id/sales_order_pending_list" />
 
     <Button
         android:id="@+id/load"
@@ -198,7 +197,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banks"/>
+        app:layout_constraintTop_toBottomOf="@+id/banks" />
 
     <TextView
         android:id="@+id/dealer"
@@ -207,14 +206,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="0"
         android:padding="10dip"
+        android:text="0"
 
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/receipt"/>
+        app:layout_constraintTop_toBottomOf="@+id/receipt" />
 
     <TextView
         android:id="@+id/textView92"
@@ -227,7 +226,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/dealer"
         app:layout_constraintEnd_toStartOf="@+id/dealer"
-        app:layout_constraintTop_toTopOf="@+id/dealer"/>
+        app:layout_constraintTop_toTopOf="@+id/dealer" />
 
     <TextView
         android:id="@+id/product_spec"
@@ -236,14 +235,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="0"
-        android:textStyle="bold"
         android:padding="10dip"
-
+        android:text="0"
         android:textColor="#000"
+
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dealer"/>
+        app:layout_constraintTop_toBottomOf="@+id/dealer" />
 
     <TextView
         android:id="@+id/textView95"
@@ -258,7 +257,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/product_spec"
         app:layout_constraintEnd_toStartOf="@+id/product_spec"
-        app:layout_constraintTop_toTopOf="@+id/product_spec"/>
+        app:layout_constraintTop_toTopOf="@+id/product_spec" />
 
     <TextView
         android:id="@+id/banks"
@@ -267,13 +266,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="0"
-        android:textStyle="bold"
         android:padding="10dip"
+        android:text="0"
         android:textColor="#000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product_spec"/>
+        app:layout_constraintTop_toBottomOf="@+id/product_spec" />
 
     <TextView
         android:id="@+id/textView97"
@@ -288,7 +287,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/banks"
         app:layout_constraintEnd_toStartOf="@+id/banks"
-        app:layout_constraintTop_toTopOf="@+id/banks"/>
+        app:layout_constraintTop_toTopOf="@+id/banks" />
 
     <TextView
         android:id="@+id/customers"
@@ -304,7 +303,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView84"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView84" />
 
     <TextView
         android:id="@+id/textView98"
@@ -312,14 +311,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="Customers"
         android:padding="10dip"
+        android:text="Customers"
 
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/customers"
         app:layout_constraintEnd_toStartOf="@+id/customers"
-        app:layout_constraintTop_toTopOf="@+id/customers"/>
+        app:layout_constraintTop_toTopOf="@+id/customers" />
 
 
 </android.support.constraint.ConstraintLayout>

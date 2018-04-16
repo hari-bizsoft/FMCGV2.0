@@ -1580,7 +1580,7 @@ public class BizUtils {
 
                         System.out.println(aq + "< ==== >" + cq);
 
-                        aq = aq - cq;
+                        aq = aq + cq;
 
 
                         allProducts.get(i).setAvailableStock(aq);
@@ -2721,6 +2721,8 @@ public class BizUtils {
 
     public Customer createCustomer(Customer customer_) {
         Customer customer = new Customer();
+
+
         customer.setId(customer_.getId());
         customer.setLedgerId(customer_.getLedgerId());
         customer.setLedgerName(customer_.getLedger().getLedgerName());
@@ -2743,9 +2745,13 @@ public class BizUtils {
         ledger.setGSTNo(customer_.getLedger().getGSTNo());
         ledger.setTelephoneNo(customer_.getLedger().getTelephoneNo());
         ledger.setEMailId(customer_.getLedger().getEMailId());
-        ledger.setOPBal(Double.valueOf(customer_.getLedger().getOPBal()));
-        ledger.setACType(customer_.getLedger().getACType());
-
+        try {
+            ledger.setOPBal(Double.valueOf(customer_.getLedger().getOPBal()));
+            ledger.setACType(customer_.getLedger().getACType());
+        }catch (Exception e)
+        {
+            System.out.println("Customer ex" + e);
+        }
 
         System.out.println("Account group Id " + currentAccGrpId);
         System.out.println("Account group name " + currentAccGrpName);

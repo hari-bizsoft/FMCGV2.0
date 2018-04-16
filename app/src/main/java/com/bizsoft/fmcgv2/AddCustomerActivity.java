@@ -211,18 +211,7 @@ public class AddCustomerActivity extends AppCompatActivity {
             mobileNumber.setError("Field cannot be empty");
         }
         if(TextUtils.isEmpty(gstNumber.getText().toString()))
-        {
-            status = false;
-            gstNumber.setError("Field cannot be empty");
-        }
-        else
-        {
-            if(gstNumber.getText().toString().length()!=15)
-            {
-                status = false;
-                gstNumber.setError("Not a valid GST number - 15 Digits Required..");
-            }
-        }
+
 
 
         if(status)
@@ -305,7 +294,10 @@ public class AddCustomerActivity extends AppCompatActivity {
         ledger.setGSTNo(gstNumber.getText().toString());
         ledger.setTelephoneNo(telephoneNumber.getText().toString());
         ledger.setEMailId(email.getText().toString());
-        ledger.setOPBal(Double.valueOf(opBalance.getText().toString()));
+
+        if(!TextUtils.isEmpty(opBalance.getText().toString())) {
+            ledger.setOPBal(Double.valueOf(opBalance.getText().toString()));
+        }
         ledger.setACType(chooosedAcType);
 
 

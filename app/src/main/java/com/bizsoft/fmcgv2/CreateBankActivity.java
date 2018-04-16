@@ -223,7 +223,13 @@ public class CreateBankActivity extends AppCompatActivity {
         ledger.setMobileNo(mobileNumber.getText().toString());
         ledger.setTelephoneNo(telephoneNumber.getText().toString());
         ledger.setEMailId(email.getText().toString());
-        ledger.setOPBal(Double.valueOf(opBalance.getText().toString()));
+        if(!TextUtils.isEmpty(opBalance.getText()))
+        {
+            ledger.setOPBal(Double.valueOf(opBalance.getText().toString()));
+
+        }
+
+
         ledger.setAccountGroupId(Store.getInstance().bankAccountGroupId);
 
         try

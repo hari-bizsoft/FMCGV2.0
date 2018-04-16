@@ -959,10 +959,9 @@ public class DashboardActivity extends AppCompatActivity {
                     System.out.println("Do nothing....");
                 }
             });
+
             alertDialog.show();
         }
-
-
     }
 
     private void writeToFile(String refCode) {
@@ -975,6 +974,8 @@ public class DashboardActivity extends AppCompatActivity {
         if (status)
         {
             Toast.makeText(DashboardActivity.this, "Pdf Saved", Toast.LENGTH_SHORT).show();
+
+            saleType.setSelection(0);
         }
         else {
             Toast.makeText(DashboardActivity.this, "Pdf not Saved", Toast.LENGTH_SHORT).show();

@@ -162,8 +162,27 @@ public class AddProductActivity extends AppCompatActivity {
         product.setReOrderLevel(Double.parseDouble(reorderLevel.getText().toString()));
         product.setSynced(false);
 
+        clearData();
 
 
+
+    }
+
+    private void clearData() {
+
+        productName.setText("");
+        itemCode.setText("");
+        purchaseRate.setText("0.0");
+        sellingRate.setText("0.0");
+        minSellingRate.setText("0.0");
+        maxSellingRate.setText("0.0");
+        MRP.setText("");
+        openingStock.setText("");
+        reorderLevel.setText("");
+
+        stockGroup.setSelection(0);
+        UOM.setSelection(0);
+        Toast.makeText(this, "Saved..", Toast.LENGTH_SHORT).show();
     }
 
     private void findAction() {

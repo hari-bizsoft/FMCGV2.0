@@ -86,7 +86,7 @@ public class PrintPreview extends AppCompatActivity {
 
 
             customerId = (TextView) findViewById(R.id.customer_id);
-            customerName = (TextView) findViewById(R.id.dealer_name);
+            customerName = (TextView) findViewById(R.id.customer_name);
             customerPhoneNumber= (TextView) findViewById(R.id.customer_ph);
             customerAddLine1= (TextView) findViewById(R.id.customer_address_line_1);
             customerAddLine2 = (TextView) findViewById(R.id.customer_address_line_2);
@@ -106,7 +106,10 @@ public class PrintPreview extends AppCompatActivity {
             grantTotal= (TextView) findViewById(R.id.grand_total);
             receivedRM= (TextView) findViewById(R.id.received_rm);
             balanceRM= (TextView) findViewById(R.id.balance_rm);
+
+
             dealerName = (TextView) findViewById(R.id.dealer_name);
+
             poweredBy= (TextView) findViewById(R.id.powered_by);
             billId = (TextView) findViewById(R.id.bill_id);
             billDate= (TextView) findViewById(R.id.bill_date);
@@ -205,15 +208,16 @@ public class PrintPreview extends AppCompatActivity {
             {
                 customerId.setText(String.valueOf(customer.getId()));
             }
-            customerName.setText(String.valueOf(customer.getLedgerName()));
+
+            customerName.setText(String.valueOf(customer.getLedger().getLedgerName()));
 
 
-            customerPhoneNumber.setText(String.valueOf(customer.getMobileNo()));
-            customerAddLine1.setText(String.valueOf(customer.getAddressLine1()));
-            customerAddLine2.setText(String.valueOf(customer.getAddressLine1()));
-            customerGst.setText(String.valueOf(customer.getGSTNo()));
+            customerPhoneNumber.setText(String.valueOf(customer.getLedger().getMobileNo()));
+            customerAddLine1.setText(String.valueOf(customer.getLedger().getAddressLine1()));
+            customerAddLine2.setText(String.valueOf(customer.getLedger().getAddressLine2()));
+            customerGst.setText(String.valueOf(customer.getLedger().getGSTNo()));
 
-            customerInCharge.setText(String.valueOf(customer.getPersonIncharge()));
+            customerInCharge.setText(String.valueOf(customer.getLedger().getPersonIncharge()));
 
 
             if(TextUtils.isEmpty(Store.getInstance().fromCustomer.getText()))
