@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.bizsoft.fmcgv2.dataobject.Store;
 import java.util.ArrayList;
 
 import static com.bizsoft.fmcgv2.DashboardActivity.discountType;
+import static com.bizsoft.fmcgv2.DashboardActivity.discountValue;
 
 /**
  * Created by shri on 10/8/17.
@@ -38,6 +40,7 @@ public class ProductAdapter extends BaseAdapter   {
     private int x = 0;
     private int Object = 1;
     private String nQuantity;
+
 
     public ProductAdapter(Context context,ArrayList<Product> productList) {
         this.context = context;
@@ -136,6 +139,11 @@ public class ProductAdapter extends BaseAdapter   {
             holder.quantity.setText(String.valueOf("0"));
             holder.add.setVisibility(View.GONE);
 
+            //Intitializing at product page reoprn/open to set deafult selling rate
+            product.setSellingRate(product.getSellingRateRef());
+
+
+
             holder.quantity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -160,17 +168,17 @@ public class ProductAdapter extends BaseAdapter   {
                 holder.isResale.setVisibility(View.GONE);
                 holder.reason.setVisibility(View.GONE);
                 product.setResale(true);
-                product.setParticulars("Not required");
+                product.setParticulars("");
 
-                System.out.println(" set value");
+                System.out.println("set value");
 
             }
             System.out.println("Reason ==" + product.getParticulars());
             if (product.getParticulars() == null) {
 
                 product.setResale(false);
-                holder.reason.setText(String.valueOf("Unspecified"));
-                product.setParticulars("Unspecified");
+                holder.reason.setText(String.valueOf(""));
+                product.setParticulars("");
 
 
             } else {
@@ -179,32 +187,14 @@ public class ProductAdapter extends BaseAdapter   {
             }
 
 
-            if (discountType.toLowerCase().contains("no")) {
-                holder.finalPrice.setVisibility(View.GONE);
-                holder.discountLabel.setVisibility(View.GONE);
-                holder.discount.setVisibility(View.GONE);
-
-            } else {
-
-                if (discountType.toLowerCase().contains("total")) {
-
-                    holder.finalPrice.setVisibility(View.GONE);
-                    holder.discountLabel.setVisibility(View.GONE);
-                    holder.discount.setVisibility(View.GONE);
-
-                } else {
-                    holder.finalPrice.setVisibility(View.VISIBLE);
-                    holder.discountLabel.setVisibility(View.VISIBLE);
-                    holder.discount.setVisibility(View.VISIBLE);
-                }
-            }
-
+          disableDiscountFields(holder);
 
             holder.discount.addTextChangedListener(new TextWatcher() {
                 double gt = 0;
                 double dc = 0;
                 double tempGt = 0;
                 double da = 0;
+                double dp = 0;
 
 
                 @Override
@@ -238,6 +228,7 @@ public class ProductAdapter extends BaseAdapter   {
                                 Toast.makeText(context, "Discount not applicable..", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            dp = dc;
                             da = tempGt * (dc / 100);
                             gt = tempGt - (tempGt * (dc / 100));
 
@@ -246,6 +237,7 @@ public class ProductAdapter extends BaseAdapter   {
                     }
                     holder.finalPrice.setText(String.valueOf(String.format("%.2f", gt)));
                     product.setDiscountAmount(da);
+                    product.setDiscountPercentage(dp);
                     product.setFinalPrice(gt);
 
                     System.out.println("GT ====<ON>" + gt);
@@ -361,6 +353,7 @@ public class ProductAdapter extends BaseAdapter   {
                         x = Integer.parseInt(holder.quantity.getText().toString());
 
 
+
                         if(DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return"))
                         {
 
@@ -370,6 +363,8 @@ public class ProductAdapter extends BaseAdapter   {
                             holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                             holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
 
+                            enableDiscountField(holder);
+
                         }
                         else {
 
@@ -378,16 +373,17 @@ public class ProductAdapter extends BaseAdapter   {
                                 holder.quantity.setText(String.valueOf(x));
 
                                 product.setQty(Long.valueOf(x));
-
-
                                 holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                                enableDiscountField(holder);
                             } else {
                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                                disableDiscountFields(holder);
                             }
                         }
                     } catch (Exception e) {
                         Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
+                        disableDiscountFields(holder);
                     }
                 }
             });
@@ -400,6 +396,7 @@ public class ProductAdapter extends BaseAdapter   {
                     try {
                         x = Integer.parseInt(holder.quantity.getText().toString());
 
+
                         if(DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return"))
                         {
                             if (x >= 1) {
@@ -408,8 +405,11 @@ public class ProductAdapter extends BaseAdapter   {
                                 product.setQty(Long.valueOf(x));
                                 holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                                enableDiscountField(holder);
                             } else {
                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                                disableDiscountFields(holder);
+
                             }
 
 
@@ -421,8 +421,10 @@ public class ProductAdapter extends BaseAdapter   {
                                 product.setQty(Long.valueOf(x));
                                 holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                                enableDiscountField(holder);
                             } else {
                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                                disableDiscountFields(holder);
                             }
 
                         }
@@ -430,6 +432,7 @@ public class ProductAdapter extends BaseAdapter   {
 
                     } catch (Exception e) {
                         Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
+                        disableDiscountFields(holder);
                     }
                 }
             });
@@ -493,6 +496,61 @@ public class ProductAdapter extends BaseAdapter   {
 
         return convertView;
     }
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
+    private void disableDiscountFields(Holder holder) {
+        if (discountType.toLowerCase().contains("no")) {
+            holder.finalPrice.setVisibility(View.GONE);
+            holder.discountLabel.setVisibility(View.GONE);
+            holder.discount.setVisibility(View.GONE);
+
+        } else {
+
+            if (discountType.toLowerCase().contains("total")) {
+
+                holder.finalPrice.setVisibility(View.GONE);
+                holder.discountLabel.setVisibility(View.GONE);
+                holder.discount.setVisibility(View.GONE);
+
+            } else {
+                holder.finalPrice.setVisibility(View.GONE);
+                holder.discountLabel.setVisibility(View.GONE);
+                holder.discount.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void enableDiscountField(Holder holder) {
+        if (discountType.toLowerCase().contains("no")) {
+            holder.finalPrice.setVisibility(View.GONE);
+            holder.discountLabel.setVisibility(View.GONE);
+            holder.discount.setVisibility(View.GONE);
+
+        } else {
+
+            if (discountType.toLowerCase().contains("total")) {
+
+                holder.finalPrice.setVisibility(View.GONE);
+                holder.discountLabel.setVisibility(View.GONE);
+                holder.discount.setVisibility(View.GONE);
+
+            } else {
+                holder.finalPrice.setVisibility(View.VISIBLE);
+                holder.discountLabel.setVisibility(View.VISIBLE);
+                holder.discount.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     public void showNumberPicker(final Product prod, final Holder holder)
     {
         final Dialog dialog = new Dialog(context);

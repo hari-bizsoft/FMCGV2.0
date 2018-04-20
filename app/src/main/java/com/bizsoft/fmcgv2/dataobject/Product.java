@@ -62,8 +62,28 @@ public class Product {
 
     boolean synced;
 
+    double discountPercentage;
+
+    public double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(double discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
     public boolean isSynced() {
         return synced;
+    }
+    //Ref Field
+    public double sellingRateRef;
+
+    public double getSellingRateRef() {
+        return sellingRateRef;
+    }
+
+    public void setSellingRateRef(double sellingRateRef) {
+        this.sellingRateRef = sellingRateRef;
     }
 
     public void setSynced(boolean synced) {
@@ -115,6 +135,11 @@ public class Product {
     }
 
     public String getParticulars() {
+        if(Particulars==null)
+        {
+            Particulars="";
+        }
+
         return Particulars;
     }
 
@@ -368,6 +393,7 @@ public class Product {
     }
 
     public double getDiscountAmount() {
+
         return DiscountAmount;
     }
 

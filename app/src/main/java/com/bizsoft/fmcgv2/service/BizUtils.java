@@ -204,6 +204,15 @@ public class BizUtils {
 
         return fromDate;
     }
+    public static String getCurrentMonth() {
+
+        String fromDate, toDate;
+        DateFormat dateFormat = new SimpleDateFormat("MM");
+        Date date = new Date();
+        fromDate = dateFormat.format(date);
+
+        return fromDate;
+    }
 
     public HashMap<String, String> setCurrentMonth() {
         HashMap<String, String> map = new HashMap<>();
@@ -1046,6 +1055,7 @@ public class BizUtils {
                     saleReturnDetail.setUnitPrice(input.get(i).getMRP());
                     saleReturnDetail.setUOMId(input.get(i).getUOMId().intValue());
                     saleReturnDetail.setResale(input.get(i).isResale());
+                    saleReturnDetail.setParticulars(input.get(i).getParticulars());
                     salesReturnDetails.add(saleReturnDetail);
 
 
@@ -1895,7 +1905,7 @@ public class BizUtils {
         {
             if(Store.getInstance().productList.get(i).isSynced())
             {
-                System.out.println("Product : Already synced...");
+             //   System.out.println("Product : Already synced...");
             }
             else
             {

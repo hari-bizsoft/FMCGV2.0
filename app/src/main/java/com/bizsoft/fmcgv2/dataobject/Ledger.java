@@ -138,6 +138,11 @@ public class Ledger {
     }
 
     public Double getOPBal() {
+
+        if(OPBal==null)
+        {
+            OPBal = 0.0;
+        }
         return OPBal;
     }
 

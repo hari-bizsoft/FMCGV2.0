@@ -596,7 +596,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
             else {
-                Toast.makeText(context, "Login Error...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
             }
         }
 

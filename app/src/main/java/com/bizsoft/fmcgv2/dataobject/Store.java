@@ -26,6 +26,10 @@ import microsoft.aspnet.signalr.client.hubs.HubProxy;
 
 public class Store {
 
+    public static final int SALE = 1;
+    public static final int SALE_ORDER = 2;
+    public static final int SALE_RETURN = 3
+            ;
     public static String SERVER_HUB_CHAT = "ABServerHub";
     private static Store instance =null;
     public ArrayList<Company> companyList = new ArrayList<Company>();
@@ -109,6 +113,7 @@ public class Store {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public ArrayList<UOM> UOM = new ArrayList<UOM>();
+    public String companyLogo;
 
 
     public static Store getInstance() {

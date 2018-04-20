@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.R;
@@ -69,18 +70,21 @@ public class AddedProductAdapter extends BaseAdapter {
     }
 
     public class Holder {
-        TextView id, name, price;
+        TextView id, name;
+        //TextView price;
 
 
-        TextView calculatedAmount;
+      //  TextView calculatedAmount;
         TextView quantity;
         public ImageButton remove;
         TextView resale,reason;
         TextView discountAmount,finalPrice;
         TextView discountLabel;
-        TextView productCode;
+        //TextView productCode;
+        ImageButton plus,minus;
 
 
+        public TextView sno;
     }
 
     @Override
@@ -93,18 +97,21 @@ public class AddedProductAdapter extends BaseAdapter {
         final Product product = getItem(position);
 
         holder.id = (TextView) convertView.findViewById(R.id.sale_id);
+        holder.sno = (TextView) convertView.findViewById(R.id.s_no);
         holder.name = (TextView) convertView.findViewById(R.id.dealer_name);
-        holder.price = (TextView) convertView.findViewById(R.id.stock);
+       // holder.price = (TextView) convertView.findViewById(R.id.stock);
         holder.resale = (TextView) convertView.findViewById(R.id.is_resale);
         holder.reason= (TextView) convertView.findViewById(R.id.particulars);
 
-        holder.calculatedAmount = (TextView) convertView.findViewById(R.id.calculated_amount);
+       // holder.calculatedAmount = (TextView) convertView.findViewById(R.id.calculated_amount);
         holder.quantity = (TextView) convertView.findViewById(R.id.quantity);
         holder.remove = (ImageButton) convertView.findViewById(R.id.remove);
         holder.discountAmount = (TextView) convertView.findViewById(R.id.discount);
         holder.finalPrice= (TextView) convertView.findViewById(R.id.final_price);
         holder.discountLabel = (TextView) convertView.findViewById(R.id.discount_label);
-        holder.productCode= (TextView) convertView.findViewById(R.id.product_code);
+        holder.plus = (ImageButton) convertView.findViewById(R.id.plus);
+        holder.minus = (ImageButton) convertView.findViewById(R.id.minus);
+       // holder.productCode= (TextView) convertView.findViewById(R.id.product_code);
 
         if(!DashboardActivity.currentSaleType.toLowerCase().contains("return"))
         {
@@ -128,18 +135,21 @@ public class AddedProductAdapter extends BaseAdapter {
         }
         holder.id.setText(String.valueOf(product.getId()));
         holder.name.setText(String.valueOf(product.getProductName()));
-        holder.price.setText(String.valueOf(String.format("%.2f",product.getMRP())));
-        holder.productCode.setText(String.valueOf(product.getItemCode()));
+        holder.sno.setText(String.valueOf(position+1)+")");
+       // holder.price.setText(String.valueOf(String.format("%.2f",product.getMRP())));
+       // holder.productCode.setText(String.valueOf(product.getItemCode()));
 
-        holder.quantity.setText(String.valueOf(product.getQty()+" * "));
+        holder.quantity.setText(String.valueOf(product.getQty()));
         double amount = product.getQty() * product.getMRP();
-        holder.calculatedAmount.setText(" = "+String.valueOf(String.format("%.2f",amount)));
+       // holder.calculatedAmount.setText(" = "+String.valueOf(String.format("%.2f",amount)));
         holder.discountAmount.setText(String.valueOf(String.format("%.2f",product.getDiscountAmount())));
 
-        double dp = 100/(amount/product.getDiscountAmount());
+        //final double dp = 100/(amount/product.getDiscountAmount());
+        final double dp = product.getDiscountPercentage();
 
 
         holder.discountLabel.setText("Discount "+String.valueOf(dp) +" % = ");
+        holder.discountLabel.setText("Discount "+String.valueOf(String.format("%.2f",dp))+" % = ");
 
 
 
@@ -167,6 +177,133 @@ public class AddedProductAdapter extends BaseAdapter {
                     }
                 }
 
+            }
+        });
+        holder.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int x = 0;
+                try {
+                    x = Integer.parseInt(holder.quantity.getText().toString());
+                    double discountPercent = dp;
+                    if(DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return"))
+                    {
+
+                        x++;
+                        double Price =  x * product.getMRP();
+                        double disAmt = Price * (product.getDiscountPercentage()/100);
+                        double fPrice = Price - disAmt;
+
+                        product.setDiscountAmount(disAmt);
+                        product.setFinalPrice(fPrice);
+                        product.setQty(Long.valueOf(x));
+
+                        holder.quantity.setText(String.valueOf(x));
+                        holder.finalPrice.setText(String.valueOf(String.format("%.2f",fPrice)));
+                        holder.discountAmount.setText(String.valueOf(String.format("%.2f",disAmt)));
+                        //enableDiscountField(holder);
+
+                    }
+                    else {
+
+                        if (x < product.getAvailableStock()) {
+                            x++;
+
+
+
+                            double Price =  x * product.getMRP();
+                            double disAmt = Price * (product.getDiscountPercentage()/100);
+                            double fPrice = Price - disAmt;
+
+                            product.setDiscountAmount(disAmt);
+                            product.setFinalPrice(fPrice);
+                            product.setQty(Long.valueOf(x));
+
+                            holder.quantity.setText(String.valueOf(x));
+                            holder.finalPrice.setText(String.valueOf(String.format("%.2f",fPrice)));
+                            holder.discountAmount.setText(String.valueOf(String.format("%.2f",disAmt)));
+
+                            notifyDataSetChanged();
+                         //   enableDiscountField(holder);
+                        } else {
+                            Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                          //  disableDiscountFields(holder);
+                        }
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
+                   // disableDiscountFields(holder);
+                }
+            }
+        });
+        holder.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int x = 0;
+
+                try {
+                    x = Integer.parseInt(holder.quantity.getText().toString());
+
+                    if(DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return"))
+                    {
+                        if (x >= 1) {
+                            x--;
+                            double Price =  x * product.getMRP();
+                            double disAmt = Price * (product.getDiscountPercentage()/100);
+                            double fPrice = Price - disAmt;
+
+                            product.setDiscountAmount(disAmt);
+                            product.setFinalPrice(fPrice);
+                            product.setQty(Long.valueOf(x));
+
+                            holder.quantity.setText(String.valueOf(x));
+                            holder.finalPrice.setText(String.valueOf(String.format("%.2f",fPrice)));
+                            holder.discountAmount.setText(String.valueOf(String.format("%.2f",disAmt)));
+
+                            notifyDataSetChanged();
+
+                            //enableDiscountField(holder);
+                        } else {
+                            Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                           // disableDiscountFields(holder);
+
+                        }
+
+
+                    }
+                    else {
+                        if (x >= 1) {
+                            x--;
+                            holder.quantity.setText(String.valueOf(x));
+                            double Price =  x * product.getMRP();
+                            double disAmt = Price * (product.getDiscountPercentage()/100);
+                            double fPrice = Price - disAmt;
+
+                            product.setDiscountAmount(disAmt);
+                            product.setFinalPrice(fPrice);
+                            product.setQty(Long.valueOf(x));
+
+                            holder.quantity.setText(String.valueOf(x));
+                            holder.finalPrice.setText(String.valueOf(String.format("%.2f",fPrice)));
+                            holder.discountAmount.setText(String.valueOf(String.format("%.2f",disAmt)));
+
+                            notifyDataSetChanged();
+
+                            // enableDiscountField(holder);
+                        } else {
+                            Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                            //disableDiscountFields(holder);
+                        }
+
+                    }
+
+
+                } catch (Exception e) {
+                    Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
+                    //disableDiscountFields(holder);
+                }
             }
         });
         return convertView;

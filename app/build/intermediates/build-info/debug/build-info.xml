@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <instant-run
-    abi="arm64-v8a,armeabi-v7a,armeabi"
-    api-level="24"
-    build-mode="FULL"
-    density="xxhdpi"
+    abi="x86"
+    api-level="25"
+    build-mode="COLD"
+    density="420dpi"
     format="10"
     plugin-version="3.1.1"
-    timestamp="1523878809086"
+    timestamp="1524222142819"
     token="-1797857911626459662"
-    verifier="FULL_BUILD_REQUESTED" >
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
@@ -24,72 +24,24 @@
         duration="0" />
 
     <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\R&amp;D\FMCGV22\app\build\intermediates\instant-run-apk\debug\app-universal-debug.apk"
+        location="D:\R&amp;D\FMCGV22\app\build\intermediates\instant-run-apk\debug\app-x86-debug.apk"
         type="SPLIT_MAIN" />
 
     <build
         build-mode="FULL"
-        timestamp="1523878809086"
+        timestamp="1524220404894"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
             type="SPLIT" />
         <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
             type="SPLIT" />
         <artifact
             location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
         <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
-            type="SPLIT" />
-        <artifact
             location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
             type="SPLIT" />
         <artifact
             location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
@@ -98,7 +50,39 @@
             location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
         <artifact
-            location="D:\R&amp;D\FMCGV22\app\build\intermediates\instant-run-apk\debug\app-universal-debug.apk"
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\instant-run-apk\debug\app-x86-debug.apk"
+            type="SPLIT_MAIN" />
+    </build>
+    <build
+        build-mode="COLD"
+        ir-eligibility="METHOD_DELETED"
+        timestamp="1524222068375"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
+    </build>
+    <build
+        build-mode="COLD"
+        timestamp="1524222142819"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\R&amp;D\FMCGV22\app\build\intermediates\instant-run-apk\debug\app-x86-debug.apk"
             type="SPLIT_MAIN" />
     </build>
 

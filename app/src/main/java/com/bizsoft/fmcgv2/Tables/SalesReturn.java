@@ -58,7 +58,6 @@ public class SalesReturn {
     public void setSRDetails(Collection<SalesReturnDetails> SRDetails) {
         this.SRDetails = SRDetails;
     }
-
     public Collection<SalesReturnDetails> SRDetails = new ArrayList<SalesReturnDetails>();
 
     public Long getId() {

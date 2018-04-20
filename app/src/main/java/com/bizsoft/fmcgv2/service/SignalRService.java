@@ -95,12 +95,9 @@ public class SignalRService {
         try {
             companyCollection = mHubProxyCaller.invoke(companyCollection.getClass(),"CompanyDetail_List").get();
 
-
-
             System.out.println("Obj ---------"+companyCollection.size());
 
             ArrayList<Company> companyArrayList = new ArrayList<Company>();
-
 
             for(int i=0;i<companyCollection.size();i++)
             {
@@ -112,6 +109,7 @@ public class SignalRService {
 
                 System.out.println("Company Id"+company.getId());
 
+
                 if(company.isActive()) {
                     System.out.println("adding---------" + "----" + i);
                     companyArrayList.add(company);
@@ -122,113 +120,6 @@ public class SignalRService {
                 }
             }
 
-        /*    for(int i=0;i<companyCollection.size();i++) {
-              //   LinkedTreeMap<Object, Object> map = new LinkedTreeMap<Object, Object>();
-                Company company = new Company();
-                //map = companyCollection.get(i);
-                //System.out.println("----------0---->" + map);
-
-                for (Map.Entry<Object, Object> entry : map.entrySet()) {
-                    {
-                        System.out.println(entry.getKey() + "/" + entry.getValue());
-
-                        if(entry.getValue()!=null) {
-                            System.out.println("Class" + "/" + entry.getValue().getClass());
-                        }
-                        else
-                        {
-                            System.out.println("Null : " + "/" + entry.getKey());
-                        }
-                        String key = (String) entry.getKey();
-                        Object value = entry.getValue();
-                        if (value != null) {
-                            Class<? extends Object> c = value.getClass();
-                             System.out.println("----------1---->" + value.getClass());
-                        }
-                        if (value instanceof String || value instanceof Boolean || value instanceof Double || value instanceof Float) {
-                            String v = String.valueOf(value);
-                             System.out.println("----------2" + v);
-                            if (key.equals("Id")) {
-                                long l = (new Double(v)).longValue();
-                                company.setId(Long.valueOf(l));
-                            }
-                            if (key.equals("CompanyName")) {
-
-                                company.setCompanyName(v);
-                            }
-                            if (key.equals("CompanyType")) {
-
-                                company.setCompanyType(v);
-                            }
-                            if (key.equals("IsActive")) {
-
-                                company.setActive(Boolean.valueOf(v));
-                            }
-                            if (key.equals("AddressLine1")) {
-
-                                company.setAddressLine1(v);
-                            }
-                            if (key.equals("AddressLine2")) {
-
-                                company.setAddressLine2(v);
-                            }
-                            if (key.equals("TelephoneNo")) {
-
-                                company.setTelephoneNo(v);
-                            }
-                            if (key.equals("EMailId")) {
-
-                                company.setEMailId(v);
-                            }
-                            if (key.equals("GSTNo")) {
-
-                                company.setGSTNo(v);
-                            }
-                            if (key.equals("CityName")) {
-
-                                company.setCityName(v);
-                            }
-                            if (key.equals("PostalCode")) {
-
-                                company.setPostalCode(v);
-                            }
-                            if (key.equals("MobileNo")) {
-
-                                company.setMobileNo(v);
-                            }
-                            if (key.equals("UnderCompanyId")) {
-
-                                company.setUnderCompanyId(v);
-                            }
-                            if (key.equals("Logo")) {
-
-                                company.setLogo(v);
-
-                            }
-                        }
-
-
-                    }
-
-
-                }
-
-
-                if(company.isActive()) {
-                    System.out.println("adding---------" + "----" + i);
-                    companyArrayList.add(company);
-                }else
-                {
-                    System.out.println("removed---------" + "----" + i);
-
-                }
-
-
-
-
-                //displayDM(companyDetails);
-            }
-            */
             Store.getInstance().companyList = companyArrayList;
             BizLogger.generateNoteOnSD( "Company Size : "+String.valueOf(Store.getInstance().companyList.size()));
 
@@ -259,8 +150,23 @@ public class SignalRService {
 
                     Store.getInstance().dealer = Store.getInstance().companyList.get(i);
 
+                    try {
 
-                    Store.getInstance().dealerLogo = companyLogo();
+                        Store.getInstance().dealerLogo = companyLogo();
+                    }
+                    catch (Exception e)
+                    {
+                        System.err.println(e);
+                    }
+
+                    try {
+                        System.out.println("Under Company Id = " + Store.getInstance().companyList.get(i).getUnderCompanyId());
+                        Store.getInstance().companyLogo = companyLogo(Store.getInstance().companyList.get(i).getUnderCompanyId());
+                    }
+                    catch (Exception e)
+                    {
+                        System.err.println(e);
+                    }
 
 
 
@@ -374,7 +280,7 @@ public class SignalRService {
                     else
                     {
                         status = false;
-                        Toast.makeText(context, "Login error..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
@@ -383,19 +289,26 @@ public class SignalRService {
                     System.out.println("Login details____OLDLOGIN"+Store.getInstance().user);
                     if(Store.getInstance().user!=null)
                     {
-                        if(Store.getInstance().user.getId()!=0) {
-                            status = true;
+                        if(Store.getInstance().user.getId()!=null) {
+
+
+                            if(Store.getInstance().user.getId()==0.0)
+                            {
+                                status = false;
+                            }
+                            else
+                            {
+                                status = true;
+                            }
                         }
-                        else
-                        {
-                            Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                        else {
                             status = false;
                         }
                     }
                     else
                     {
                         status = false;
-                        Toast.makeText(context, "Login error..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -439,6 +352,8 @@ public class SignalRService {
                 obj = Store.getInstance().mHubProxyCaller.invoke(obj.getClass(),"userAccount_Login",year,dlrName,usrName,passWord).get();
 
                 System.out.println("---user info---"+obj);
+
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -453,6 +368,17 @@ public class SignalRService {
                 if(Store.getInstance().user.getId()!=null) {
                     status = true;
                     System.out.println("Login details____NEWLOGIN"+Store.getInstance().user);
+                    if(Store.getInstance().user.getId()==0.0)
+                    {
+                        status = false;
+                    }
+                    else
+                    {
+                        status = true;
+                    }
+                }
+                else {
+                    status = false;
                 }
             }
         }
@@ -594,6 +520,7 @@ public class SignalRService {
 
                 if(product.getStockGroup().isSale() && product.isDealer()) {
                     product.setSynced(true);
+                    product.sellingRateRef = product.getSellingRate();
                     Store.getInstance().productList.add(product);
                 }
                 ((Activity)context).runOnUiThread(new Runnable() {
@@ -1095,6 +1022,25 @@ public class SignalRService {
             e.printStackTrace();
         }
         return Store.getInstance().dealerLogo;
+
+    }
+    public static String companyLogo(Long underCompanyId)
+    {
+
+        Object o = new Object();
+        try {
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"Company_Logo",underCompanyId).get();
+
+            System.out.println("Company Logo (RAW) = "+o.getClass() + " = "+o);
+
+            Store.getInstance().companyLogo = String.valueOf(o);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return Store.getInstance().companyLogo;
 
     }
     public static void  SOPendingList()

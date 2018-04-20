@@ -210,7 +210,7 @@ public class AddCustomerActivity extends AppCompatActivity {
             status = false;
             mobileNumber.setError("Field cannot be empty");
         }
-        if(TextUtils.isEmpty(gstNumber.getText().toString()))
+
 
 
 
@@ -295,8 +295,10 @@ public class AddCustomerActivity extends AppCompatActivity {
         ledger.setTelephoneNo(telephoneNumber.getText().toString());
         ledger.setEMailId(email.getText().toString());
 
-        if(!TextUtils.isEmpty(opBalance.getText().toString())) {
-            ledger.setOPBal(Double.valueOf(opBalance.getText().toString()));
+        if( !TextUtils.isEmpty(opBalance.getText())) {
+            if(opBalance.getText().toString()!=null) {
+                ledger.setOPBal(Double.valueOf(opBalance.getText().toString()));
+            }
         }
         ledger.setACType(chooosedAcType);
 

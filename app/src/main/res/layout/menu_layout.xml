@@ -29,10 +29,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/menu_bg"
+        android:cropToPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView21"
-        app:srcCompat="@drawable/user"/>
+        app:srcCompat="@drawable/user" />
 
     <TextView
         android:id="@+id/textView5"
@@ -56,13 +58,13 @@
 
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="108dp"
-        android:background="#e53935"
+        android:layout_marginTop="208dp"
+        android:background="@color/colorPrimaryDark"
         android:text="Close"
         android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/load_offline_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/load_offline_text" />
 
     <ImageView
         android:id="@+id/sync"
@@ -72,10 +74,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toStartOf="@+id/home"
+        app:layout_constraintEnd_toStartOf="@+id/load_offline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23"
-        app:srcCompat="@android:drawable/ic_popup_sync"/>
+        app:srcCompat="@android:drawable/ic_popup_sync" />
 
     <TextView
         android:textColor="#000"
@@ -98,10 +100,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
+        android:background="@drawable/menu_bg"
+        android:cropToPadding="true"
+        android:padding="2dp"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toStartOf="@+id/sale_order"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sale"/>
+        app:srcCompat="@drawable/sale" />
 
     <TextView
         android:id="@+id/textView20"
@@ -126,12 +132,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
+        android:background="@drawable/menu_bg"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/choices"/>
+        app:srcCompat="@drawable/choices" />
 
     <TextView
         android:id="@+id/textView21"
@@ -156,10 +165,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toStartOf="@+id/invoice_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView77"
-        app:srcCompat="@drawable/analytics"/>
+        app:srcCompat="@drawable/analytics" />
 
     <TextView
         android:id="@+id/textView23"
@@ -183,12 +194,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/printer"
-        android:padding="3dp"
+
+        android:background="@drawable/menu_bg"
+        android:cropToPadding="true"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/printer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/invoice_list"
-        app:layout_constraintTop_toBottomOf="@+id/textView74"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView74" />
 
     <TextView
         android:id="@+id/textView37"
@@ -211,10 +225,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:srcCompat="@drawable/invoice"/>
+        app:srcCompat="@drawable/invoice" />
 
     <TextView
         android:id="@+id/textView67"
@@ -235,15 +251,13 @@
         android:id="@+id/clear_data"
         android:layout_width="54dp"
         android:layout_height="54dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/sync"
-        app:layout_constraintStart_toEndOf="@+id/home"
-        app:layout_constraintTop_toBottomOf="@+id/textView37"
-        app:srcCompat="@drawable/logout"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView83"
+        app:srcCompat="@drawable/logout" />
 
     <TextView
         android:id="@+id/textView68"
@@ -266,10 +280,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="52dp"
-        android:background="@drawable/sale_return"
+        android:background="@drawable/menu_bg"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/sale_return"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sale_order"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView70"
@@ -293,10 +310,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/customer_icon"
         app:layout_constraintTop_toBottomOf="@+id/textView70"
-        app:srcCompat="@drawable/receipt"/>
+        app:srcCompat="@drawable/receipt" />
 
     <TextView
         android:id="@+id/textView74"
@@ -320,13 +339,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#fff"
+        android:background="@drawable/menu_bg"
+        android:cropToPadding="true"
         android:scaleType="fitXY"
         android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/customer_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
-        app:srcCompat="@drawable/sotos"/>
+        app:srcCompat="@drawable/sotos" />
 
     <TextView
         android:id="@+id/textView77"
@@ -349,11 +369,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#fff"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/clear_data"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView67"
-        app:srcCompat="@drawable/ic_home_black_24dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView93"
+        app:srcCompat="@drawable/ic_home_black_24dp" />
 
     <TextView
         android:id="@+id/textView79"
@@ -389,11 +410,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/database"
-        app:layout_constraintEnd_toStartOf="@+id/home"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitCenter"
+        android:src="@drawable/database"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView79"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView67" />
 
     <TextView
         android:id="@+id/load_offline_text"
@@ -401,12 +423,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Load Storage"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/load_offline"
         app:layout_constraintStart_toStartOf="@+id/load_offline"
-        app:layout_constraintTop_toBottomOf="@+id/load_offline"/>
+        app:layout_constraintTop_toBottomOf="@+id/load_offline" />
 
     <ImageButton
         android:id="@+id/dealer"
@@ -415,21 +438,24 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/handshake"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitCenter"
+        android:src="@drawable/handshake"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView79"/>
+        app:layout_constraintTop_toBottomOf="@+id/load_offline_text" />
 
     <TextView
         android:id="@+id/textView83"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Dealer"
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/dealer"
         app:layout_constraintStart_toStartOf="@+id/dealer"
-        app:layout_constraintTop_toBottomOf="@+id/dealer"/>
+        app:layout_constraintTop_toBottomOf="@+id/dealer" />
 
     <ImageButton
         android:id="@+id/product_spec"
@@ -438,33 +464,38 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/measuring"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
+        android:src="@drawable/measuring"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dealer"
-        app:layout_constraintTop_toBottomOf="@+id/textView68"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView90" />
 
     <TextView
         android:id="@+id/textView85"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Product Spec"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/product_spec"
         app:layout_constraintStart_toStartOf="@+id/product_spec"
-        app:layout_constraintTop_toBottomOf="@+id/product_spec"/>
+        app:layout_constraintTop_toBottomOf="@+id/product_spec" />
 
     <ImageButton
         android:id="@+id/bank"
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bank"
-        app:layout_constraintEnd_toStartOf="@+id/product"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/load_offline_text"/>
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
+        android:src="@drawable/bank"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/load_offline"
+        app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
     <TextView
         android:id="@+id/textView90"
@@ -484,11 +515,13 @@
         android:layout_height="54dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/menu_bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/dealer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView83"
-        app:srcCompat="@drawable/product_bag"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        app:srcCompat="@drawable/product_bag" />
 
     <TextView
         android:id="@+id/textView93"

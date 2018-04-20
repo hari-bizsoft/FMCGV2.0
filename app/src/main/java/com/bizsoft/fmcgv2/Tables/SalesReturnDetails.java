@@ -15,7 +15,15 @@ public class SalesReturnDetails {
     Double GSTAmount;
     Double Amount;
     boolean IsResale;
+    String Particulars;
 
+    public String getParticulars() {
+        return Particulars;
+    }
+
+    public void setParticulars(String particulars) {
+        Particulars = particulars;
+    }
 
     public Long getId() {
         return Id;
