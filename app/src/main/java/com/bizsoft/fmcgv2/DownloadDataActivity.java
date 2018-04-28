@@ -39,7 +39,7 @@ public class DownloadDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new BizLogger(DownloadDataActivity.this);
+        //new BizLogger(DownloadDataActivity.this);
 
 
 
@@ -131,6 +131,7 @@ public class DownloadDataActivity extends AppCompatActivity {
             });
 
             SignalRService.productList(DownloadDataActivity.this);
+            SignalRService.getTransactionType();
             progressBar.setProgress(50);
             runOnUiThread(new Runnable() {
                 @Override

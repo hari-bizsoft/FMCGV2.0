@@ -1,9 +1,12 @@
 package com.bizsoft.fmcgv2.BTLib;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizLogger;
 
 import java.io.IOException;
@@ -58,7 +61,7 @@ public class BTPrint extends AppCompatActivity {
                 btoutputstream.write(new byte[] { 0x1b, 0x61, 0x32 });
             }
             if(FONT_SIZE==0){
-                btoutputstream.write(new byte[] { 0x1d, 0x21, 0x00 });
+                btoutputstream.write( new byte[]{0x1B,0x21,0x00});
             }else if(FONT_SIZE==1){
                 btoutputstream.write(new byte[] { 0x1d, 0x21, 0x02 });
             }else {
@@ -66,15 +69,23 @@ public class BTPrint extends AppCompatActivity {
             }
 
             if(FONT_BOLD){
-                btoutputstream.write(new byte[] {  0x1b, 0x45, 0x00 });
+
+                btoutputstream.write( new byte[]{0x1B,0x21,0x08} );
             }
             else {
-                btoutputstream.write(new byte[] {  0x1b, 0x45, 0x01 });
+                //btoutputstream.write(new byte[] {  0x1b, 0x45, 0x01 });
+                btoutputstream.write(new byte[]{0x1B,0x21,0x00});
             }
             btoutputstream.write(Text.getBytes());
             btoutputstream.write(0x0D);
             btoutputstream.flush();
-        }catch (Exception e){}
+        }catch (Exception e){
+
+            System.out.println("Print Exception == "+e);
+            if(Store.getInstance().printerContext!=null) {
+                Toast.makeText(Store.getInstance().printerContext, "", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -89,6 +100,10 @@ public class BTPrint extends AppCompatActivity {
             btoutputstream.write(0x0D);
             //btoutputstream.write(0x0D);
             btoutputstream.flush();
-        }catch (Exception e){}
+        }catch (Exception e){
+            if(Store.getInstance().printerContext!=null) {
+                Toast.makeText(Store.getInstance().printerContext, "", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

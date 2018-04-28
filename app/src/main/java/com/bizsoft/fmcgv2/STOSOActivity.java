@@ -74,7 +74,7 @@ public class STOSOActivity extends AppCompatActivity {
         subTotalT = (TextView) findViewById(R.id.sub_total);
         gstT = (TextView) findViewById(R.id.GST);
         grandTotalT = (TextView) findViewById(R.id.grand_total);
-        print = (Button) findViewById(R.id.print);
+        print = (Button) findViewById(R.id.dc_print);
         balance = (TextView) findViewById(R.id.balance_amount);
         received = (TextView) findViewById(R.id.received_amount);
         billID = (Spinner) findViewById(R.id.bill_id);

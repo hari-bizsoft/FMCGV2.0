@@ -279,7 +279,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Sale/Sale Order:"
+        android:text="Sale/Sale Order/Sale Return:"
         android:textColor="#000"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -690,7 +690,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView54"
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/textView55"
-        android:layout_marginStart="8dp"/>
+        android:layout_marginStart="0dp"/>
 
     <TextView
         android:id="@+id/company_id"
@@ -958,7 +958,7 @@
         app:layout_constraintVertical_bias="0.0"/>
 
     <Button
-        android:id="@+id/print"
+        android:id="@+id/dc_print"
         android:background="@color/colorPrimaryDark"
         android:textColor="#fff"
         android:layout_width="0dp"
@@ -987,7 +987,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView54"/>
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/paymode_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pay Mode :"
@@ -1020,6 +1020,29 @@
         android:textStyle="bold"
         app:layout_constraintRight_toRightOf="@+id/textView36"
         app:layout_constraintTop_toBottomOf="@+id/textView36"/>
+
+    <TextView
+        android:id="@+id/cheque_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_mode" />
+
+    <TextView
+        android:id="@+id/cheque_no_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Cheque Number:"
+        android:textStyle="bold"
+        android:textColor="#000"
+        app:layout_constraintEnd_toStartOf="@+id/cheque_no"
+        app:layout_constraintTop_toBottomOf="@+id/paymode_label" />
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

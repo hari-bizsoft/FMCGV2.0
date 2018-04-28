@@ -19,7 +19,24 @@ public class Sale {
     String tempId;
     String refCode;
     boolean synced;
+    double discountPercentage;
+    String discountType;
 
+    public String getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(String discountType) {
+        this.discountType = discountType;
+    }
+
+    public double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(double discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
     public String getRefCode() {
         return refCode;
     }

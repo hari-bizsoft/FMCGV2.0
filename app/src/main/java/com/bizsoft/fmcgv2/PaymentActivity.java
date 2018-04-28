@@ -22,7 +22,6 @@ import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Payment;
-import com.bizsoft.fmcgv2.dataobject.Receipt;
 import com.bizsoft.fmcgv2.dataobject.Sale;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
@@ -64,7 +63,7 @@ public class PaymentActivity extends AppCompatActivity {
         paymentModeSpinner = (Spinner) findViewById(R.id.payment_mode_spinner);
         openingBalance = (TextView) findViewById(R.id.opening_balance);
         outStandingAmount = (TextView) findViewById(R.id.outstanding_amount);
-        print = (Button) findViewById(R.id.print);
+        print = (Button) findViewById(R.id.dc_print);
         toCustomer = (EditText) findViewById(R.id.to_customer);
         save = (Button) findViewById(R.id.save);
         outStandingAmount.setText(String.valueOf(String.format("%.2f", openingBalanceValue)));

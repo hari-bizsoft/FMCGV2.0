@@ -40,27 +40,13 @@ public class BTIntialize {
             {
 
 
-                Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
-
-
-                System.out.println("Sales List "+customer.getSale().size());
-                System.out.println("Sales Order List "+customer.getSaleOrder().size());
-
-                if(customer.getSale().size()>0)
-                {
-
-                    dashboardActivity.print(customer,"Sale Bill",customer.getSale(), customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size() - 1), customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size() - 1), customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size() - 1));
-                }
-                else if (customer.getSaleOrder().size()>0) {
-                    dashboardActivity.print(customer,"Sale Order Bill",customer.getSaleOrder(), customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size() - 1), customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size() - 1), customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size() - 1));
-                }
 
 
             }
         }
         catch (Exception e)
         {
-            System.out.println("Exception "+e);
+            System.out.println("Printer Exception "+e);
 
         }
     }
@@ -96,6 +82,7 @@ public class BTIntialize {
         }
         catch (Exception e)
         {
+            System.out.println("Unable to connect...");
 
         }
 

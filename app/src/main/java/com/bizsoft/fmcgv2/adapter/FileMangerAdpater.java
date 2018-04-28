@@ -158,13 +158,14 @@ public class FileMangerAdpater extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 BackgroundMail.newBuilder(context)
-                        .withUsername("hari.bizsoft@gmail.com")
-                        .withPassword("Bizsoft@123")
+                        .withUsername("naveen.bizsoft@gmail.com")
+                        .withPassword("navin0330")
                         .withMailto(receipientMail[0])
                         .withType(BackgroundMail.TYPE_PLAIN)
                         .withSubject("Invoice copy")
                         .withBody("This is a digitally generated invoice copy from ."+ company.getCompanyName())
                         .withAttachments(absolutePath)
+
 
                         .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                             @Override

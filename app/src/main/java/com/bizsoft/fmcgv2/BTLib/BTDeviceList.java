@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.dataobject.Store;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.UUID;
@@ -48,6 +51,7 @@ public class BTDeviceList extends ListActivity {
     // UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     static private BluetoothSocket mbtSocket = null;
+    private static BluetoothProfile     mBluetoothProfile;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,7 @@ public class BTDeviceList extends ListActivity {
 
         IntentFilter btIntentFilter = new IntentFilter(
                 BluetoothDevice.ACTION_FOUND);
+
         registerReceiver(mBTReceiver, btIntentFilter);
         mBluetoothAdapter.startDiscovery();
     }
@@ -202,6 +207,7 @@ public class BTDeviceList extends ListActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            System.out.println("Device Action : "+action);
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
                 System.out.println("found some bluetooth devices ");
@@ -239,6 +245,12 @@ public class BTDeviceList extends ListActivity {
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
             //Device has disconnected
                 System.out.println("Device has disconnected");
+            }
+            else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                //Device has disconnected
+                System.out.println("Device  state changed");
+                Toast.makeText(context, "Device state changed", Toast.LENGTH_SHORT).show();
+
             }
         }
     };
@@ -281,7 +293,7 @@ public class BTDeviceList extends ListActivity {
                             Thread.sleep(500);
                             try{
                                 System.out.println("Connected to bluetooth device 1");
-                                boolean gotuuid = btDevice.fetchUuidsWithSdp();
+
                                 UUID uuid = btDevice.getUuids()[0]
                                         .getUuid();
                                 mbtSocket = btDevice.createRfcommSocketToServiceRecord(uuid);
@@ -290,6 +302,8 @@ public class BTDeviceList extends ListActivity {
                                 System.out.println("Connected to bluetooth device 2");
 
                                 Store.getInstance().bluetoothStatus = true;
+                                Store.getInstance().btDevice =btDevice;
+
                                 break;
 
                             }catch (Exception ex){msg(ex.toString());}
@@ -423,4 +437,86 @@ public class BTDeviceList extends ListActivity {
         }catch (Exception ex){}
 
     }
+    public  void  listenConnectionState(Context context)
+    {
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        context.registerReceiver(mBTReceiver,filter);
+
+    }
+    public static boolean checkStatus(Context context)
+    {
+        OutputStream opstream = null;
+        boolean status = true;
+        try {
+            mbtSocket.connect();
+
+            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+            if(pairedDevices.size() > 0) {
+                for (BluetoothDevice device : pairedDevices) {
+                    System.out.println("Bluetooth devices = "+device.getName());
+                    // RPP300 is the name of the bluetooth printer device
+                    // we got this name from the list of paired devices
+                    if (device.getAddress().equals(Store.getInstance().btDevice.getAddress())) {
+                        System.out.println("Device found.....");
+
+
+                        status = true;
+                        break;
+                    }
+                }
+            }
+
+
+
+        } catch (Exception e) {
+            System.out.println("Not good"+mbtSocket.isConnected());
+            System.err.println("BT EX = "+e);
+            System.out.println("Good"+Store.getInstance().btDevice.getBondState());
+
+            if(e.toString().contains("socket might closed or timeout"))
+            {
+                status = false;
+            }
+
+
+            e.printStackTrace();
+        }
+        return status;
+    }
+    public static boolean getConnectionState(BluetoothDevice device) {
+
+
+
+        return  true;
+
+    }
+
+    public static class  GetConnectionStatus extends AsyncTask
+    {
+        Context context;
+        private boolean status;
+
+        public GetConnectionStatus(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            status = BTDeviceList.checkStatus(context);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            if(!status) {
+                Toast.makeText(context, "Printer offline..unable to connect.", Toast.LENGTH_SHORT).show();
+                BTPrint.btsocket = null;
+            }
+        }
+    }
+
 }

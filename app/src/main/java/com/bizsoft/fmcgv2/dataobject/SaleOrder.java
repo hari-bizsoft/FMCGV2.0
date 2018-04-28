@@ -19,6 +19,24 @@ public class SaleOrder {
     double gst;
     String refCode;
     boolean synced;
+    double discountPercentage;
+
+    public double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(double discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+    String discountType;
+
+    public String getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(String discountType) {
+        this.discountType = discountType;
+    }
 
     public boolean isSynced() {
         return synced;

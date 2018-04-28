@@ -3,6 +3,7 @@ package com.bizsoft.fmcgv2.service;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -98,6 +100,7 @@ import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.bizsoft.fmcgv2.DashboardActivity.appDiscount;
+import static com.bizsoft.fmcgv2.DashboardActivity.discountType;
 import static com.bizsoft.fmcgv2.DashboardActivity.fromCustomer;
 import static com.bizsoft.fmcgv2.DashboardActivity.paymentModeValue;
 import static com.bizsoft.fmcgv2.DashboardActivity.subTotal;
@@ -574,6 +577,47 @@ public class BizUtils {
             }
         }
 
+    }
+
+    public void updateOPBal(Customer customer, Sale sale) {
+
+        if (sale.getPaymentMode().contains("PNT")) {
+
+
+            double x = 0;
+
+            System.out.println("GT ===" + sale.getGrandTotal());
+            x = customer.getLedger().getOPBal() + sale.getGrandTotal();
+
+            System.out.println("OP =" + x);
+            customer.getLedger().setOPBal(x);
+
+        }
+    }
+
+    public static int getDiscountType(String discountType) {
+        int i=0;
+        if(discountType.toLowerCase().contains("no"))
+        {
+            i=1;
+        }
+        if(discountType.toLowerCase().contains("grand"))
+        {
+            i=2;
+        }
+        if(discountType.toLowerCase().contains("individual"))
+        {
+            i=3;
+        }
+        return i;
+    }
+
+    public static boolean createAlertDialog(Context context,String s) {
+        final boolean[] status = {false};
+
+
+
+        return status[0];
     }
 
 
@@ -1313,11 +1357,9 @@ public class BizUtils {
 
             if (status || jsonStr != null) {
 
-
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                 Gson gson = gsonBuilder.create();
-
 
                 Type collectionType = new TypeToken<ProductSaveResponse>() {
                 }.getType();
@@ -1370,11 +1412,11 @@ public class BizUtils {
                             double x = 0;
 
                             System.out.println("GT ===" + grandTotal);
-
                             x = customer.getLedger().getOPBal() + grandTotal;
 
                             System.out.println("OP =" + x);
                             customer.setOPBal(x);
+
                         }
                         syncStatus = true;
                     }
@@ -1566,7 +1608,25 @@ public class BizUtils {
 
 
     }
+    public static int getTransactionType(String name)
+    {
+        int i=0;
 
+        if(name.toLowerCase().contains("return"))
+        {
+            i=Store.getInstance().SALE_RETURN;
+        }
+        if(name.toLowerCase().contains("order"))
+        {
+            i=Store.getInstance().SALE_ORDER;
+        }
+        if(!(name.toLowerCase().contains("return")|| name.toLowerCase().contains("order") ))
+        {
+
+            i = Store.getInstance().SALE;
+        }
+        return i;
+    }
 
     public void updateStock(SaleReturn saleReturn) {
 
@@ -1997,11 +2057,34 @@ public class BizUtils {
         return company;
     }
 
-    public Boolean write(Context context, String fname, Company company, Customer customer, ArrayList<Product> productList, String refCode) {
+    public Boolean write(Context context, String fname, Company company, Customer customer, ArrayList<Product> productList, String refCode,Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
         try {
 
 
             BizUtils bizUtils = new BizUtils();
+            String refNo;
+            String currentSaleType = "";
+            if(sale!=null) {
+                refNo = sale.getRefCode();
+                paymentModeValue = sale.getPaymentMode();
+                currentSaleType = "sale";
+
+            }
+            if(saleOrder !=null)
+            {
+                refNo = saleOrder.getRefCode();
+
+                paymentModeValue = saleOrder.getPaymentMode();
+                currentSaleType = "sale order";
+            }
+            if(saleReturn !=null)
+            {
+                refNo = saleReturn.getRefCode();
+                paymentModeValue = saleReturn.getPaymentMode();
+                currentSaleType = "sale return";
+
+            }
+
 
             billIdValue = refCode;
             billDateValue = bizUtils.getCurrentTime();
@@ -2118,16 +2201,31 @@ public class BizUtils {
             PdfPTable cn2 = new PdfPTable(1);
             cn2.setWidthPercentage(100);
             cn2.addCell(getCell("                   ", PdfPCell.ALIGN_LEFT));
-            cn2.addCell(getCell(DashboardActivity.currentSaleType, PdfPCell.ALIGN_CENTER));
+
 
             document.add(cn2);
 
-            PdfPTable pm = new PdfPTable(2);
+            PdfPTable pm = new PdfPTable(1);
             pm.setWidthPercentage(100);
 
-            pm.addCell(getCell("Sale/Sale Order/Sale Return: " + DashboardActivity.currentSaleType, PdfPTable.ALIGN_LEFT));
-            pm.addCell(getCell("Payment Mode: " + paymentModeValue, PdfPTable.ALIGN_RIGHT));
+            pm.addCell(getCell("Sale/Sale Order/Sale Return: " + currentSaleType, PdfPTable.ALIGN_LEFT));
             document.add(pm);
+            if(getTransactionType(currentSaleType)==Store.getInstance().SALE) {
+                PdfPTable pm1 = new PdfPTable(1);
+                pm1.setWidthPercentage(100);
+                pm1.addCell(getCell("Payment Mode: " + paymentModeValue, PdfPTable.ALIGN_LEFT));
+                document.add(pm1);
+                if(paymentModeValue.toLowerCase().contains("cheque"))
+                {
+                    PdfPTable pm2 = new PdfPTable(1);
+                    pm2.setWidthPercentage(100);
+                    pm2.addCell(getCell("Cheque No: " + sale.getChequeNo(), PdfPTable.ALIGN_LEFT));
+                    document.add(pm2);
+                }
+            }
+
+
+
 
             PdfPTable cn3 = new PdfPTable(1);
             cn3.setWidthPercentage(100);
@@ -2142,13 +2240,21 @@ public class BizUtils {
             document.add(line);
 
 
-            PdfPTable table = new PdfPTable(7);
+            int numberOfCols = 7;
+            if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
+                numberOfCols = 9;
+            }
+            PdfPTable table = new PdfPTable(numberOfCols);
             table.setWidthPercentage(100);
 
             table.addCell(getCell("S.No", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("ID", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("Name", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("Qty", PdfPCell.ALIGN_LEFT));
+            if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
+                table.addCell(getCell("Reason", PdfPCell.ALIGN_LEFT));
+                table.addCell(getCell("Resale", PdfPCell.ALIGN_LEFT));
+            }
             table.addCell(getCell("Price", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("Discount", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("Amount", PdfPCell.ALIGN_RIGHT));
@@ -2160,13 +2266,17 @@ public class BizUtils {
             document.add(line1);
 
             for (int i = 0; i < productList.size(); i++) {
-                PdfPTable table1 = new PdfPTable(7);
+                PdfPTable table1 = new PdfPTable(numberOfCols);
                 table1.setWidthPercentage(100);
 
                 table1.addCell(getCell(String.valueOf(i + 1), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(productList.get(i).getId()), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(productList.get(i).getProductName(), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(productList.get(i).getQty()), PdfPCell.ALIGN_LEFT));
+                if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
+                    table1.addCell(getCell(String.valueOf(productList.get(i).getParticulars()), PdfPCell.ALIGN_LEFT));
+                    table1.addCell(getCell(String.valueOf(productList.get(i).isResale()), PdfPCell.ALIGN_LEFT));
+                }
                 table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getMRP())), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getDiscountAmount())), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getFinalPrice())), PdfPCell.ALIGN_RIGHT));
@@ -2270,33 +2380,34 @@ public class BizUtils {
             } else {
                 disAmnt = Double.parseDouble(DashboardActivity.discountValue.getText().toString());
             }
-
-            gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
-            gt.addCell(getCell("Discount ( " + disAmnt + ") % " + gstSpace + appDiscount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            if(BizUtils.getDiscountType(discountType)==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL) {
+                gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
+                gt.addCell(getCell("Discount ( " + disAmnt + ") % " + gstSpace + appDiscount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            }
 
             gt.addCell(getCell("      ", PdfPCell.ALIGN_RIGHT));
-
             gt.addCell(getCell("Grand Total RM " + mgSpace + DashboardActivity.grandTotal.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
             gt.addCell(getCell("____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
 
             gt.addCell(getCell("  ", PdfPCell.ALIGN_RIGHT));
             System.out.println("Pay Mode ====" + paymentModeValue);
-            if (paymentModeValue.contains("PNT") || paymentModeValue.contains("cheque")) {
-            } else {
+
+
+
+                if(getTransactionType(currentSaleType)==Store.getInstance().SALE) {
+                    if(sale.getPaymentMode().toLowerCase().contains("cash")) {
                 if (TextUtils.isEmpty(fromCustomer.getText().toString())) {
                     gt.addCell(getCell("Received RM " + raSpace + String.format("%.2f", Double.parseDouble("0")) + "  ", PdfPCell.ALIGN_RIGHT));
                 } else {
                     gt.addCell(getCell("Received RM " + raSpace + String.format("%.2f", Double.parseDouble(fromCustomer.getText().toString())) + "  ", PdfPCell.ALIGN_RIGHT));
                 }
-
-
                 gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
-
-
                 gt.addCell(getCell("Balance RM " + baSpace + DashboardActivity.tenderAmount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
                 gt.addCell(getCell("___________________________________________________________________________", PdfPCell.ALIGN_LEFT));
+            }}
 
-            }
+
+
             gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
             gt.addCell(getCell("Dealer Name = " + Store.getInstance().dealerName, PdfPCell.ALIGN_LEFT));
 

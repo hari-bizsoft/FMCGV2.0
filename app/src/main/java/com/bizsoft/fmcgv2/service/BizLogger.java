@@ -40,6 +40,11 @@ public class BizLogger implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(final Thread thread, final Throwable ex) {
 
+        String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+        String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+        Log.d(className + "." + methodName + "():" + lineNumber, String.valueOf(ex));
         System.out.println("Exception ----------------"+ex);
         generateNoteOnSD(ex.toString());
 

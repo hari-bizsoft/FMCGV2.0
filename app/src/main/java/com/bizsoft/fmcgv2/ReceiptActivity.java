@@ -34,15 +34,10 @@ import com.bizsoft.fmcgv2.service.BizUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.bizsoft.fmcgv2.DashboardActivity.BLUETOOTH_FLAG;
 
 public class ReceiptActivity extends AppCompatActivity {
 
@@ -86,7 +81,7 @@ public class ReceiptActivity extends AppCompatActivity {
         paymentModeSpinner = (Spinner) findViewById(R.id.payment_mode_spinner);
         openingBalance = (TextView) findViewById(R.id.opening_balance);
         outStandingAmount = (TextView) findViewById(R.id.outstanding_amount);
-        print = (Button) findViewById(R.id.print);
+        print = (Button) findViewById(R.id.dc_print);
         fromCustomer = (EditText) findViewById(R.id.to_customer);
         save = (Button) findViewById(R.id.save);
         cn= (TextView) findViewById(R.id.cn);
@@ -348,7 +343,13 @@ public class ReceiptActivity extends AppCompatActivity {
             }
             else
             {
-                genderList.add(customerList.get(i).getId()+" - "+customerList.get(i).getLedger().getLedgerName());
+                if(customerList.get(i).getId()==0)
+                {
+                    genderList.add("Unsaved"+" - "+customerList.get(i).getLedger().getLedgerName());
+                }
+                else {
+                    genderList.add(customerList.get(i).getId() + " - " + customerList.get(i).getLedger().getLedgerName());
+                }
             }
 
         }

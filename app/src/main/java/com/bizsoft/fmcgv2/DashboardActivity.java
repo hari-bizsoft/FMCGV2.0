@@ -28,6 +28,8 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -40,6 +42,7 @@ import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
+import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.AddedProductAdapter;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.adapter.CustomerAdapter;
@@ -67,6 +70,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
@@ -79,6 +85,7 @@ import java.util.HashMap;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
 public class DashboardActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_CONSTANT = 777;
@@ -98,7 +105,7 @@ public class DashboardActivity extends AppCompatActivity {
     EditText productNameKey;
     public static TextView productName;
     private ListView productListView;
-    ListView addedProductListView;
+    public static ListView addedProductListView;
     ImageView sync;
     Button save;
     ImageButton sales, salesOrder, salesReturn;
@@ -134,7 +141,8 @@ public class DashboardActivity extends AppCompatActivity {
     private String fromCustomerValue = String.valueOf(0);
     private String tenderAmountValue = String.valueOf(0);
     private boolean newcustomer = false;
-    private ImageButton invoiceList, clearData;
+    private ImageButton invoiceList;
+    Button clearData;
     public static Spinner paymentMode;
     public static String paymentModeValue;
     boolean savedCurrentTransaction = false;
@@ -143,7 +151,9 @@ public class DashboardActivity extends AppCompatActivity {
     private ImageButton payment;
     private static final String TAG= DashboardActivity.class.getName();
     TextView cn;
-    EditText bankName,chequeDate,chequeNo;
+    AutoCompleteTextView bankName;
+    EditText chequeDate;
+    static EditText chequeNo;
     View view17;
     TextView note;
     Spinner discount;
@@ -164,7 +174,8 @@ public class DashboardActivity extends AppCompatActivity {
     private String lastSavedBillType = "none";
     private ArrayList<String> gstTypeList;
     private ArrayList<String> discountTypeList;
-    private ArrayList<String> paymentModeTypeList;
+    private Button printCC;
+
 
     @Override
     protected void onResume() {
@@ -220,11 +231,11 @@ public class DashboardActivity extends AppCompatActivity {
         cdl = (TextView) findViewById(R.id.cdl);
         bnl = (TextView) findViewById(R.id.bnl);
         chequeDate = (EditText) findViewById(R.id.cheque_date);
-        bankName = (EditText) findViewById(R.id.bank_name);
-
+        bankName = (AutoCompleteTextView) findViewById(R.id.bank_name);
+        clearData = (Button) findViewById(R.id.clear_data);
         addedProductListView = (ListView) findViewById(R.id.product_list);
         save = (Button) findViewById(R.id.save);
-        print = (Button) findViewById(R.id.print);
+        print = (Button) findViewById(R.id.dc_print);
         preview = (Button) findViewById(R.id.preview);
         isGst = (Spinner) findViewById(R.id.is_gst);
         fromCustomer = (EditText) findViewById(R.id.money_from_customer);
@@ -237,6 +248,7 @@ public class DashboardActivity extends AppCompatActivity {
         view17 = findViewById(R.id.view17);
         note = (TextView) findViewById(R.id.note);
         discount = (Spinner) findViewById(R.id.discount);
+        printCC = (Button) findViewById(R.id.print_cc);
 
         discountValue = (EditText) findViewById(R.id.discount_value);
         cn.setVisibility(View.GONE);
@@ -251,7 +263,12 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         UIUtil.setActionBarDesign(DashboardActivity.this,getSupportActionBar());
+        ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Bank.getNames());
+        prettyJson("bank names",Bank.getNames());
 
+        bankName.setThreshold(1);
+        bankName.setAdapter(bankAdapter);
 
         chequeDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -270,6 +287,7 @@ public class DashboardActivity extends AppCompatActivity {
                 showDialog(999);
             }
         });
+
 
 
         //clearCategory.setVisibility(View.INVISIBLE);
@@ -476,6 +494,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 System.out.println("Added Prod Adap GT <?>= "+Store.getInstance().addedProductAdapter.grandTotal);
                 System.out.println("GT <?>= "+gt);
+                System.out.println("DP <?>= "+dc);
 
                 if(Store.getInstance().addedProductAdapter.grandTotal==0)
                 {
@@ -487,6 +506,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                     grandTotal.setText(String.valueOf(String.format("%.2f",gt)));
                     appDiscount.setText(String.valueOf(String.format("%.2f",da)));
+
                 }
 
 
@@ -514,74 +534,15 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                ArrayList<Product> temp = Store.getInstance().addedProductList;
-
-                System.out.println("Added product in cart ==== " + temp.size());
+            printLastSaved("Dealer Copy");
 
 
-                try {
-                    if (BTPrint.btsocket == null) {
-
-
-                        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(DashboardActivity.this);
-                        alertDialog.setMessage("Please connect to the bluetooth to initiate printing");
-                        alertDialog.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Intent intent = new Intent(DashboardActivity.this, BTDeviceList.class);
-
-                                startActivityForResult(intent, BLUETOOTH_FLAG);
-
-                                Toast.makeText(DashboardActivity.this, "Initializing bluetooth connection...", Toast.LENGTH_SHORT).show();
-
-
-
-
-                            }
-                        });
-                        alertDialog.setNegativeButton(R.string.noReloadMsg, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                System.out.println("Do nothing....");
-                            }
-                        });
-
-                        alertDialog.create();
-                        alertDialog.show();
-
-
-
-                    } else {
-
-
-                        Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
-
-                        if(lastSavedBillType.toLowerCase().contains("return"))
-                        {
-                            temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
-                            print(customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1));
-
-                        }
-                        if(lastSavedBillType.toLowerCase().contains("order"))
-                        {
-                            temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                            print(customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null);
-
-                        }
-                        if(! (lastSavedBillType.toLowerCase().contains("return") || lastSavedBillType.toLowerCase().contains("order")) )
-                        {
-                            temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
-                            print(customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null);
-
-                        }
-
-                    }
-                } catch (Exception e) {
-                    System.out.println("Exception " + e);
-
-                }
+            }
+        });
+        printCC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printLastSaved("Customer Copy");
 
             }
         });
@@ -603,6 +564,13 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+        clearData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            clearData();
+            }
+        });
+
 
         Store.getInstance().addedProductAdapter = new AddedProductAdapter(DashboardActivity.this, Store.getInstance().addedProductList);
         Store.getInstance().addedProductAdapter.setFrom("dashboard");
@@ -612,14 +580,13 @@ public class DashboardActivity extends AppCompatActivity {
         setSaleType();
         //new CustomerDetails(DashboardActivity.this).execute();
 
-           new TransactionList().execute();
+           //new TransactionList().execute();
 
       customerSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String key = customerNameKey.getText().toString();
-
                 showCustomerList(key);
             }
         });
@@ -725,18 +692,14 @@ public class DashboardActivity extends AppCompatActivity {
                                     if (storeOffline(Store.getInstance().customerList.get(i))) {
                                         System.out.println("Sale order Added to offline list of customer");
 
-
+                                        clearData();
                                     }
 
-
+                                    lastSavedBillType = currentSaleType;
                                     print(currentSaleType);
                                     clearList();
 
-                                    Store.getInstance().addedProductList.clear();
-
-                                    Store.getInstance().addedProductAdapter.notifyDataSetChanged();
                                     Toast.makeText(DashboardActivity.this, "Sale order saved offline", Toast.LENGTH_SHORT).show();
-
                                     System.out.println("Sales Order  Size --------------------->" + Store.getInstance().customerList.get(i).getSale());
 
 
@@ -784,23 +747,15 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                                     if (storeOffline(Store.getInstance().customerList.get(i))) {
+                                        clearData();
                                         System.out.println("Sale  return  Added to offline list of customer");
                                     }
-
+                                    lastSavedBillType = currentSaleType;
                                     print(currentSaleType);
-
                                     clearList();
-                                    Store.getInstance().addedProductList.clear();
-                                    Store.getInstance().addedProductAdapter.notifyDataSetChanged();
-
                                     Toast.makeText(DashboardActivity.this, "Sale return saved offline", Toast.LENGTH_SHORT).show();
-
                                     System.out.println("Sales return   Size --------------------->" + Store.getInstance().customerList.get(i).getSaleReturn().size());
-
-
                                 }
-
-
                             }
                             Store.getInstance().currentStockGroup = null;
                             Store.getInstance().currentCustomer = null;
@@ -845,28 +800,13 @@ public class DashboardActivity extends AppCompatActivity {
                                     Store.getInstance().customerList.get(i).sale.addAll(getCurrentProducts());
                                     Store.getInstance().addedProductForSales.addAll(getCurrentProducts());
                                     if (storeOffline(Store.getInstance().customerList.get(i))) {
-
-
+                                        clearData();
                                         System.out.println("Sales Added to offline list of customer");
-
-
-
-
-
-
-
-
-
-                                    }
-
+                                     }
+                                    lastSavedBillType = currentSaleType;
                                     print(currentSaleType);
-
                                     clearList();
-                                    Store.getInstance().addedProductList.clear();
-                                    Store.getInstance().addedProductAdapter.notifyDataSetChanged();
-
-
-                                    System.out.println("Sales Size --------------------->" + Store.getInstance().customerList.get(i).getSale().size());
+                                       System.out.println("Sales Size --------------------->" + Store.getInstance().customerList.get(i).getSale().size());
 
                                     Toast.makeText(DashboardActivity.this, "Sale saved offline", Toast.LENGTH_SHORT).show();
                                     save.setEnabled(false);
@@ -935,6 +875,86 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+
+
+    private void printLastSaved(String dc) {
+        ArrayList<Product> temp = Store.getInstance().addedProductList;
+
+        System.out.println("Added product in cart ==== " + temp.size());
+
+
+
+
+        try {
+            if (BTPrint.btsocket == null) {
+
+
+                android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(DashboardActivity.this);
+                alertDialog.setMessage("Please connect to the bluetooth to initiate printing");
+                alertDialog.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(DashboardActivity.this, BTDeviceList.class);
+
+                        startActivityForResult(intent, BLUETOOTH_FLAG);
+
+                        Toast.makeText(DashboardActivity.this, "Initializing bluetooth connection...", Toast.LENGTH_SHORT).show();
+
+
+
+
+                    }
+                });
+                alertDialog.setNegativeButton(R.string.noReloadMsg, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("Do nothing....");
+                    }
+                });
+
+                alertDialog.create();
+                alertDialog.show();
+
+
+
+            } else {
+
+
+                Store.getInstance().printerContext = DashboardActivity.this;
+
+                Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
+
+                if(lastSavedBillType.toLowerCase().contains("return"))
+                {
+                    temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
+                    print(customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),dc);
+
+                }
+                if(lastSavedBillType.toLowerCase().contains("order"))
+                {
+                    temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
+                    print(customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,dc);
+
+                }
+                if(! (lastSavedBillType.toLowerCase().contains("return") || lastSavedBillType.toLowerCase().contains("order")) )
+                {
+                    temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
+                    print(customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,dc);
+
+                }
+                if(lastSavedBillType.toLowerCase().contains("none"))
+                {
+                    Toast.makeText(DashboardActivity.this, "No last bills found..", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        } catch (Exception e) {
+            System.out.println("Exception " + e);
+
+        }
+    }
+
     private void checkBluetoothConnection() {
 
         if (BTPrint.btsocket == null) {
@@ -953,6 +973,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
+
                 }
             });
             alertDialog.setNegativeButton(R.string.noReloadMsg, new DialogInterface.OnClickListener() {
@@ -966,12 +987,32 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void writeToFile(String refCode) {
+    private void writeToFile(Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
 
         Company company = bizUtils.getCompany();
         Customer customer  = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
             Boolean status = false;
-         status = bizUtils.write(DashboardActivity.this,customer.getLedgerName()+" | "+refCode+"|"+bizUtils.getCurrentTime()+" | ( "+company.getCompanyName()+" )" +" | "+Store.getInstance().dealerId,company,customer,Store.getInstance().addedProductList,refCode);
+
+        String refNo = "";
+        String paymentModeValue = "";
+        if(sale!=null) {
+            refNo = sale.getRefCode();
+            paymentModeValue = sale.getPaymentMode();
+
+        }
+        if(saleOrder !=null)
+        {
+            refNo = saleOrder.getRefCode();
+
+            paymentModeValue = saleOrder.getPaymentMode();
+        }
+        if(saleReturn !=null)
+        {
+            refNo = saleReturn.getRefCode();
+            paymentModeValue = saleReturn.getPaymentMode();
+
+        }
+        status = bizUtils.write(DashboardActivity.this,customer.getLedgerName()+" | "+ refNo +"|"+bizUtils.getCurrentTime()+" | ( "+company.getCompanyName()+" )" +" | "+Store.getInstance().dealerId,company,customer,Store.getInstance().addedProductList,refNo, sale,saleOrder,saleReturn);
 
         if (status)
         {
@@ -1009,14 +1050,19 @@ public class DashboardActivity extends AppCompatActivity {
             saleOrder.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             saleOrder.setPaymentMode(paymentModeValue);
 
+
+
+
             double dc = 0;
             if(!TextUtils.isEmpty(discountValue.getText()) )
             {
 
                     dc = Double.parseDouble(appDiscount.getText().toString());
 
-            }
+                    saleOrder.setDiscountPercentage(Double.parseDouble(discountValue.getText().toString()));
 
+            }
+            saleOrder.setDiscountType(discountType);
             saleOrder.setDiscountValue(dc);
 
             System.out.println("===============PAYMODE=========="+paymentModeValue);
@@ -1056,7 +1102,7 @@ public class DashboardActivity extends AppCompatActivity {
                 status = true;
              }
 
-            writeToFile(saleOrder.getRefCode());
+            writeToFile(null,saleOrder,null);
 
 
 
@@ -1093,9 +1139,12 @@ public class DashboardActivity extends AppCompatActivity {
             {
 
                     dc = Double.parseDouble(appDiscount.getText().toString());
+                saleReturn.setDiscountPercentage(Double.parseDouble(discountValue.getText().toString()));
+
 
             }
 
+            saleReturn.setDiscountType(discountType);
             saleReturn.setDiscountValue(dc);
             if(paymentModeValue.toLowerCase().contains("cheque")) {
                 saleReturn.setChequeNo(chequeNo.getText().toString());
@@ -1116,7 +1165,7 @@ public class DashboardActivity extends AppCompatActivity {
                 bizUtils.updateStock(saleReturn);
                 status = true;
             }
-            writeToFile(saleReturn.getRefCode());
+            writeToFile(null,null,saleReturn);
         }  if( ! (currentSaleType.toLowerCase().contains("return") || currentSaleType.toLowerCase().contains("order")) ) {
 
             int beforeAdd = customer.getSalesOfCustomer().size();
@@ -1153,9 +1202,12 @@ public class DashboardActivity extends AppCompatActivity {
             {
 
                 dc = Double.parseDouble(appDiscount.getText().toString());
+                sale.setDiscountPercentage(Double.parseDouble(discountValue.getText().toString()));
+                sale.setDiscountType(discountType);
             }
             System.out.println( "DC VALUE = "+dc);
             sale.setDiscountValue(dc);
+
             if(paymentModeValue.toLowerCase().contains("cheque")) {
                 sale.setChequeNo(chequeNo.getText().toString());
 
@@ -1172,9 +1224,10 @@ public class DashboardActivity extends AppCompatActivity {
             if (customer.getSalesOfCustomer().size() > beforeAdd) {
                 status = true;
                 bizUtils.updateStock(sale);
+                bizUtils.updateOPBal(customer,sale);
 
             }
-             writeToFile(sale.getRefCode());
+             writeToFile(sale,null,null);
 
         }
 
@@ -1353,49 +1406,42 @@ public class DashboardActivity extends AppCompatActivity {
                 alertDialog.show();
 
             } else {
-
+                Store.getInstance().printerContext = DashboardActivity.this;
 
                 Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
 
 
                 System.out.println("Sales List " + customer.getSale().size());
                 System.out.println("Sales Order List " + customer.getSaleOrder().size());
+                System.out.println("Sale Type : "+cSaleType);
+                System.out.println("Sale  : "+! (cSaleType.toLowerCase().contains("return") || cSaleType.toLowerCase().contains("order")));
+                System.out.println("Sale Order: "+cSaleType.toLowerCase().contains("order"));
+                System.out.println("Sale Return  : "+cSaleType.toLowerCase().contains("return"));
 
 
                 if(cSaleType.toLowerCase().contains("return"))
                 {
+
                     temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1));
+                    print(customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),"Customer Copy");
                     lastSavedBillType = cSaleType;
 
                 }
                 if(cSaleType.toLowerCase().contains("order"))
                 {
                     temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null);
+                    print(customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,"Customer Copy");
                     lastSavedBillType = cSaleType;
 
                 }
                 if(! (cSaleType.toLowerCase().contains("return") || cSaleType.toLowerCase().contains("order")) )
                 {
                     temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null);
+                    print(customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,"Customer Copy");
                     lastSavedBillType = cSaleType;
 
                 }
-                /*if (customer.getSale().size() > 0) {
 
-                    temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
-
-                    print(customer, "Sale Bill", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null);
-                } else if (customer.getSaleOrder().size() > 0) {
-                    temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Order Bill", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null);
-                } else if (customer.getSaleReturn().size() > 0) {
-                    temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Return Bill", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1));
-                }
-                */
 
 
             }
@@ -1507,12 +1553,19 @@ public class DashboardActivity extends AppCompatActivity {
         for (int i = 0; i < Store.getInstance().addedProductList.size(); i++) {
             Store.getInstance().addedProductList.get(i).setQty(null);
             Store.getInstance().addedProductList.get(i).setDiscountAmount(0.0);
+            Store.getInstance().addedProductList.get(i).setDiscountPercentage(0.0);
             Store.getInstance().addedProductList.get(i).setFinalPrice(0);
             Store.getInstance().addedProductList.get(i).setResale(false);
-
-
         }
+
+        Store.getInstance().addedProductList.clear();
+        Store.getInstance().addedProductAdapter.notifyDataSetChanged();
+        fromCustomer.setText("0");
+        chequeNo.setText("");
+        chequeDate.setText("");
+        bankName.setText("");
         savedCurrentTransaction = true;
+
     }
 
     @Override
@@ -1522,7 +1575,8 @@ public class DashboardActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DashboardActivity.this.finish();
+
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -1585,6 +1639,8 @@ public class DashboardActivity extends AppCompatActivity {
 
                     customerName.setText(String.valueOf(tempCus1.get(position).getLedger().getLedgerName()).toUpperCase());
                     dialog.dismiss();
+
+                    lockAllUIComponents();
                     Toast.makeText(DashboardActivity.this, "Customer Name : " + Store.getInstance().currentCustomer, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -1599,6 +1655,15 @@ public class DashboardActivity extends AppCompatActivity {
 
         dialog.show();
 
+    }
+
+    private void lockAllUIComponents() {
+        lockUIComponent(customerSearch);
+        lockUIComponent(customerNameKey);
+        lockUIComponent(saleType);
+        lockUIComponent(isGst);
+        lockUIComponent(paymentMode);
+        lockUIComponent(discount);
     }
 
     public void showStockHome(String key) {
@@ -1638,6 +1703,8 @@ public class DashboardActivity extends AppCompatActivity {
 
                     System.out.println("---currentStockGroupId=="+ Store.getInstance().currentStockGroupId );
                     stockGroupName.setText(String.valueOf(Store.getInstance().currentStockGroup).toUpperCase());
+
+
                     dialog.dismiss();
                     //Toast.makeText(DashboardActivity.this, "--id--"+tempStock1.get(position).getId(), Toast.LENGTH_SHORT).show();
                 }
@@ -2260,6 +2327,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 }
 
+
             }
 
 
@@ -2281,7 +2349,7 @@ public class DashboardActivity extends AppCompatActivity {
         isGst.setSelection(0);
         isGstValue = gstTypeList.get(0);
         paymentMode.setSelection(0);
-        paymentModeValue = paymentModeTypeList.get(0);
+        paymentModeValue = Store.getInstance().paymentModeTypeList.get(0);
         discount.setSelection(0);
         discountType = discountTypeList.get(0);
     }
@@ -2302,6 +2370,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
               //  Toast.makeText(getApplicationContext(), genderList.get(position), Toast.LENGTH_SHORT).show();
                 isGstValue = gstTypeList.get(position);
+
             }
 
             @Override
@@ -2358,8 +2427,10 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
                 discountType= discountTypeList.get(0);
 
                 discountValue.setEnabled(false);
@@ -2373,38 +2444,19 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void setPaymentMode() {
 
-        paymentModeTypeList = new ArrayList<String>();
-
-
-        for(int i =0 ; i < Store.getInstance().transactionTypeList.size();i++)
-        {
-
-
-            if(Store.getInstance().transactionTypeList.get(i).getType().toLowerCase().contains("credit"))
-            {
-                paymentModeTypeList.add("PNT (Payment Next Trip)");
-            }
-            else
-            {
-                paymentModeTypeList.add(Store.getInstance().transactionTypeList.get(i).getType());
-            }
-
-        }
-
-
 
 
 
 
         // Drop down layout style - list view with radio button
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DashboardActivity.this, paymentModeTypeList);
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DashboardActivity.this, Store.getInstance().paymentModeTypeList);
         paymentMode.setAdapter(customSpinnerAdapter);
 
         paymentMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getApplicationContext(), genderList.get(position), Toast.LENGTH_SHORT).show();
-                paymentModeValue = paymentModeTypeList.get(position);
+                paymentModeValue = Store.getInstance().paymentModeTypeList.get(position);
 
                 if(paymentModeValue.contains("PNT") || paymentModeValue.toLowerCase().contains("cheque") )
                 {
@@ -2492,7 +2544,9 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                paymentModeValue = paymentModeTypeList.get(0);
+
+                Log.d("Sale Type","Noting selected");
+                paymentModeValue = Store.getInstance().paymentModeTypeList.get(0);
 
                 if(paymentModeValue.contains("PNT") || paymentModeValue.toLowerCase().contains("cheque") )
                 {
@@ -3200,7 +3254,10 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    public void print(Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
+    public void print(Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn,String copyName) {
+
+        Store.getInstance().printerContext = DashboardActivity.this;
+
         SharedPreferences prefs = getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyName), "Aboorvass"));
@@ -3226,9 +3283,12 @@ public class DashboardActivity extends AppCompatActivity {
 
         String refNo = "";
         String paymentModeValue = "";
+
         if(sale!=null) {
             refNo = sale.getRefCode();
             paymentModeValue = sale.getPaymentMode();
+
+
 
         }
         if(saleOrder !=null)
@@ -3243,6 +3303,7 @@ public class DashboardActivity extends AppCompatActivity {
             paymentModeValue = saleReturn.getPaymentMode();
 
         }
+
 
 
 
@@ -3377,7 +3438,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if(item.getDiscountAmount()==0)
                 {
-                    id = "     ";
+                    id = "    ";
                 }
 
             }
@@ -3386,8 +3447,9 @@ public class DashboardActivity extends AppCompatActivity {
             double subTotalx = 0;
             double gstx = 0;
             if (String.valueOf(item.getQty() * item.getMRP()).length() >= 6) {
-                ir = String.valueOf( (item.getQty() * item.getMRP()) - item.getDiscountAmount()).substring(0, 4);
-                ir = ir + "..";
+              //  ir = String.valueOf( (item.getQty() * item.getMRP()) - item.getDiscountAmount()).substring(0, 4);
+                //ir = ir + "..";
+                ir = String.valueOf((item.getQty() * item.getMRP()) - item.getDiscountAmount());
 
                 subTotalx = item.getQty() * item.getMRP();
             } else {
@@ -3464,6 +3526,13 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
+            if(!TextUtils.isEmpty(id.trim())) {
+                id = String.valueOf(String.format("%.2f", Double.parseDouble(id)));
+            }
+            ir = String.valueOf(String.format("%.2f", Double.parseDouble(ir)));
+
+            String print_line =   " "+iq + q + ip + dis + id +pr + ir;
+            System.out.println("Print Line = "+print_line);
             BTPrint.PrintTextLine( " "+iq + q + ip + dis + id +pr + ir);
 
         }
@@ -3541,26 +3610,38 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-        BTPrint.PrintTextLine("Discount RM " + gstSpace + String.format("%.2f",disV));
 
-        BTPrint.PrintTextLine("------------------------------");
 
+
+        String discountPer = "0.00";
+        String disType ="";
         if(sale!=null)
         {
             mainGrantTotal = sale.getGrandTotal();
             ba = String.valueOf(sale.getBalance());
+            discountPer = String.format("%.2f",sale.getDiscountPercentage());
+            disType = sale.getDiscountType();
 
         }
         if(saleOrder!=null)
         {
             mainGrantTotal = saleOrder.getGrandTotal();
             ba = String.valueOf(saleOrder.getBalance());
+            discountPer = String.format("%.2f",saleOrder.getDiscountPercentage());
+            disType = saleOrder.getDiscountType();
         }
         if(saleReturn!=null)
         {
             mainGrantTotal = saleReturn.getGrandTotal();
             ba = String.valueOf(saleReturn.getBalance());
         }
+        if(BizUtils.getDiscountType(disType)==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL)
+        {
+
+                BTPrint.PrintTextLine("Discount("+discountPer+"%) RM " + gstSpace + String.format("%.2f",disV));
+        }
+
+        BTPrint.PrintTextLine("------------------------------");
         BTPrint.PrintTextLine("Grand total " + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
 
         if(getTransactionType(type)==Store.getInstance().SALE) {
@@ -3578,6 +3659,8 @@ public class DashboardActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
+        BTPrint.SetAlign(Paint.Align.CENTER);
+        BTPrint.PrintTextLine("***"+copyName+"***");
         BTPrint.printLineFeed();
         savedCurrentTransaction = false;
 
@@ -3852,23 +3935,29 @@ public class DashboardActivity extends AppCompatActivity {
             // arg2 = month
             // arg3 = day
             String date = (arg2+1)+"/"+arg3+"/"+arg1;
-
-
-            if(validateChequeDate(arg3,arg2+1,arg1)) {
+            JSONObject result = null;
+            boolean status = false;
+            String errMsg = "";
+            try {
+                 result = validateChequeDate(arg3, arg2 + 1, arg1);
+                 status = (boolean) result.get("status");
+                 errMsg = (String) result.get("errMsg");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if(status) {
                 chequeDate.setText(String.valueOf(date));
 
 
-                Toast.makeText(DashboardActivity.this, date, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, date, Toast.LENGTH_LONG).show();
             }
             else
             {
-                Toast.makeText(DashboardActivity.this, "Invalid Cheque Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, errMsg, Toast.LENGTH_LONG).show();
             }
         }
 
-        private boolean validateChequeDate(int day, int month, int year) {
-
-
+        private JSONObject validateChequeDate(int day, int month, int year) throws JSONException {
 
 
             Calendar cal = Calendar.getInstance();
@@ -3890,6 +3979,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
             boolean status;
+            String errMsg = "";
             if(cal.before(afterDate) && cal.after(beforeDate))
             {
 
@@ -3897,10 +3987,23 @@ public class DashboardActivity extends AppCompatActivity {
             }
             else
             {
+                if(!cal.before(afterDate))
+                {
+                    errMsg = "The cheque date should not be dated after 3 Years from current date";
+                }
+
+                if(!cal.after(beforeDate))
+                {
+                    errMsg = "The cheque date should not be dated before 6 Months from current date";
+                }
 
                 status = false;
             }
-            return status;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("status",status);
+            jsonObject.put("errMsg",errMsg);
+
+            return jsonObject;
 
 
         }
@@ -3917,12 +4020,12 @@ public class DashboardActivity extends AppCompatActivity {
 
             if(TextUtils.isEmpty(chequeDate.getText().toString()) )
             {
-                chequeDate.setText(String.valueOf("null"));
+                chequeDate.setText(String.valueOf(""));
             }
 
             if(TextUtils.isEmpty(bankName.getText().toString()) )
             {
-                bankName.setText(String.valueOf("null"));
+                bankName.setText(String.valueOf(""));
             }
             if(con1 || !con2)
             {
@@ -4151,4 +4254,92 @@ public class DashboardActivity extends AppCompatActivity {
         }
         return i;
     }
+    private void clearData() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+        builder.setMessage("Do you want to clear ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        realeaseUIComponent(saleType);
+                        realeaseUIComponent(isGst);
+                        realeaseUIComponent(discount);
+                        realeaseUIComponent(paymentMode);
+                        realeaseUIComponent(customerSearch);
+                        realeaseUIComponent(customerNameKey);
+
+                        clearList();
+                        clearCSP();
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
+    }
+
+    private void clearCSP() {
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                //Do something on UiThread
+
+                Store.getInstance().currentStockGroup = null;
+                stockGroupName.setText("");
+
+                Store.getInstance().currentCustomer = null;
+                customerName.setText(String.valueOf(""));
+
+                if(!currentSaleType.toLowerCase().contains("order")) {
+                    save.setEnabled(false);
+                    save.setBackgroundColor(getResources().getColor(R.color.grey));
+                    preview.setEnabled(false);
+                    Log.d("Preview", "Disabled 00");
+                    preview.setBackgroundColor(getResources().getColor(R.color.grey));
+                }
+
+
+
+                fromCustomer.setText(String.valueOf(""));
+                grandTotal.setText(String.valueOf("0.00"));
+                tenderAmount.setText(String.valueOf("0.00"));
+                discountValue.setText(String.valueOf("0"));
+                appDiscount.setText(String.valueOf("0"));
+                chequeNo.setText(String.valueOf(""));
+                chequeDate.setText(String.valueOf(""));
+                bankName.setText(String.valueOf(""));
+            }
+        });
+
+
+    }
+
+    public  void lockUIComponent(View v)
+    {
+        v.setEnabled(false);
+        v.setBackgroundResource(R.color.disabled);
+
+    }
+    public void realeaseUIComponent(View v)
+    {
+        v.setEnabled(true);
+        v.setBackgroundResource(R.drawable.enable);
+
+        if(v.getId()==R.id.customer_name_key){
+
+            v.setBackgroundResource(R.drawable.rounded_edittext);
+        }
+
+
+
+    }
+
 }

@@ -113,7 +113,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView80"/>
 
     <Button
-        android:id="@+id/print"
+        android:id="@+id/dc_print"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

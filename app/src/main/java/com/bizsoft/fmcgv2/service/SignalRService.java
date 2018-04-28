@@ -1249,7 +1249,9 @@ public class SignalRService {
 
 
 
+
             }
+            TransactionType.getAll();
 
         } catch (InterruptedException e) {
             e.printStackTrace();

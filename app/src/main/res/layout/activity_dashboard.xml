@@ -287,6 +287,8 @@
             android:layout_marginTop="8dp"
             android:divider="#00f7f5f5"
             android:dividerHeight="8dp"
+            android:stackFromBottom="true"
+            android:transcriptMode="normal"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -354,19 +356,36 @@
             app:layout_constraintTop_toBottomOf="@+id/preview" />
 
         <Button
-            android:id="@+id/print"
+            android:id="@+id/dc_print"
 
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@color/colorPrimaryDark"
-            android:text="Print(Last Saved)"
+            android:text="Print Last Saved (DC)"
             android:textColor="#fff"
+            app:layout_constraintEnd_toStartOf="@+id/print_cc"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/save" />
+
+        <Button
+            android:id="@+id/clear_data"
+
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Clear"
+            android:textColor="#fff"
+            app:layout_constraintEnd_toStartOf="@+id/print_cc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dc_print" />
 
         <Button
             android:id="@+id/preview"
@@ -620,9 +639,9 @@
             android:id="@+id/cdl"
             android:layout_width="wrap_content"
             android:layout_height="17dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="Cheque Date"
             android:textColor="#000"
             android:textStyle="bold"
@@ -659,7 +678,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cheque_date" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/bank_name"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -700,9 +719,8 @@
 
         <EditText
             android:id="@+id/discount_value"
-            android:layout_width="23dp"
+            android:layout_width="64dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
@@ -710,7 +728,7 @@
             android:padding="5dp"
             android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-            app:layout_constraintLeft_toRightOf="@+id/discount_label"
+            app:layout_constraintEnd_toEndOf="@+id/textView50"
             app:layout_constraintTop_toBottomOf="@+id/textView50" />
 
         <TextView
@@ -718,13 +736,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="Discount(%)"
             android:textColor="#000"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/discount_value"
-            app:layout_constraintRight_toRightOf="@+id/textView50"
+            app:layout_constraintEnd_toStartOf="@+id/discount_value"
             app:layout_constraintTop_toTopOf="@+id/discount_value"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -751,6 +770,22 @@
             android:textStyle="bold"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stock_group_search" />
+
+        <Button
+            android:id="@+id/print_cc"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Print Last saved (CC)"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dc_print"
+            app:layout_constraintTop_toBottomOf="@+id/save" />
 
 
     </android.support.constraint.ConstraintLayout>
