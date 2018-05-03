@@ -1757,6 +1757,31 @@ public class SignalRService {
         new Activate(appIdValue,getLocalBluetoothName(),email,android_id,context).execute();
 
     }
+
+    public static boolean salesOrderDelete(SalesOrder salesOrder) {
+        Object o = new Object();
+
+        boolean status = false;
+        try {
+            Gson gson = new Gson();
+            String json = gson.toJson(salesOrder);
+            System.out.println("JSON : " + json);
+
+
+            //System.out.println(" ---------Sales  details size "+sale.getSDetail().size());
+            o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"salesOrder_Delete",salesOrder.getId()).get();
+
+            System.out.println(" ---------Sales order  delete"+o.getClass());
+
+            status = (boolean) o;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
     static class Activate extends AsyncTask
     {
         String appIdValue;

@@ -178,4 +178,20 @@ public class StockGroup {
         }
         return strings;
     }
+    public static ArrayList<String> getNamesWithID()
+    {
+        ArrayList<StockGroup> stockGroup = Store.getInstance().stockGroupList;
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i=0;i<stockGroup.size();i++)
+        {
+
+
+            strings.add(stockGroup.get(i).getStockGroupName()+"-"+stockGroup.get(i).getId());
+
+
+        }
+        return strings;
+    }
+
+
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by shri on 9/8/17.
@@ -486,6 +487,26 @@ public class Customer {
             return one.getLedgerName().toLowerCase().compareTo(other.getLedgerName().toLowerCase());
         }
     };
+    public static ArrayList<String> getCustomerList()
+    {
+        ArrayList<String> names = new ArrayList<>();
+        for(int i=0;i<Store.getInstance().customerList.size();i++)
+        {
+            names.add(Store.getInstance().customerList.get(i).getLedger().getLedgerName()+" - "+Store.getInstance().customerList.get(i).getLedger().getId());
 
+        }
+
+        return names;
+    }
+
+    public ArrayList<SOPending> SOPListDelete = new ArrayList<SOPending>();
+
+    public ArrayList<SOPending> getSOPListDelete() {
+        return SOPListDelete;
+    }
+
+    public void setSOPListDelete(ArrayList<SOPending> SOPListDelete) {
+        this.SOPListDelete = SOPListDelete;
+    }
 }
 

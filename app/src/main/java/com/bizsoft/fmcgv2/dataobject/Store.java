@@ -34,7 +34,7 @@ public class Store {
             ;
     public static final int NO_DISCOUNT = 1;
     public static final int DISCOUNT_FOR_GRABD_TOTAL = 2;
-    public static final int DISCOUNT_FOR_INDIVIDUAL_PROD = 3;
+
     public static String SERVER_HUB_CHAT = "ABServerHub";
     private static Store instance =null;
     public ArrayList<Company> companyList = new ArrayList<Company>();
@@ -122,6 +122,8 @@ public class Store {
     public ArrayList<String> paymentModeTypeList = new ArrayList<>();
     public BluetoothDevice btDevice;
     public Context printerContext ;
+    public double grandTotalRef;
+    public  ArrayList<SOPending> SOPListToDelete = new ArrayList<>();
 
 
     public static Store getInstance() {

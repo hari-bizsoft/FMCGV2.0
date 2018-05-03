@@ -1,10 +1,15 @@
 package com.bizsoft.fmcgv2.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.Store;
+import com.bizsoft.fmcgv2.service.BizUtils;
 
 import java.util.ArrayList;
 
@@ -35,17 +41,21 @@ import static com.bizsoft.fmcgv2.DashboardActivity.discountValue;
 public class ProductAdapter extends BaseAdapter   {
 
     Context context;
-    public ArrayList<Product> productList = new ArrayList<Product>();
+    public ArrayList<Product> productList ;
     LayoutInflater layoutInflater= null;
     private int x = 0;
+
     private int Object = 1;
     private String nQuantity;
+    double currentSP = 0;
+    public Dialog sellingPriceDialog;
 
 
     public ProductAdapter(Context context,ArrayList<Product> productList) {
         this.context = context;
         this.productList = productList;
         this.layoutInflater = (LayoutInflater.from(context));
+
     }
 
     @Override
@@ -139,8 +149,10 @@ public class ProductAdapter extends BaseAdapter   {
             holder.quantity.setText(String.valueOf("0"));
             holder.add.setVisibility(View.GONE);
 
+            currentSP = product.getSellingRate();
+
             //Intitializing at product page reoprn/open to set deafult selling rate
-            product.setSellingRate(product.getSellingRateRef());
+          //  product.setSellingRate(product.getSellingRateRef());
 
 
 
@@ -149,20 +161,13 @@ public class ProductAdapter extends BaseAdapter   {
                 public void onClick(View v) {
 
 
-                    showNumberPicker(product, holder);
+                    //showNumberPicker(product, holder);
+                    setQuantity(product,holder);
 
                 }
             });
 
-            holder.price.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-
-                    chooeseSellingRatePicker(product, holder);
-
-                }
-            });
 
             if (!DashboardActivity.currentSaleType.toLowerCase().contains("return")) {
                 holder.isResale.setVisibility(View.GONE);
@@ -185,10 +190,32 @@ public class ProductAdapter extends BaseAdapter   {
                 holder.reason.setText(product.getParticulars());
 
             }
+            holder.price.setInputType(InputType.TYPE_NULL);
+            holder.price.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setSellingPrice(product,holder);
+
+                        }
+                    });
+
+                }
+            });
+            holder.price.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
 
 
-          disableDiscountFields(holder);
+                    }
+                }
+            });
 
+            disableDiscountFields(holder);
             holder.discount.addTextChangedListener(new TextWatcher() {
                 double gt = 0;
                 double dc = 0;
@@ -255,11 +282,7 @@ public class ProductAdapter extends BaseAdapter   {
 
                 }
             });
-
-
             holder.isResale.setEnabled(false);
-
-
             holder.reason.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -294,8 +317,6 @@ public class ProductAdapter extends BaseAdapter   {
                     product.setResale(false);
                 }
             });
-
-
             holder.isResale.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -349,8 +370,10 @@ public class ProductAdapter extends BaseAdapter   {
                 public void onClick(View v) {
 
                     x = 0;
+                    double p = 0;
                     try {
                         x = Integer.parseInt(holder.quantity.getText().toString());
+                        p = Double.parseDouble(holder.price.getText().toString());
 
 
 
@@ -360,8 +383,8 @@ public class ProductAdapter extends BaseAdapter   {
                             x++;
                             holder.quantity.setText(String.valueOf(x));
                             product.setQty(Long.valueOf(x));
-                            holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
-                            holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                            holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * p)));
+                            holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * p)));
 
                             enableDiscountField(holder);
 
@@ -373,8 +396,8 @@ public class ProductAdapter extends BaseAdapter   {
                                 holder.quantity.setText(String.valueOf(x));
 
                                 product.setQty(Long.valueOf(x));
-                                holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
-                                holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                                holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * p)));
+                                holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * p)));
                                 enableDiscountField(holder);
                             } else {
                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
@@ -390,11 +413,10 @@ public class ProductAdapter extends BaseAdapter   {
             holder.minus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    x = 0;
-
+                    double p = 0;
                     try {
                         x = Integer.parseInt(holder.quantity.getText().toString());
+                        p = Double.parseDouble(holder.price.getText().toString());
 
 
                         if(DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return"))
@@ -403,8 +425,8 @@ public class ProductAdapter extends BaseAdapter   {
                                 x--;
                                 holder.quantity.setText(String.valueOf(x));
                                 product.setQty(Long.valueOf(x));
-                                holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
-                                holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                                holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * p)));
+                                holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * p)));
                                 enableDiscountField(holder);
                             } else {
                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
@@ -419,8 +441,8 @@ public class ProductAdapter extends BaseAdapter   {
                                 x--;
                                 holder.quantity.setText(String.valueOf(x));
                                 product.setQty(Long.valueOf(x));
-                                holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
-                                holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * product.getMRP())));
+                                holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x *p)));
+                                holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * p)));
                                 enableDiscountField(holder);
                             } else {
                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
@@ -437,53 +459,7 @@ public class ProductAdapter extends BaseAdapter   {
                 }
             });
 
-            holder.add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-
-                    System.out.println("Size of cart list" + Store.getInstance().addedProductList.size());
-
-                    if (Store.getInstance().addedProductList.size() > 0) {
-
-                        for (int i = 0; i < Store.getInstance().addedProductList.size(); i++) {
-                            if (Store.getInstance().addedProductList.get(i).getId() != product.getId()) {
-
-                                DashboardActivity.productName.setText(String.valueOf(product.getProductName()));
-
-                                if (x == 0) {
-                                    x = 1;
-                                    System.out.println("X=" + x);
-                                }
-
-                                product.setQty(Long.valueOf(x));
-                                Store.getInstance().addedProductList.add(product);
-
-
-                                Store.getInstance().addedProductAdapter.notifyDataSetChanged();
-                            } else {
-                                Toast.makeText(context, "product already added", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    } else {
-
-
-                        if (x == 0) {
-                            x = 1;
-                            System.out.println("X=" + x);
-                        }
-                        product.setQty(Long.valueOf(x));
-                        Store.getInstance().addedProductList.add(product);
-
-                        DashboardActivity.productName.setText(String.valueOf(product.getProductName()));
-                        System.out.println("========" + Store.getInstance().addedProductList.get(0).getQty());
-                        Store.getInstance().addedProductAdapter.notifyDataSetChanged();
-                    }
-
-
-                }
-            });
 
         }
         catch (Exception e)
@@ -496,6 +472,142 @@ public class ProductAdapter extends BaseAdapter   {
 
         return convertView;
     }
+
+    private void setSellingPrice(final Product product, final Holder holder) {
+        sellingPriceDialog = new Dialog(context);
+        sellingPriceDialog.setContentView(R.layout.choose_selling_rate);
+
+        final EditText sp = (EditText) sellingPriceDialog.findViewById(R.id.selling_price);
+        Button enter = (Button) sellingPriceDialog.findViewById(R.id.enter);
+        final TextView minSP = (TextView) sellingPriceDialog.findViewById(R.id.minSP);
+        final TextView maxSP = (TextView) sellingPriceDialog.findViewById(R.id.maxSP);
+
+        sp.setText(String.valueOf(product.getSellingRate()));
+        minSP.setText(String.valueOf(product.getMinSellingRate()));
+        maxSP.setText(String.valueOf(product.getMaxSellingRate()));
+
+        currentSP = product.getSellingRate();
+        enter.setOnClickListener(new View.OnClickListener() {
+            public double value  = 0.0;
+
+            @Override
+            public void onClick(View v) {
+                try
+                {
+                     value = Double.valueOf(sp.getText().toString());
+
+                     if(value>=product.getMinSellingRate() && value<=product.getMaxSellingRate())
+                     {
+                         currentSP = value;
+                         product.setSellingRate(currentSP);
+                         notifyDataSetChanged();
+                         holder.price.setText(String.valueOf(product.getMRP()));
+                         sellingPriceDialog.dismiss();
+                     }
+                     else
+                     {
+                         if(value<product.getMinSellingRate())
+                         {
+                             sp.setError("Entered value is less than Min S.P");
+                         }
+                         if(value>product.getMaxSellingRate())
+                         {
+                             sp.setError("Entered value greater than Max S.P");
+                         }
+
+                     }
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception = "+e);
+
+                    sp.setError("Invalid entry..");
+
+
+                    Toast.makeText(context, "Invalid entry..", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        sellingPriceDialog.show();
+    }
+    private void setQuantity(final Product product, final Holder holder) {
+        final Dialog dialog = new Dialog(context);
+        dialog .setContentView(R.layout.choose_selling_rate);
+
+        final EditText sp = (EditText) dialog .findViewById(R.id.selling_price);
+        Button enter = (Button) dialog .findViewById(R.id.enter);
+        final TextView minSP = (TextView) dialog .findViewById(R.id.minSP);
+        final TextView maxSP = (TextView) dialog .findViewById(R.id.maxSP);
+        final TextView minSPLabel = (TextView) dialog .findViewById(R.id.minSp_label);
+        final TextView maxSPLabel = (TextView) dialog .findViewById(R.id.maxSP_label);
+        TextView label = (TextView) dialog.findViewById(R.id.label);
+        label.setText("Enter Quantity");
+
+
+        maxSP.setVisibility(View.INVISIBLE);
+        maxSPLabel.setVisibility(View.INVISIBLE);
+
+        minSPLabel.setText("Available stock");
+        if(product.getQty()==null) {
+            sp.setText(String.valueOf("0"));
+        }else
+        {
+            sp.setText(String.valueOf(product.getQty()));
+        }
+
+        minSP.setText(String.valueOf(product.getAvailableStock()));
+
+
+
+        enter.setOnClickListener(new View.OnClickListener() {
+            public double value  = 0.0;
+
+            @Override
+            public void onClick(View v) {
+                try
+                {
+                    value = Double.valueOf(sp.getText().toString());
+
+                    if(value<=product.getAvailableStock() )
+                    {
+
+
+                        product.setQty(Long.valueOf((long) value));
+                        holder.quantity.setText(String.valueOf(product.getQty()));
+
+                        holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", value * product.getMRP())));
+                        holder.finalPrice.setText(String.valueOf(String.format("%.2f", value * product.getMRP())));
+
+
+                        dialog .dismiss();
+                    }
+                    else
+                    {
+
+                            sp.setError("Entered value greater than available stock");
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception = "+e);
+
+                    sp.setError("Invalid entry..");
+
+
+                    Toast.makeText(context, "Invalid entry..", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        dialog .show();
+    }
+
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
@@ -539,11 +651,7 @@ public class ProductAdapter extends BaseAdapter   {
 
             if (discountType.toLowerCase().contains("total")) {
 
-                holder.finalPrice.setVisibility(View.GONE);
-                holder.discountLabel.setVisibility(View.GONE);
-                holder.discount.setVisibility(View.GONE);
 
-            } else {
                 holder.finalPrice.setVisibility(View.VISIBLE);
                 holder.discountLabel.setVisibility(View.VISIBLE);
                 holder.discount.setVisibility(View.VISIBLE);
@@ -558,10 +666,25 @@ public class ProductAdapter extends BaseAdapter   {
         dialog.setContentView(R.layout.number_picker);
         NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.np);
         final TextView q = (TextView) dialog.findViewById(R.id.tv);
-        q.setText(String.valueOf("Set selling price"));
+        q.setText(String.valueOf("Choose quantity"));
+        String s = "0";
+
         numberPicker.setMinValue(0);
         //Specify the maximum value/number of NumberPicker
-        String s = String.valueOf(prod.getAvailableStock());
+
+        if(BizUtils.getTransactionType(DashboardActivity.currentSaleType)==Store.getInstance().SALE){
+            s = String.valueOf(prod.getAvailableStock());
+            if(prod.getAvailableStock()<=0)
+            {
+                s = "0";
+            }
+
+        }
+        else
+        {
+             s = String.valueOf("1000");
+        }
+
         numberPicker.setMaxValue(Integer.parseInt(s));
 
         //Gets whether the selector wheel wraps when reaching the min/max value.
@@ -575,10 +698,10 @@ public class ProductAdapter extends BaseAdapter   {
                 x = 0;
 
                 try {
-                    x = Integer.parseInt(holder.quantity.getText().toString());
+                    x = newVal;
                     if (x >= 1) {
 
-                        x = newVal;
+
                         prod.setQty(Long.valueOf(x));
                         holder.quantity.setText(String.valueOf(x));
 
@@ -588,6 +711,7 @@ public class ProductAdapter extends BaseAdapter   {
                         Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
+                    System.out.println("Exception = "+e);
                     Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -603,16 +727,13 @@ public class ProductAdapter extends BaseAdapter   {
         NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.np);
         final TextView q = (TextView) dialog.findViewById(R.id.tv);
         q.setText("Choose Selling Rate");
-
         String m = String.valueOf(prod.getMinSellingRate());
-        numberPicker.setMinValue(Integer.parseInt(m));
+        numberPicker.setMinValue(Integer.parseInt("1"));
         //Specify the maximum value/number of NumberPicker
         String s = String.valueOf(prod.getMaxSellingRate());
         numberPicker.setMaxValue(Integer.parseInt(s));
-
         //Gets whether the selector wheel wraps when reaching the min/max value.
         numberPicker.setWrapSelectorWheel(true);
-
         //Set a value change listener for NumberPicker
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -626,7 +747,6 @@ public class ProductAdapter extends BaseAdapter   {
                     if (x >= 1) {
 
                         x = newVal;
-
                         prod.setSellingRate((x));
                         holder.price.setText(String.valueOf(x));
 
@@ -640,7 +760,13 @@ public class ProductAdapter extends BaseAdapter   {
                 }
             }
         });
-
         dialog.show();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        Log.d(this.getClass().getSimpleName(),"Data set changed");
+
     }
 }

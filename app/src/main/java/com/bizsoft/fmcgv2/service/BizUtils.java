@@ -601,14 +601,12 @@ public class BizUtils {
         {
             i=1;
         }
-        if(discountType.toLowerCase().contains("grand"))
+        if(discountType.toLowerCase().contains("grand") || discountType.toLowerCase().contains("individual"))
         {
             i=2;
         }
-        if(discountType.toLowerCase().contains("individual"))
-        {
-            i=3;
-        }
+
+
         return i;
     }
 
@@ -1771,6 +1769,8 @@ public class BizUtils {
 
                 System.out.println("Sale of return size " + customerList.get(i).getSaleReturn().size());
 
+                System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
+
                 System.out.println("Sale retutn of cus size " + customerList.get(i).getSaleReturnOfCustomer().size());
                 System.out.println("Receipt size " + customerList.get(i).getReceipts().size());
                 System.out.println("Payments size " + customerList.get(i).getPayments().size());
@@ -1846,6 +1846,31 @@ public class BizUtils {
                             if (status) {
                                 System.out.println("SO pending saved");
                                 customerList.get(i).getsOPendingList().get(x).setSynced(true);
+                                sync = true;
+                                try {
+                                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                                    System.err.println("DB Updated..on local storage");
+                                } catch (ClassNotFoundException e) {
+
+                                    System.err.println("Unable to write to DB");
+                                }
+                            } else {
+                                System.out.println("SO Pending Not  saved ");
+                            }
+                        }
+                    }
+
+                }
+                System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
+                if (customerList.get(i).getSOPListDelete().size() > 0) {
+                    for (int x = 0; x < customerList.get(i).getSOPListDelete().size(); x++) {
+                        if (customerList.get(i).getSOPListDelete().get(x).isSynced()) {
+                            System.out.println("SO pendling 'delete' already synced");
+                        } else {
+                           boolean status = SignalRService.salesOrderDelete(customerList.get(i).getsOPendingList().get(x));
+                            if (status) {
+                                System.out.println("SO pending deleted");
+                                customerList.get(i).getSOPListDelete().get(x).setSynced(true);
                                 sync = true;
                                 try {
                                     BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
@@ -2064,10 +2089,12 @@ public class BizUtils {
             BizUtils bizUtils = new BizUtils();
             String refNo;
             String currentSaleType = "";
+            String roundOffValue = "0.00";
             if(sale!=null) {
                 refNo = sale.getRefCode();
                 paymentModeValue = sale.getPaymentMode();
                 currentSaleType = "sale";
+                roundOffValue = String.format("%.2f",sale.getRoundOffValue());
 
             }
             if(saleOrder !=null)
@@ -2076,13 +2103,14 @@ public class BizUtils {
 
                 paymentModeValue = saleOrder.getPaymentMode();
                 currentSaleType = "sale order";
+                roundOffValue = String.format("%.2f",saleOrder.getRoundOffValue());
             }
             if(saleReturn !=null)
             {
                 refNo = saleReturn.getRefCode();
                 paymentModeValue = saleReturn.getPaymentMode();
                 currentSaleType = "sale return";
-
+                roundOffValue = String.format("%.2f",saleReturn.getRoundOffValue());
             }
 
 
@@ -2384,6 +2412,8 @@ public class BizUtils {
                 gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
                 gt.addCell(getCell("Discount ( " + disAmnt + ") % " + gstSpace + appDiscount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
             }
+            gt.addCell(getCell("      ", PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("Round Off RM " + gstSpace + roundOffValue + "  ", PdfPCell.ALIGN_RIGHT));
 
             gt.addCell(getCell("      ", PdfPCell.ALIGN_RIGHT));
             gt.addCell(getCell("Grand Total RM " + mgSpace + DashboardActivity.grandTotal.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));

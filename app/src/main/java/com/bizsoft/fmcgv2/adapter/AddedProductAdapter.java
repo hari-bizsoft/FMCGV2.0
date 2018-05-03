@@ -159,6 +159,17 @@ public class AddedProductAdapter extends BaseAdapter {
         holder.discountLabel.setText("Discount "+String.valueOf(dp) +" % = ");
         holder.discountLabel.setText("Discount "+String.valueOf(String.format("%.2f",dp))+" % = ");
 
+        if(DashboardActivity.discountType.toLowerCase().contains("no"))
+        {
+            holder.discountLabel.setVisibility(View.INVISIBLE);
+            holder.discountAmount.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            holder.discountLabel.setVisibility(View.VISIBLE);
+            holder.discountAmount.setVisibility(View.VISIBLE);
+
+        }
 
 
         if(product.getFinalPrice()==0)
@@ -413,12 +424,15 @@ public class AddedProductAdapter extends BaseAdapter {
             tender =  fromCustomer  - grandTotal;
         }
 
+
         Store.getInstance().subTotal.setText(String.valueOf(String.format("%.2f",subTotal)));
         Store.getInstance().GST.setText(String.valueOf( String.format("%.2f", gst)));
-        Store.getInstance().grandTotal.setText(String.valueOf( String.format("%.2f", grandTotal)));
+        Store.getInstance().grandTotal.setText(String.valueOf( String.format("%.2f", DashboardActivity.roundOff(grandTotal))));
         Store.getInstance().tenderAmount.setText(String.valueOf(String.format("%.2f", tender)));
-        DashboardActivity.fromCustomer.setText("0.00");
+        DashboardActivity.fromCustomer.setText("0");
+        DashboardActivity.roundOffValue.setText("0");
 
+        Store.getInstance().grandTotalRef = grandTotal;
 
 
         DashboardActivity.addedProductListView.requestFocus();

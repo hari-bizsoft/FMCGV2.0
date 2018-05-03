@@ -21,7 +21,15 @@ public class Sale {
     boolean synced;
     double discountPercentage;
     String discountType;
+    double roundOffValue;
 
+    public double getRoundOffValue() {
+        return roundOffValue;
+    }
+
+    public void setRoundOffValue(double roundOffValue) {
+        this.roundOffValue = roundOffValue;
+    }
     public String getDiscountType() {
         return discountType;
     }

@@ -20,6 +20,15 @@ public class SaleOrder {
     String refCode;
     boolean synced;
     double discountPercentage;
+    double roundOffValue;
+
+    public double getRoundOffValue() {
+        return roundOffValue;
+    }
+
+    public void setRoundOffValue(double roundOffValue) {
+        this.roundOffValue = roundOffValue;
+    }
 
     public double getDiscountPercentage() {
         return discountPercentage;

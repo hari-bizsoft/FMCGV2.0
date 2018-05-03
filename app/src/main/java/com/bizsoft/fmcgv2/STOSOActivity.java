@@ -62,6 +62,8 @@ public class STOSOActivity extends AppCompatActivity {
     BizUtils bizUtils;
     FloatingActionButton menu;
     TextView discountValue;
+    private Button delete;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,9 @@ public class STOSOActivity extends AppCompatActivity {
         menu  = (FloatingActionButton) findViewById(R.id.menu);
         discountValue = (TextView) findViewById(R.id.discount_value);
         bizUtils = new BizUtils();
+        delete = (Button) findViewById(R.id.delete);
+
+
 
         getSupportActionBar().setTitle("Covert To Sale");
 
@@ -102,6 +107,39 @@ public class STOSOActivity extends AppCompatActivity {
 
         adapter = new SalesAdapter(STOSOActivity.this,products);
         listView.setAdapter(adapter);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for(  int i=0;i<Store.getInstance().customerList.size();i++) {
+
+                    System.out.println(Store.getInstance().customerList.get(i).getLedger().getId() + "=====================" + currentCustomer.getLedger().getId());
+                    System.out.println(Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()));
+                    if (Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()) == 0) {
+
+                        System.out.println("item delete");
+                        Store.getInstance().customerList.get(i).getSOPListDelete().add(currentSaleOrder);
+                        Toast.makeText(STOSOActivity.this, "Sale Order Deleted", Toast.LENGTH_SHORT).show();
+
+                        try {
+                            BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                            System.out.println("DB Updated..on local storage");
+
+
+                        } catch (ClassNotFoundException e) {
+                            System.err.println("Unable to write to DB");
+                        }
+
+                        clear();
+                    }
+                }
+
+
+
+            }
+        });
+
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

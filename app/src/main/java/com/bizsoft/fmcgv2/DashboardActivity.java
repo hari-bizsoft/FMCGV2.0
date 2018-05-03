@@ -89,6 +89,7 @@ import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
 public class DashboardActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_CONSTANT = 777;
+    public static ArrayAdapter productAdapter;
     String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
     int permsRequestCode = 200;
 
@@ -97,14 +98,14 @@ public class DashboardActivity extends AppCompatActivity {
     ArrayList<String> saleTypeList = new ArrayList<String>();
     public static String currentSaleType;
     ListView customerListView;
-    EditText customerNameKey;
+    AutoCompleteTextView customerNameKey;
     TextView customerName;
-    EditText stockGroupKey;
+    AutoCompleteTextView stockGroupKey;
     TextView stockGroupName;
     private ListView stockHomeListView;
     EditText productNameKey;
     public static TextView productName;
-    private ListView productListView;
+    public static ListView productListView;
     public static ListView addedProductListView;
     ImageView sync;
     Button save;
@@ -175,6 +176,9 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayList<String> gstTypeList;
     private ArrayList<String> discountTypeList;
     private Button printCC;
+    public  static  TextView roundOffText;
+    public  static   EditText roundOffValue;
+    public  static   TextView roundOffLabel;
 
 
     @Override
@@ -212,9 +216,9 @@ public class DashboardActivity extends AppCompatActivity {
         saleType = (Spinner) findViewById(R.id.sale_type_spinner);
         customerSearch = (ImageButton) findViewById(R.id.customer_search);
         productSearch = (ImageButton) findViewById(R.id.product_search);
-        customerNameKey = (EditText) findViewById(R.id.customer_name_key);
+        customerNameKey = (AutoCompleteTextView) findViewById(R.id.customer_name_key);
         customerName = (TextView) findViewById(R.id.dealer_name);
-        stockGroupKey = (EditText) findViewById(R.id.stock_group_key);
+        stockGroupKey = (AutoCompleteTextView) findViewById(R.id.stock_group_key);
         stockGroupName = (TextView) findViewById(R.id.stock_group_name);
         stockHomeSearch = (ImageButton) findViewById(R.id.stock_group_search);
         productNameKey = (EditText) findViewById(R.id.product_key);
@@ -227,6 +231,10 @@ public class DashboardActivity extends AppCompatActivity {
         discountLabel = (TextView) findViewById(R.id.discount_label);
         discountSpinnerLabel = (TextView) findViewById(R.id.discount_spinner_label);
         paymentLabel = (TextView) findViewById(R.id.paymode_label);
+        roundOffLabel = (TextView) findViewById(R.id.round_of_label);
+        roundOffText = (TextView) findViewById(R.id.round_off_text);
+        roundOffValue = (EditText) findViewById(R.id.round_off_value);
+
 
         cdl = (TextView) findViewById(R.id.cdl);
         bnl = (TextView) findViewById(R.id.bnl);
@@ -440,27 +448,76 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
 
+       roundOffValue.addTextChangedListener(new TextWatcher() {
+           double gt =0;
+           double rov=0;
+           String regex = "^(\\d*\\.)?\\d+$";
+           double finalAmount = 0;
+           boolean status = false;
+
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+               gt = Double.parseDouble(grandTotal.getText().toString());
+               rov =0;
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+               Log.d("Round OFF char",s.toString());
+               if(!s.toString().trim().matches(regex))
+               {
+                   Log.d("Round OFF char","Invalid Format");
+                  // roundOffText.setText(grandTotal.getText().toString());
+
+
+               }
+               else
+               {
+                   rov =  Double.parseDouble(s.toString());
+               }
+
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+
+
+               if(rov<=gt)
+               {
+                   finalAmount = gt - rov;
+
+                   roundOffText.setText(String.valueOf(String.format("%.2f",rov)));
+                   double x = roundOff(Double.parseDouble(subTotal.getText().toString()) + Double.parseDouble(GST.getText().toString()));
+                   grandTotal.setText(String.valueOf(String.format("%.2f",x-rov)));
+
+               }
+               else
+               {
+                   Toast.makeText(DashboardActivity.this, "Invalid Amount Entered", Toast.LENGTH_SHORT).show();
+               }
+
+
+           }
+       });
 
         discountValue.addTextChangedListener(new TextWatcher() {
 
             double gt =0;
             double dc  =0;
-
             double da =0;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                 tempGt = Store.getInstance().addedProductAdapter.grandTotal;
-
                 }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
                 try
                 {
-
                     if(TextUtils.isEmpty(discountValue.getText()))
                     {
                         dc =0;
@@ -504,7 +561,7 @@ public class DashboardActivity extends AppCompatActivity {
                 else
                 {
 
-                    grandTotal.setText(String.valueOf(String.format("%.2f",gt)));
+                    grandTotal.setText(String.valueOf(String.format("%.2f",roundOff(gt))));
                     appDiscount.setText(String.valueOf(String.format("%.2f",da)));
 
                 }
@@ -582,12 +639,46 @@ public class DashboardActivity extends AppCompatActivity {
 
            //new TransactionList().execute();
 
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Customer.getCustomerList());
+        customerNameKey.setAdapter(adapter);
+        customerNameKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) parent.getItemAtPosition(position);
+
+                new StoreCurrentCusDetails(selected).execute();
+                //Toast.makeText(DashboardActivity.this, ""+Customer.getCustomerList().get(position), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
       customerSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                customerNameKey.setText("");
 
                 String key = customerNameKey.getText().toString();
                 showCustomerList(key);
+            }
+        });
+
+        ArrayAdapter<String> StockGroupAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, StockGroup.getNamesWithID());
+        stockGroupKey.setThreshold(1);
+        stockGroupKey.setAdapter(StockGroupAdapter);
+        stockGroupKey.setThreshold(1);
+        stockGroupKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) parent.getItemAtPosition(position);
+
+                new StoreCurrentStockDetails(selected).execute();
+                //Toast.makeText(DashboardActivity.this, ""+Customer.getCustomerList().get(position), Toast.LENGTH_SHORT).show();
+
             }
         });
         stockHomeSearch.setOnClickListener(new View.OnClickListener() {
@@ -596,8 +687,6 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if (Store.getInstance().currentCustomer != null) {
                     String key = stockGroupKey.getText().toString();
-
-
 
                     showStockHome(key);
                 } else {
@@ -875,6 +964,29 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    public static double roundOff(double finalAmount) {
+        Log.d("Input", String.valueOf(finalAmount));
+        double x = finalAmount - (long) finalAmount;
+
+        int bd = (int) finalAmount;
+
+        x = x * 100;
+        int y = (int) x;
+        int r  = y%10;
+        int fd = 0;
+        if(r>5)
+        {
+            fd  = y + (10-r);
+        }
+        else
+        {
+            fd = y - r;
+        }
+
+        double result = bd + (fd*0.01);
+        Log.d("Round off ", String.valueOf(result));
+        return result;
+    }
 
 
     private void printLastSaved(String dc) {
@@ -1049,6 +1161,8 @@ public class DashboardActivity extends AppCompatActivity {
             saleOrder.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             saleOrder.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             saleOrder.setPaymentMode(paymentModeValue);
+           saleOrder.setRoundOffValue(Double.parseDouble(roundOffText.getText().toString()));
+
 
 
 
@@ -1121,6 +1235,7 @@ public class DashboardActivity extends AppCompatActivity {
             saleReturn.setBalance(Double.parseDouble(tenderAmountValue));
             saleReturn.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             saleReturn.setPaymentMode(paymentModeValue);
+            saleReturn.setRoundOffValue(Double.parseDouble(roundOffText.getText().toString()));
 
             int invce = 0;
             for(int i=0;i<Store.getInstance().customerList.size();i++)
@@ -1183,6 +1298,7 @@ public class DashboardActivity extends AppCompatActivity {
             sale.setBalance(Double.parseDouble(tenderAmountValue));
             sale.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             sale.setPaymentMode(paymentModeValue);
+            sale.setRoundOffValue(Double.parseDouble(roundOffText.getText().toString()));
 
             System.out.println("===============PAYMODE=========="+paymentModeValue);
             int invce = 0;
@@ -1556,6 +1672,7 @@ public class DashboardActivity extends AppCompatActivity {
             Store.getInstance().addedProductList.get(i).setDiscountPercentage(0.0);
             Store.getInstance().addedProductList.get(i).setFinalPrice(0);
             Store.getInstance().addedProductList.get(i).setResale(false);
+            Store.getInstance().addedProductList.get(i).setSellingRate(Store.getInstance().addedProductList.get(i).getSellingRateRef());
         }
 
         Store.getInstance().addedProductList.clear();
@@ -1803,7 +1920,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 product = tempProduct1.get(i);
                                 System.out.println("Id === " + product.getId());
                                 System.out.println("Reason === " + product.getParticulars());
-
+                                System.out.println("Selling rate === " + product.getSellingRate());
                                 //Validating reason field for sale return alone
                                 if(currentSaleType.toLowerCase().contains("return")) {
                                     if (TextUtils.isEmpty(product.getParticulars())) {
@@ -1836,6 +1953,7 @@ public class DashboardActivity extends AppCompatActivity {
                         for (int i = 0; i < tempProduct1.size(); i++) {
                             System.out.println("ID====================" + tempProduct1.get(i).getId());
                             System.out.println("QTY====================" + tempProduct1.get(i).getQty());
+                            System.out.println("Selling rate === " + tempProduct1.get(i).getSellingRate());
                             if (tempProduct1.get(i).getQty() != null) {
 
 
@@ -1857,6 +1975,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     product = tempProduct1.get(i);
                                     System.out.println("Id === " + product.getId());
                                     System.out.println("Reason === " + product.getParticulars());
+                                    System.out.println("SP === " + product.getSellingRate());
 
                                     if(currentSaleType.toLowerCase().contains("return")) {
                                         if (TextUtils.isEmpty(product.getParticulars())) {
@@ -2387,8 +2506,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         discountTypeList = new ArrayList<String>();
         discountTypeList.add("No Discount");
-        discountTypeList.add("Discount for grand total");
-        discountTypeList.add("Discount for individual products");
+        discountTypeList.add("Discount for grand total and individual products");
+
 
 
         // Drop down layout style - list view with radio button
@@ -2413,12 +2532,8 @@ public class DashboardActivity extends AppCompatActivity {
                     if(discountType.toLowerCase().contains("total"))
                     {
                         grandTotalDiscount();
+                        induvidualDiscount();
 
-
-                    }
-                    else
-                    {
-                       induvidualDiscount();
 
                     }
                 }
@@ -3543,6 +3658,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         String ra="0.00",ba="0.00";
         Double disV = 0.00;
+        double roundOffValue = 0.00;
         if(sale!=null) {
 
              ra = String.valueOf(String.format("%.2f", sale.getReceivedAmount()));
@@ -3550,6 +3666,7 @@ public class DashboardActivity extends AppCompatActivity {
              mgt = String.valueOf(String.format("%.2f", sale.getGrandTotal()));
             mainGst = sale.getGst();
              disV = sale.getDiscountValue();
+            roundOffValue =  sale.getRoundOffValue();
 
         }
          if(saleOrder !=null)
@@ -3560,6 +3677,7 @@ public class DashboardActivity extends AppCompatActivity {
             disV = saleOrder.getDiscountValue();
             mgt = String.valueOf(String.format("%.2f", saleOrder.getGrandTotal()));
             mainGst = saleOrder.getGst();
+            roundOffValue =  saleOrder.getRoundOffValue();
         }
         if(saleReturn !=null)
         {
@@ -3568,6 +3686,7 @@ public class DashboardActivity extends AppCompatActivity {
             disV = saleReturn.getDiscountValue();
             mgt = String.valueOf(String.format("%.2f", saleReturn.getGrandTotal()));
             mainGst = saleReturn.getGst();
+            roundOffValue =  saleReturn.getRoundOffValue();
         }
 
         int mgtL = mgt.length();
@@ -3640,7 +3759,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 BTPrint.PrintTextLine("Discount("+discountPer+"%) RM " + gstSpace + String.format("%.2f",disV));
         }
-
+        BTPrint.PrintTextLine("Round Off RM " + gstSpace + String.format("%.2f",roundOffValue));
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.PrintTextLine("Grand total " + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
 
@@ -4131,11 +4250,16 @@ public class DashboardActivity extends AppCompatActivity {
                                 double gt = Double.parseDouble(grandTotal.getText().toString());
                                 double fc = 0;
                                 try {
+
                                     fc = Double.parseDouble(fromCustomer.getText().toString());
+                                    if(TextUtils.isEmpty(fromCustomer.getText()))
+                                    {
+                                        fc =0;
+                                    }
                                     balance = fc - gt;
                                 } catch (Exception e) {
                                     fc = 0;
-                                    balance = 0;
+                                    balance = fc - gt;
                                 }
 
 
@@ -4214,10 +4338,10 @@ public class DashboardActivity extends AppCompatActivity {
     }
     private void induvidualDiscount() {
         discountValue.setText("0");
-        discountValue.setEnabled(false);
-        discountValue.setVisibility(View.GONE);
-        appDiscount.setVisibility(View.GONE);
-        discountLabel.setVisibility(View.GONE);
+        discountValue.setEnabled(true);
+        discountValue.setVisibility(View.VISIBLE);
+        appDiscount.setVisibility(View.VISIBLE);
+        discountLabel.setVisibility(View.VISIBLE);
     }
 
     private void grandTotalDiscount() {
@@ -4342,4 +4466,94 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    private class StoreCurrentCusDetails extends AsyncTask {
+        String name;
+        private Customer choosedCustomer;
+
+        public StoreCurrentCusDetails(String name) {
+
+            this.name = name;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+
+
+
+             choosedCustomer = null;
+            for(int i=0;i<Store.getInstance().customerList.size();i++)
+            {
+                System.out.println(name.toLowerCase()+"===="+Store.getInstance().customerList.get(i).getLedger().getId().toString());
+                System.out.println(name.toLowerCase().toString().contains(Store.getInstance().customerList.get(i).getLedger().getId().toString()));
+                if(name.toLowerCase().toString().contains(Store.getInstance().customerList.get(i).getLedger().getId().toString()))
+                {
+                    choosedCustomer  = Store.getInstance().customerList.get(i);
+                    Store.getInstance().currentCustomer = choosedCustomer.getLedgerName();
+
+                    Store.getInstance().currentCustomerId = choosedCustomer.getLedger().getId();
+
+                    Store.getInstance().currentLedgerId = choosedCustomer.getLedger().getId();
+
+
+                    Store.getInstance().currentCustomerPosition = i;
+
+
+
+
+                }
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            lockAllUIComponents();
+            customerName.setText(String.valueOf(choosedCustomer.getLedger().getLedgerName()).toUpperCase());
+            Toast.makeText(DashboardActivity.this, "Customer Name : " + Store.getInstance().currentCustomer, Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    private class StoreCurrentStockDetails extends AsyncTask {
+        String name;
+        private StockGroup choosedStockGroup;
+        public StoreCurrentStockDetails(String selected) {
+            this.name = selected;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            for(int i=0;i<Store.getInstance().stockGroupList.size();i++) {
+
+                if(name.toLowerCase().toString().contains(Store.getInstance().stockGroupList.get(i).getGroupCode().toString()))
+                {
+                    choosedStockGroup = Store.getInstance().stockGroupList.get(i);
+
+
+
+                    Store.getInstance().currentStockGroup = choosedStockGroup.getStockGroupName();
+                    Store.getInstance().currentStockGroupId = choosedStockGroup.getId();
+
+
+                    System.out.println("---currentStockGroupId==" + Store.getInstance().currentStockGroupId);
+                }
+
+
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            stockGroupName.setText(String.valueOf(Store.getInstance().currentStockGroup).toUpperCase());
+        }
+    }
 }
