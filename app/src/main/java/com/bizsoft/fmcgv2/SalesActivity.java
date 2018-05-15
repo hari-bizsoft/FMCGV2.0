@@ -92,7 +92,7 @@ public class SalesActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(SalesActivity.this);
+                bizUtils.bizMenu(SalesActivity.this);
             }
         });
 

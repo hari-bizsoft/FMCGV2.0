@@ -8,18 +8,20 @@
     tools:context="com.bizsoft.fmcgv2.ProductSpecActivity">
 
     <EditText
-        android:id="@+id/date_chooser_text_box"
+        android:id="@+id/from_date_chooser_text_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="date"
+
+        android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView86"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/radiogroup" />
 
     <TextView
         android:id="@+id/textView86"
@@ -32,9 +34,9 @@
         android:textColor="@android:color/background_dark"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/date_chooser_text_box"
+        app:layout_constraintBottom_toBottomOf="@+id/from_date_chooser_text_box"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/from_date_chooser_text_box" />
 
     <ImageButton
         android:id="@+id/date_chooser"
@@ -44,9 +46,9 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_today_black_24dp"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/date_chooser_text_box"
-        app:layout_constraintEnd_toEndOf="@+id/date_chooser_text_box"
-        app:layout_constraintTop_toTopOf="@+id/date_chooser_text_box"/>
+        app:layout_constraintBottom_toBottomOf="@+id/from_date_chooser_text_box"
+        app:layout_constraintEnd_toEndOf="@+id/from_date_chooser_text_box"
+        app:layout_constraintTop_toTopOf="@+id/from_date_chooser_text_box"/>
 
     <TextView
         android:id="@+id/textView87"
@@ -59,7 +61,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_chooser_text_box"/>
+        app:layout_constraintTop_toBottomOf="@+id/from_date_chooser_text_box"/>
 
     <EditText
         android:id="@+id/product_name"
@@ -111,7 +113,8 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
-        android:text="1"
+        android:focusableInTouchMode="false"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView89"
         app:layout_constraintTop_toBottomOf="@+id/product_name"/>
@@ -209,4 +212,51 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_menu_black_24dp"/>
+
+
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Choose stock process issue Type"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" >
+
+        <RadioButton
+            android:id="@+id/packaging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Packaging"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <RadioButton
+            android:id="@+id/dispatching"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Dispatching"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+    </RadioGroup>
 </android.support.constraint.ConstraintLayout>

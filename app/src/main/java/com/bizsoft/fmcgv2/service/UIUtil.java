@@ -49,7 +49,7 @@ public class UIUtil {
                 public void onClick(View v) {
 
                     BizUtils bizUtils = new BizUtils();
-                    bizUtils.showMenu(context);
+                    bizUtils.bizMenu(context);
 
                 }
             });

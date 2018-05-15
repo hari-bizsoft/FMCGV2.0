@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,6 @@ import java.util.regex.Pattern;
 public class FileMangerAdpater extends BaseAdapter{
 
     Context context;
-
     LayoutInflater layoutInflater= null;
     public ArrayList<BizFile> fileList = new ArrayList<BizFile>();
     private Dialog dialog;
@@ -154,6 +154,7 @@ public class FileMangerAdpater extends BaseAdapter{
 
 
 
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,8 +166,6 @@ public class FileMangerAdpater extends BaseAdapter{
                         .withSubject("Invoice copy")
                         .withBody("This is a digitally generated invoice copy from ."+ company.getCompanyName())
                         .withAttachments(absolutePath)
-
-
                         .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                             @Override
                             public void onSuccess() {

@@ -746,15 +746,20 @@ public class MainActivity extends AppCompatActivity {
 
 
             System.out.println("mHubProxyCaller = "+ Store.getInstance().mHubProxyCaller);
-            if(Boolean.valueOf(result)) {
 
-                connect();
+            if(result!=null) {
+                if (Boolean.valueOf(result)) {
+
+                    connect();
+                } else {
+                    message.setText("Waiting for approval..");
+                    Toast.makeText(context, "Waiting for approval...", Toast.LENGTH_SHORT).show();
+
+                }
             }
-            else
-            {
-                message.setText("Waiting for approval..");
-                Toast.makeText(context, "Waiting for approval...", Toast.LENGTH_SHORT).show();
-
+            else {
+                message.setText("Server unreachable");
+                Toast.makeText(context, "Server unreachable...", Toast.LENGTH_SHORT).show();
             }
 
 

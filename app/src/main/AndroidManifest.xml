@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.bizsoft.fmcgv2">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.bizsoft.fmcgv2">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
-    <supports-screens android:xlargeScreens="true"/>
+    <supports-screens android:xlargeScreens="true" />
 
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
     <uses-permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+        android:protectionLevel="signature"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -36,81 +38,72 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".DashboardActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".CustomerActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".AddCustomerActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".SalesActivity">
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".SalesOrderActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".BTLib.BTDeviceList"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".BTLib.BTPrint"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ReportActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".PrintPreview"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ReprintActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" ></activity>
         <activity
             android:name=".InvoiceListActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".SalesReturnActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ReceiptActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".PaymentActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
-        <activity android:name=".service.BlockPage"/>
-        <activity android:name=".DownloadDataActivity">
-        </activity>
-        <activity android:name=".STOSOActivity">
-        </activity>
-        <activity android:name=".AppActivity">
-        </activity>
-        <activity android:name=".DealerActivity">
-        </activity>
-        <activity android:name=".ProductSpecActivity">
-        </activity>
-        <activity android:name=".BankActivity">
-        </activity>
-        <activity android:name=".CreateBankActivity">
-        </activity>
-        <activity android:name=".ProductListActivity">
-        </activity>
-        <activity android:name=".AddProductActivity">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".service.BlockPage" />
+        <activity android:name=".DownloadDataActivity"
+            android:configChanges="keyboardHidden|orientation"></activity>
+        <activity android:name=".STOSOActivity"></activity>
+        <activity android:name=".AppActivity"></activity>
+        <activity android:name=".DealerActivity"></activity>
+        <activity android:name=".ProductSpecActivity"></activity>
+        <activity android:name=".BankActivity"></activity>
+        <activity android:name=".CreateBankActivity"></activity>
+        <activity android:name=".ProductListActivity"></activity>
+        <activity android:name=".AddProductActivity"></activity>
+        <activity android:name=".StockReportActivity"
+            android:configChanges="keyboardHidden|orientation"
+            ></activity>
     </application>
 
 </manifest>

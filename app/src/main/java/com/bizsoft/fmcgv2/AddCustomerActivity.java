@@ -32,7 +32,7 @@ public class AddCustomerActivity extends AppCompatActivity {
     EditText telephoneNumber,email,opBalance;
     Spinner accType;
     String chooosedAcType;
-    private ArrayList<String> accTypeList;
+    public static ArrayList<String> accTypeList;
 
     private String myAction;
     int position;
@@ -210,13 +210,18 @@ public class AddCustomerActivity extends AppCompatActivity {
             status = false;
             mobileNumber.setError("Field cannot be empty");
         }
+        if(TextUtils.isEmpty(chooosedAcType))
+        {
+            status = false;
+            Toast.makeText(this, "Please choose account type as Credit/Debit", Toast.LENGTH_SHORT).show();
+        }
 
 
 
 
         if(status)
         {
-    Network network = Network.getInstance(AddCustomerActivity.this);
+            Network network = Network.getInstance(AddCustomerActivity.this);
             System.out.println("===="+network.isOnline());
 
             if(!network.isOnline())

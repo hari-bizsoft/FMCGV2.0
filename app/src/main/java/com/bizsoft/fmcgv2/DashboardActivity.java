@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -297,7 +299,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-
+        BizUtils.windowDetails(DashboardActivity.this);
         //clearCategory.setVisibility(View.INVISIBLE);
         clearCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,17 +340,16 @@ public class DashboardActivity extends AppCompatActivity {
 
         }
         if (paymentModeValue==null)
-        {
+            {
 
 
-            fromCustomerWatcher = new TextWatcher() {
+                fromCustomerWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+
                 if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
-
                     if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque"))) {
-
                         if (!currentSaleType.toLowerCase().contains("order")) {
                             save.setEnabled(false);
                             save.setBackgroundColor(getResources().getColor(R.color.grey));
@@ -379,9 +380,6 @@ public class DashboardActivity extends AppCompatActivity {
 
                     if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") ))
                     {
-
-
-
                         if (Store.getInstance().fromCustomer.getText() != null) {
                             double balance = 0;
                             if (!Store.getInstance().fromCustomer.getText().toString().equals("") || TextUtils.isEmpty(Store.getInstance().fromCustomer.getText().toString())) {
@@ -398,7 +396,12 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                                 if (balance < 0) {
-                                    Toast.makeText(DashboardActivity.this, "Invalid amount received from customer", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(DashboardActivity.this, "Invalid amount received from customer", Toast.LENGTH_SHORT).show();
+                                    //fromCustomer.setError("Invalid Amount");
+                                    //fromCustomer.setSelection(fromCustomer.getText().length());
+                                    note.setText("Get amount greater than "+String.valueOf(String.format("%.2f", gt)));
+                                    note.setTextColor(Color.RED);
+
                                     save.setEnabled(false);
                                     save.setBackgroundColor(getResources().getColor(R.color.grey));
                                     preview.setEnabled(false);
@@ -406,19 +409,23 @@ public class DashboardActivity extends AppCompatActivity {
                                     preview.setBackgroundColor(getResources().getColor(R.color.grey));
 
                                 } else {
+                                    note.setText(getString(R.string.cfc_note));
+                                    note.setTextColor(Color.BLUE);
+
                                     save.setEnabled(true);
                                     save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                    tenderAmount.setText(String.valueOf(String.format("%.2f", balance)));
 
+                                    tenderAmount.setText(String.valueOf(String.format("%.2f", balance)));
+                                    if(balance<0)
+                                    {
+                                        tenderAmount.setText(String.valueOf(String.format("%.2f", 0.00)));
+                                    }
                                     preview.setEnabled(true);
                                     Log.d("Preview", "Enabled 4");
                                     preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
                                 }
-
-
                             }
-
                         }
                     }
 
@@ -491,7 +498,8 @@ public class DashboardActivity extends AppCompatActivity {
                    finalAmount = gt - rov;
 
                    roundOffText.setText(String.valueOf(String.format("%.2f",rov)));
-                   double x = roundOff(Double.parseDouble(subTotal.getText().toString()) + Double.parseDouble(GST.getText().toString()));
+                   double x = roundOff(Double.parseDouble(subTotal.getText().toString()) + Double.parseDouble(GST.getText().toString()) -  Double.parseDouble(appDiscount.getText().toString()));
+
                    grandTotal.setText(String.valueOf(String.format("%.2f",x-rov)));
 
                }
@@ -572,7 +580,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                //grandTotal.setText(String.valueOf(gt));
+                grandTotal.setText(String.valueOf(roundOff(gt)));
             }
         });
 
@@ -702,7 +710,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 System.out.println("Stock Group Id-------"+Store.getInstance().currentStockGroupId);
                 if (Store.getInstance().currentStockGroup != null && Store.getInstance().currentStockGroupId!=null ) {
-                    String key = productNameKey.getText().toString();
+                    String key = productNameKey.getText().toString().toLowerCase();
 
 
                     showProductListNew(key, Store.getInstance().currentStockGroupId);
@@ -781,7 +789,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     if (storeOffline(Store.getInstance().customerList.get(i))) {
                                         System.out.println("Sale order Added to offline list of customer");
 
-                                        clearData();
+                                        clearWOConfirmation();
                                     }
 
                                     lastSavedBillType = currentSaleType;
@@ -836,7 +844,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                                     if (storeOffline(Store.getInstance().customerList.get(i))) {
-                                        clearData();
+                                        clearWOConfirmation();
                                         System.out.println("Sale  return  Added to offline list of customer");
                                     }
                                     lastSavedBillType = currentSaleType;
@@ -889,7 +897,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     Store.getInstance().customerList.get(i).sale.addAll(getCurrentProducts());
                                     Store.getInstance().addedProductForSales.addAll(getCurrentProducts());
                                     if (storeOffline(Store.getInstance().customerList.get(i))) {
-                                        clearData();
+                                        clearWOConfirmation();
                                         System.out.println("Sales Added to offline list of customer");
                                      }
                                     lastSavedBillType = currentSaleType;
@@ -976,11 +984,32 @@ public class DashboardActivity extends AppCompatActivity {
         int fd = 0;
         if(r>5)
         {
-            fd  = y + (10-r);
+            if(r<8)
+            {
+                if(r==8)
+                {
+                    fd = y + (10 - r);
+                }
+                else {
+                    fd = y - (r -5);
+                }
+
+            }
+            else {
+                fd = y + (10 - r);
+            }
         }
         else
         {
-            fd = y - r;
+            if(r<3)
+            {
+                fd = y - r;
+            }
+            else
+            {
+                fd = y + (5-r);
+            }
+
         }
 
         double result = bd + (fd*0.01);
@@ -1165,14 +1194,11 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-
-
             double dc = 0;
             if(!TextUtils.isEmpty(discountValue.getText()) )
             {
 
                     dc = Double.parseDouble(appDiscount.getText().toString());
-
                     saleOrder.setDiscountPercentage(Double.parseDouble(discountValue.getText().toString()));
 
             }
@@ -1338,6 +1364,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
             customer.getSalesOfCustomer().add(sale);
             if (customer.getSalesOfCustomer().size() > beforeAdd) {
+
                 status = true;
                 bizUtils.updateStock(sale);
                 bizUtils.updateOPBal(customer,sale);
@@ -1420,7 +1447,6 @@ public class DashboardActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
             }
 
-
             SharedPreferences.Editor editor = permissionStatus.edit();
             editor.putBoolean(WRITE_EXTERNAL_STORAGE, true);
             editor.commit();
@@ -1452,7 +1478,6 @@ public class DashboardActivity extends AppCompatActivity {
         {
             refcode = Store.getInstance().user.getRTRefCode().substring(5,10);
         }
-
 
         System.out.println("Hexa ref code = "+refcode);
         String result = new String();
@@ -1681,6 +1706,8 @@ public class DashboardActivity extends AppCompatActivity {
         chequeNo.setText("");
         chequeDate.setText("");
         bankName.setText("");
+        stockGroupKey.setText("");
+        customerNameKey.setText("");
         savedCurrentTransaction = true;
 
     }
@@ -1847,8 +1874,22 @@ public class DashboardActivity extends AppCompatActivity {
         final ArrayList<Product> tempProduct1 = new ArrayList<Product>();
         ArrayList<Product> tempProduct = new ArrayList<Product>();
         dialog.setTitle("Product List");
-        tempProduct.addAll(Store.getInstance().productList);
-        System.out.println("product size -=-----" + Store.getInstance().productList.size());
+
+
+        ArrayList<Product> p = new ArrayList<>();
+        if(BizUtils.getTransactionType(DashboardActivity.currentSaleType)==Store.getInstance().SALE) {
+            for (int i = 0; i < Store.getInstance().productList.size(); i++) {
+                if (Store.getInstance().productList.get(i).getAvailableStock() > 0) {
+                    p.add(Store.getInstance().productList.get(i));
+                }
+            }
+        }
+        else
+        {
+            p.addAll(Store.getInstance().productList);
+        }
+        tempProduct.addAll(p);
+        System.out.println("product size -=-----" + p.size());
 
 
         System.out.println("tempProduct Group Size = " + Store.getInstance().stockGroupList.size());
@@ -2160,182 +2201,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-//Currently unused
-    public void showProductList(String key, Long currentStockGroupId) {
 
-
-        final Dialog dialog = new Dialog(DashboardActivity.this);
-        final ArrayList<Product> tempProduct1 = new ArrayList<Product>();
-        ArrayList<Product> tempProduct = new ArrayList<Product>();
-
-
-        dialog.setTitle("Product List");
-        tempProduct.addAll(Store.getInstance().productList);
-
-
-        System.out.println("product size -=-----"+Store.getInstance().productList.size());
-
-
-
-        System.out.println("tempProduct Group Size = " + Store.getInstance().stockGroupList.size());
-
-        System.out.println("Size of sale = " + Store.getInstance().addedProductForSales.size());
-        for (int c = 0; c < Store.getInstance().addedProductForSales.size(); c++) {
-            System.out.println("Test 1 - Sale item ======= " + Store.getInstance().addedProductForSales.get(c).getProductName() + "=====" + Store.getInstance().addedProductForSales.get(c).getQty());
-        }
-
-        for (int i = 0; i < tempProduct.size(); i++) {
-            if (tempProduct.get(i).getProductName().toLowerCase().contains(key) || String.valueOf(tempProduct.get(i).getId()).contains(key) || String.valueOf(tempProduct.get(i).getItemCode()).contains(key)) {
-                if (currentStockGroupId == null) {
-
-                    Product prod = new Product();
-
-                    prod = tempProduct.get(i);
-
-                    tempProduct1.add(prod);
-                }
-
-                System.out.println("*************************"+tempProduct.get(i).getItemCode() );
-
-                if(currentStockGroupId!=null) {
-                    if (tempProduct.get(i).getStockGroupId().compareTo(currentStockGroupId) == 0) {
-
-                        System.out.println("Stock Group ID ---from Item--- A" + tempProduct.get(i).getStockGroupId());
-
-                        Product prod = new Product();
-
-                        prod = tempProduct.get(i);
-
-                        tempProduct1.add(prod);
-                    }
-                }
-                else
-                {
-                    System.out.println("Stock Group ID ---from Item--- NA"+tempProduct.get(i).getStockGroupId() );
-                }
-            }
-        }
-
-
-
-        System.out.println("Temp product -  current stock group id=== "+currentStockGroupId);
-        System.out.println("Prod Size === "+tempProduct1.size());
-        if(tempProduct1.size()==0)
-        {
-            dialog.setContentView(R.layout.no_result);
-        }
-        else
-        {
-            dialog.setContentView(R.layout.show_product_list_dialog);
-            productListView = (ListView) dialog.findViewById(R.id.listview);
-
-
-
-
-
-            Button add = (Button) dialog.findViewById(R.id.button);
-
-
-
-
-
-
-
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-
-                            if (Store.getInstance().addedProductList.size() == 0) {
-
-
-                        for (int i = 0; i < tempProduct1.size(); i++) {
-
-
-                            System.out.println("Product Quantity  ===== " + tempProduct1.get(i).getQty());
-                            if (tempProduct1.get(i).getQty() != null) {
-
-                                Product product = new Product();
-                                product = tempProduct1.get(i);
-                                System.out.println("Id === " + product.getId());
-                                System.out.println("Qty === " + product.getQty());
-                                System.out.println("Reason === " + product.getParticulars());
-
-
-                                if(product.getParticulars()==null)
-                                {
-                                    Toast.makeText(DashboardActivity.this, "reson empty", Toast.LENGTH_SHORT).show();
-                                }
-
-                                Store.getInstance().addedProductList.add(product);
-
-
-                            }
-                        }
-
-
-                        Store.getInstance().addedProductAdapter.notifyDataSetChanged();
-                    } else {
-                        for (int i = 0; i < tempProduct1.size(); i++) {
-                            System.out.println("ID====================" + tempProduct1.get(i).getId());
-                            System.out.println("QTY====================" + tempProduct1.get(i).getQty());
-                            if (tempProduct1.get(i).getQty() != null) {
-
-
-                                System.out.println("Size === " + Store.getInstance().addedProductList.size());
-
-
-                                boolean status = true;
-                                for (int j = 0; j < Store.getInstance().addedProductList.size(); j++) {
-
-                                    System.out.println(tempProduct1.get(i).getId() + "<==========>" + Store.getInstance().addedProductList.get(j).getId());
-                                    if (tempProduct1.get(i).getId() == Store.getInstance().addedProductList.get(j).getId()) {
-                                        status = false;
-                                    }
-
-
-                                }
-                                if (status) {
-                                    Product product = new Product();
-                                    product = tempProduct1.get(i);
-                                    System.out.println("Id === " + product.getId());
-                                    System.out.println("Reason === " + product.getParticulars());
-                                    Store.getInstance().addedProductList.add(product);
-                                    Store.getInstance().addedProductAdapter.notifyDataSetChanged();
-                                    System.out.println("Product does not exist..");
-                                }
-
-
-                                for (int j = 0; j < Store.getInstance().addedProductList.size(); j++) {
-
-                                    System.out.println("Added Product === " + Store.getInstance().addedProductList.get(j).getId());
-
-                                }
-
-
-                            }
-                        }
-
-                    }
-
-
-
-                    dialog.dismiss();
-
-                }
-            });
-
-
-            productListView.setAdapter(new ProductAdapter(DashboardActivity.this, tempProduct1));
-        }
-
-
-
-
-        dialog.show();
-
-    }
 
     public void setSaleType() {
         final ArrayList<String> genderList = new ArrayList<String>();
@@ -2506,7 +2372,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         discountTypeList = new ArrayList<String>();
         discountTypeList.add("No Discount");
-        discountTypeList.add("Discount for grand total and individual products");
+        discountTypeList.add("Grand Total & Individual Products");
 
 
 
@@ -2909,7 +2775,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    class Save extends AsyncTask {
+/*    class Save extends AsyncTask {
 
         Context context;
         String jsonStr = null;
@@ -3145,9 +3011,9 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-    }
+    }*/
 
-    public class SaveCustomer extends AsyncTask {
+/*    public class SaveCustomer extends AsyncTask {
         Context context;
         String jsonStr;
         String url;
@@ -3193,26 +3059,18 @@ public class DashboardActivity extends AppCompatActivity {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                 Gson gson = gsonBuilder.create();
-
-
                 Type collectionType = new TypeToken<AddCustomerResponse>() {
                 }.getType();
 
                 AddCustomerResponse customerRCollection = gson.fromJson(jsonStr, collectionType);
-
-
                 Store.getInstance().addCustomerResponse = (AddCustomerResponse) customerRCollection;
                 if (Store.getInstance().addCustomerResponse.isHasError()) {
                     Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
 
-
                 } else {
                     Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
-
                     this.customers.setId(Store.getInstance().addCustomerResponse.getId());
-
                     int size = Store.getInstance().customerList.size();
-
                     System.out.println("Received ID " + Store.getInstance().addCustomerResponse.getId());
 
                     Store.getInstance().customerList.get(size - 1).setId(Store.getInstance().addCustomerResponse.getId());
@@ -3277,9 +3135,6 @@ public class DashboardActivity extends AppCompatActivity {
                             newcustomer = false;
                             System.out.println("Called save payments");
                             for (int z = 0; z < customers.getPayments().size(); z++) {
-
-
-
                                 if( customers.getPayments().get(z).isSynced())
                                 {
                                     System.out.println("Payment already synced");
@@ -3306,10 +3161,10 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-    }
+    }*/
 
 
-    class saveOffline extends AsyncTask {
+/*    class saveOffline extends AsyncTask {
 
 
         @Override
@@ -3328,7 +3183,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -3456,7 +3311,8 @@ public class DashboardActivity extends AppCompatActivity {
         customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
 
 
-        String gstSpace = "";
+
+
 
         System.out.println("Sale list" + customer.getSale().size());
         double mainSubTotal = 0;
@@ -3470,7 +3326,6 @@ public class DashboardActivity extends AppCompatActivity {
             String ip = "";
             String ir = "";
             String id = "";
-
             String itemnameSpace = "";
             String itemquantitySpace = "";
             String itempriceSpace = "";
@@ -3586,21 +3441,7 @@ public class DashboardActivity extends AppCompatActivity {
             mainGrantTotal = mainSubTotal + mainGst;
 
 
-            System.out.println("on test");
-            String subTotal = String.valueOf(subTotalx);
-            int subTotalLength = subTotal.length();
 
-            String gst = String.valueOf(gstx);
-            int gstLength = gst.length();
-
-
-            gstSpace = "";
-
-            int c = subTotalLength - gstLength;
-
-            for (int f = 0; f < c; f++) {
-                gstSpace = gstSpace + " ";
-            }
 
 
             double tt = subTotalx;
@@ -3689,38 +3530,40 @@ public class DashboardActivity extends AppCompatActivity {
             roundOffValue =  saleReturn.getRoundOffValue();
         }
 
-        int mgtL = mgt.length();
-        int raL = ra.length();
-        int baL = ba.length();
 
-        String mgSpace = "";
-        String raSpace = "";
-        String baSpace = "";
-        int x = 0;
-        int y = 0;
-        if (mgtL > raL) {
-            x = mgtL - raL;
-            y = mgtL - baL;
-            for (int i = 0; i < x; i++) {
-                raSpace = raSpace + " ";
+        String gstSpace = "";
+        String discountSpace="";
+        String roundOffSpace="";
+        System.out.println("on test");
+        String subTotal = String.valueOf(String.format("%.2f",mainSubTotal));
+        int subTotalLength = subTotal.length();
 
-            }
-            for (int i = 0; i < y; i++) {
-                baSpace = baSpace + " ";
+        String gst = String.valueOf(String.format("%.2f",mainGst));
+        int gstLength = gst.length();
 
-            }
-        } else if (raL > mgtL) {
-            x = raL - mgtL;
-            y = raL - baL;
-            for (int i = 0; i < x; i++) {
-                mgSpace = mgSpace + " ";
-            }
-            for (int i = 0; i < y; i++) {
-                baSpace = baSpace + " ";
+        String disString =String.valueOf(String.format("%.2f",disV));
+        int disLength = disString.length();
 
-            }
+        String roundOffStr = String.valueOf(String.format("%.2f",roundOffValue));
+        int roundOFFlenght = roundOffStr.length();
+
+
+
+
+
+        int c = subTotalLength - gstLength;
+        int dl = subTotalLength - disLength;
+        int rl = subTotalLength - roundOFFlenght;
+
+        for (int f = 0; f < c; f++) {
+            gstSpace = gstSpace + " ";
         }
-
+        for (int f = 0; f < dl; f++) {
+            discountSpace = discountSpace+ " ";
+        }
+        for (int f = 0; f < rl; f++) {
+            roundOffSpace = roundOffSpace+ " ";
+        }
 
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.RIGHT);
@@ -3757,16 +3600,63 @@ public class DashboardActivity extends AppCompatActivity {
         if(BizUtils.getDiscountType(disType)==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL)
         {
 
-                BTPrint.PrintTextLine("Discount("+discountPer+"%) RM " + gstSpace + String.format("%.2f",disV));
+                BTPrint.PrintTextLine("Discount("+discountPer+"%) RM " + discountSpace + String.format("%.2f",disV));
         }
-        BTPrint.PrintTextLine("Round Off RM " + gstSpace + String.format("%.2f",roundOffValue));
+        ba = String.format("%.2f",Double.parseDouble(ba));
+        BTPrint.PrintTextLine("Round Off RM " + roundOffSpace + String.format("%.2f",roundOffValue));
+        int mgtL =  String.valueOf(String.format("%.2f",mainGrantTotal)).length();
+        int raL = ra.length();
+        int baL = ba.length();
+
+        String mgSpace = "";
+        String raSpace = "";
+        String baSpace = "";
+        int x = 0;
+        int y = 0;
+        if (mgtL > raL) {
+            x = mgtL - raL;
+            y = mgtL - baL;
+            for (int i = 0; i < x; i++) {
+                raSpace = raSpace + " ";
+
+            }
+            for (int i = 0; i < y; i++) {
+                baSpace = baSpace + " ";
+
+            }
+        } else if (raL > mgtL) {
+                x = raL - mgtL;
+                y = raL - baL;
+                for (int i = 0; i < x; i++) {
+                    mgSpace = mgSpace + " ";
+                }
+                for (int i = 0; i < y; i++) {
+                    baSpace = baSpace + " ";
+
+                }
+
+        }
+        else
+        {
+            x = mgtL - raL;
+            y = mgtL - baL;
+            for (int i = 0; i < x; i++) {
+                raSpace = raSpace + " ";
+
+            }
+            for (int i = 0; i < y; i++) {
+                baSpace = baSpace + " ";
+
+            }
+        }
+
         BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("Grand total " + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
+        BTPrint.PrintTextLine("Grand total" + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
 
         if(getTransactionType(type)==Store.getInstance().SALE) {
             if(sale.getPaymentMode().toLowerCase().contains("cash")) {
-                BTPrint.PrintTextLine("Received amount " + raSpace + " RM " + String.format("%.2f", Double.parseDouble(ra)));
-                BTPrint.PrintTextLine("Balance amount " + baSpace + " RM " + String.format("%.2f", Double.parseDouble(ba)));
+                BTPrint.PrintTextLine("Received amount RM " + String.format("%.2f", Double.parseDouble(ra)));
+                BTPrint.PrintTextLine("Balance amount RM " + baSpace +String.format("%.2f", Double.parseDouble(ba)));
             }
         }
         BTPrint.PrintTextLine("------------------------------");
@@ -4208,6 +4098,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
 
+
                 if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
 
                     if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque"))) {
@@ -4228,6 +4119,7 @@ public class DashboardActivity extends AppCompatActivity {
                         preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     }
                 }
+
             }
 
             @Override
@@ -4237,6 +4129,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+
 
                 if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
@@ -4264,7 +4157,11 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                                 if (balance < 0) {
-                                    Toast.makeText(DashboardActivity.this, "Invalid amount received from customer", Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(DashboardActivity.this, "Invalid amount received from customer", Toast.LENGTH_SHORT).show();
+                                    //fromCustomer.setError("Invalid amount");
+                                    //fromCustomer.setSelection(fromCustomer.getText().length());
+                                    note.setText("Get amount RM "+String.valueOf(String.format("%.2f", gt) +" or above"));
+                                    note.setTextColor(Color.RED);
                                     save.setEnabled(false);
                                     save.setBackgroundColor(getResources().getColor(R.color.grey));
                                     preview.setEnabled(false);
@@ -4272,10 +4169,15 @@ public class DashboardActivity extends AppCompatActivity {
                                     preview.setBackgroundColor(getResources().getColor(R.color.grey));
 
                                 } else {
+                                    note.setText(getString(R.string.cfc_note));
+                                    note.setTextColor(Color.BLUE);
                                     save.setEnabled(true);
                                     save.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                     tenderAmount.setText(String.valueOf(String.format("%.2f", balance)));
-
+                                    if(balance<0)
+                                    {
+                                        tenderAmount.setText(String.valueOf(String.format("%.2f", 0.00)));
+                                    }
                                     preview.setEnabled(true);
                                     Log.d("Preview", "Enabled 4");
                                     preview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -4293,7 +4195,9 @@ public class DashboardActivity extends AppCompatActivity {
                     Log.d("Balance Calc", "Not applicable for this method");
                 }
 
+
             }
+
         };
         fromCustomer.addTextChangedListener(fromCustomerWatcher);
     }
@@ -4409,6 +4313,18 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     }
+    public void clearWOConfirmation()
+    {
+        realeaseUIComponent(saleType);
+        realeaseUIComponent(isGst);
+        realeaseUIComponent(discount);
+        realeaseUIComponent(paymentMode);
+        realeaseUIComponent(customerSearch);
+        realeaseUIComponent(customerNameKey);
+
+        clearList();
+        clearCSP();
+    }
 
     private void clearCSP() {
 
@@ -4440,6 +4356,7 @@ public class DashboardActivity extends AppCompatActivity {
                 chequeNo.setText(String.valueOf(""));
                 chequeDate.setText(String.valueOf(""));
                 bankName.setText(String.valueOf(""));
+                productNameKey.setText(String.valueOf(""));
             }
         });
 
@@ -4530,7 +4447,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             for(int i=0;i<Store.getInstance().stockGroupList.size();i++) {
 
-                if(name.toLowerCase().toString().contains(Store.getInstance().stockGroupList.get(i).getGroupCode().toString()))
+                if(name.toLowerCase().toString().contains(Store.getInstance().stockGroupList.get(i).getId().toString()))
                 {
                     choosedStockGroup = Store.getInstance().stockGroupList.get(i);
 
@@ -4553,7 +4470,12 @@ public class DashboardActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
 
+            Store.getInstance().currentStockGroup = choosedStockGroup.getStockGroupName();
+            Store.getInstance().currentStockGroupId = choosedStockGroup.getId();
+
+
             stockGroupName.setText(String.valueOf(Store.getInstance().currentStockGroup).toUpperCase());
+
         }
     }
 }

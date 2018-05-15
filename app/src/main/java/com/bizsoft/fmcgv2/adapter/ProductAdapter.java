@@ -13,6 +13,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -279,6 +281,8 @@ public class ProductAdapter extends BaseAdapter   {
                     //  product.setFinalPrice(gt);
                     //   System.out.println("GT ====<AFR>"+gt);
                     //  System.out.println("GT ====<ON>"+product.getFinalPrice());
+                    //holder.discount.clearFocus();
+
 
                 }
             });
@@ -368,6 +372,9 @@ public class ProductAdapter extends BaseAdapter   {
             holder.plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
+
 
                     x = 0;
                     double p = 0;
@@ -769,4 +776,5 @@ public class ProductAdapter extends BaseAdapter   {
         Log.d(this.getClass().getSimpleName(),"Data set changed");
 
     }
+
 }

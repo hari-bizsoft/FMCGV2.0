@@ -50,7 +50,7 @@ public class InvoiceListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(InvoiceListActivity.this);
+                bizUtils.bizMenu(InvoiceListActivity.this);
             }
         });
 

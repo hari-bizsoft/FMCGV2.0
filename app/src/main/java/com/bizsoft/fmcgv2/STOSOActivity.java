@@ -1,5 +1,7 @@
 package com.bizsoft.fmcgv2;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.Tables.SOPending;
 import com.bizsoft.fmcgv2.Tables.SalesOrder;
@@ -101,7 +104,7 @@ public class STOSOActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(STOSOActivity.this);
+                bizUtils.bizMenu(STOSOActivity.this);
             }
         });
 
@@ -112,28 +115,54 @@ public class STOSOActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                for(  int i=0;i<Store.getInstance().customerList.size();i++) {
-
-                    System.out.println(Store.getInstance().customerList.get(i).getLedger().getId() + "=====================" + currentCustomer.getLedger().getId());
-                    System.out.println(Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()));
-                    if (Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()) == 0) {
-
-                        System.out.println("item delete");
-                        Store.getInstance().customerList.get(i).getSOPListDelete().add(currentSaleOrder);
-                        Toast.makeText(STOSOActivity.this, "Sale Order Deleted", Toast.LENGTH_SHORT).show();
-
-                        try {
-                            BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
-                            System.out.println("DB Updated..on local storage");
 
 
-                        } catch (ClassNotFoundException e) {
-                            System.err.println("Unable to write to DB");
+                android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(STOSOActivity.this);
+                alertDialog.setMessage("Are you sure you want to delete ?");
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        for(  int i=0;i<Store.getInstance().customerList.size();i++) {
+
+                            System.out.println(Store.getInstance().customerList.get(i).getLedger().getId() + "=====================" + currentCustomer.getLedger().getId());
+                            System.out.println(Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()));
+                            if (Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()) == 0) {
+
+                                System.out.println("item delete");
+                                Store.getInstance().customerList.get(i).getSOPListDelete().add(currentSaleOrder);
+                                Toast.makeText(STOSOActivity.this, "Sale Order Deleted", Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                                    System.out.println("DB Updated..on local storage");
+
+
+                                } catch (ClassNotFoundException e) {
+                                    System.err.println("Unable to write to DB");
+                                }
+
+                                clear();
+                            }
                         }
 
-                        clear();
+
+
                     }
-                }
+                });
+                alertDialog.setNegativeButton(R.string.noReloadMsg, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("Do nothing....");
+                    }
+                });
+
+                alertDialog.create();
+                alertDialog.show();
+
+
+
 
 
 
@@ -151,6 +180,7 @@ public class STOSOActivity extends AppCompatActivity {
                         SalesOrder salesOrder = new SalesOrder();
                         salesOrder.setSODate(currentSaleOrder.getSODate());
 
+                        salesOrder.setId(((long) currentSaleOrder.getId()));
                         int invce = 0;
                         for(int i=0;i<Store.getInstance().customerList.size();i++)
                         {
@@ -161,7 +191,7 @@ public class STOSOActivity extends AppCompatActivity {
                             }
 
                         }
-                        salesOrder.setRefNo(String.valueOf(BizUtils.calculateShortCode("sale")+DashboardActivity.calculateRefCode(Store.getInstance().user.getSalRefCode(),invce)));
+                        salesOrder.setRefNo(currentSaleOrder.getRefNo());
 
 
                        // salesOrder.setRefNo(currentSaleOrder.getRefNo());
@@ -172,7 +202,12 @@ public class STOSOActivity extends AppCompatActivity {
                         salesOrder.setGSTAmount(currentSaleOrder.getGSTAmount());
                         salesOrder.setTotalAmount(currentSaleOrder.getTotalAmount());
                         salesOrder.setNarration(currentSaleOrder.getNarration());
-                        salesOrder.setSODetails(currentSaleOrder.getSODetails());
+                        ArrayList<SalesOrderDetails> sodetails = currentSaleOrder.getSODetails();
+                        for(int i=0;i<sodetails.size();i++)
+                        {
+                            sodetails.get(i).setSODId(salesOrder.getId());
+                        }
+                        salesOrder.setSODetails(sodetails);
 
                         for(  int i=0;i<Store.getInstance().customerList.size();i++)
                         {
@@ -288,6 +323,7 @@ public class STOSOActivity extends AppCompatActivity {
             product.setDiscountAmount(0.00);
             product.setQty((long) salesOrderDetails.get(i).getQuantity());
             product.setUOM("");
+            product.setSODId(salesOrder.getId());
             product.setProductName(salesOrderDetails.get(i).getProductName());
             products.add(product);
 

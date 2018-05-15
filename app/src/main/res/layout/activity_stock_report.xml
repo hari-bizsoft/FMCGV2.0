@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StockReportActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
+
+        android:stretchColumns="8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar">
+
+
+        <TableRow
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+
+
+            >
+
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="0dip"
+
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="Product Name"
+
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+        <!--    <TextView
+                android:id="@+id/sin"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="Stock In"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sout"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="Stock Out"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />-->
+
+            <TextView
+                android:id="@+id/sale"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="Sales"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/sale_return"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="Sale Return"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/sale_return_for_sale"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="SR for Sale"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/sale_return_not_for_sale"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="SR (Not for Sale)"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/available_stock"
+                android:layout_width="0dip"
+                android:layout_height="60dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/cell_header"
+                android:gravity="center_vertical"
+                android:padding="10dip"
+                android:text="Available "
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+    </TableLayout>
+
+    <com.bizsoft.fmcgv2.service.NonScrollListView
+        android:id="@+id/listview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <AutoCompleteTextView
+        android:id="@+id/search_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:completionHint="type the product name to filter  result from available list"
+        android:drawableLeft="@drawable/ic_search_white_24dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/clear"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/backspace_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

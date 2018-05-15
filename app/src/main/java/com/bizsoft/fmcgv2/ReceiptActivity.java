@@ -110,7 +110,7 @@ public class ReceiptActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(ReceiptActivity.this);
+                bizUtils.bizMenu(ReceiptActivity.this);
             }
         });
         print.setVisibility(View.INVISIBLE);

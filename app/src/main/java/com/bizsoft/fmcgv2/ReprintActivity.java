@@ -92,7 +92,7 @@ public class ReprintActivity extends AppCompatActivity {
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bizUtils.showMenu(ReprintActivity.this);
+                bizUtils.bizMenu(ReprintActivity.this);
             }
         });
 
@@ -893,6 +893,7 @@ public class ReprintActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
+        BTPrint.PrintTextLine("***Customer Copy***");
         BTPrint.printLineFeed();
         //savedCurrentTransaction = false;
 
@@ -1170,6 +1171,7 @@ public class ReprintActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
+        BTPrint.PrintTextLine("***Customer Copy***");
 
         BTPrint.printLineFeed();
 

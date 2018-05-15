@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bizsoft.fmcgv2.ProductSpecActivity;
 import com.bizsoft.fmcgv2.Tables.*;
 import com.bizsoft.fmcgv2.Tables.Sale;
 import com.bizsoft.fmcgv2.adapter.AddedProductAdapter;
@@ -16,6 +17,7 @@ import com.bizsoft.fmcgv2.service.Waiter;
 import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import microsoft.aspnet.signalr.client.SignalRFuture;
@@ -124,6 +126,14 @@ public class Store {
     public Context printerContext ;
     public double grandTotalRef;
     public  ArrayList<SOPending> SOPListToDelete = new ArrayList<>();
+    public ArrayList<ProductSpec> productSpecMasterList = new ArrayList<>();
+    public ArrayList<StockReport> stockReportList = new ArrayList<>();
+    public int height;
+    public int width;
+    public ArrayList<Product> allProductList = new ArrayList<>();
+    public ArrayList<MenuItems> menuItems = new ArrayList<MenuItems>();
+    public HashMap<Long, Product> allProductHashMap = new HashMap<Long, Product>();
+    public ArrayList<String> menuNameList = new ArrayList<>();
 
 
     public static Store getInstance() {

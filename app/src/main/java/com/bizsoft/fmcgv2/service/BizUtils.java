@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -13,20 +14,31 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bizsoft.fmcgv2.AddCustomerActivity;
 import com.bizsoft.fmcgv2.AppActivity;
+import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
 import com.bizsoft.fmcgv2.BankActivity;
 import com.bizsoft.fmcgv2.CustomerActivity;
 import com.bizsoft.fmcgv2.DashboardActivity;
@@ -43,15 +55,18 @@ import com.bizsoft.fmcgv2.STOSOActivity;
 import com.bizsoft.fmcgv2.SalesActivity;
 import com.bizsoft.fmcgv2.SalesOrderActivity;
 import com.bizsoft.fmcgv2.SalesReturnActivity;
+import com.bizsoft.fmcgv2.StockReportActivity;
 import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.Tables.ReceiptDetail;
 import com.bizsoft.fmcgv2.Tables.SaleDetail;
 import com.bizsoft.fmcgv2.Tables.SalesOrderDetails;
 import com.bizsoft.fmcgv2.Tables.SalesReturnDetails;
+import com.bizsoft.fmcgv2.adapter.MenuAdapter;
 import com.bizsoft.fmcgv2.dataobject.Company;
 
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Ledger;
+import com.bizsoft.fmcgv2.dataobject.MenuItems;
 import com.bizsoft.fmcgv2.dataobject.Notification;
 import com.bizsoft.fmcgv2.dataobject.Payment;
 import com.bizsoft.fmcgv2.dataobject.Product;
@@ -117,9 +132,12 @@ public class BizUtils {
     private String fpath;
     private String billIdValue;
     private String billDateValue;
+    private MenuAdapter menuAdapter;
+    private ArrayList<MenuItems> menuItems = new ArrayList<MenuItems>();
+    private Dialog dialog;
 
 
-    public boolean isNetworkConnected(Context context) {
+    public static boolean isNetworkConnected(Context context) {
         ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         boolean status = false;
@@ -310,10 +328,13 @@ public class BizUtils {
         return map;
     }
 
-    public void showMenu(final Context context) {
+/*    public void showMenu(final Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.menu_layout);
+
+
+
         ImageButton customerIcon = (ImageButton) dialog.findViewById(R.id.customer_icon);
 
         Button close = (Button) dialog.findViewById(R.id.close_button);
@@ -333,6 +354,7 @@ public class BizUtils {
         Button activity = (Button) dialog.findViewById(R.id.activity);
         ImageButton bank = (ImageButton) dialog.findViewById(R.id.bank);
         ImageButton product = (ImageButton) dialog.findViewById(R.id.product);
+        ImageButton stockReport = (ImageButton) dialog.findViewById(R.id.stock_report);
         TextView productLabel = (TextView) dialog.findViewById(R.id.textView93);
         //  productLabel.setVisibility(View.INVISIBLE);
 
@@ -414,6 +436,18 @@ public class BizUtils {
             }
         });
 
+        stockReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, StockReportActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                dialog.dismiss();
+                context.startActivity(intent);
+
+            }
+        });
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -546,6 +580,186 @@ public class BizUtils {
         });
 
 
+    }*/
+
+
+    public  void bizMenu(final Context context)
+    {
+         dialog = new Dialog(context);
+        dialog.setContentView(R.layout.biz_menu);
+
+
+        dialog.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
+        GridView menuGrid = (GridView) dialog.findViewById(R.id.menu_grid);
+        AutoCompleteTextView searchKey = (AutoCompleteTextView) dialog.findViewById(R.id.search_term);
+
+
+        loadSearchList(context,searchKey,Store.getInstance().menuNameList);
+
+        ViewGroup.LayoutParams layoutParams = menuGrid.getLayoutParams();
+        layoutParams.height = Store.getInstance().width;
+        layoutParams.width = Store.getInstance().width;
+      //  menuGrid.setLayoutParams(layoutParams);
+
+
+        menuItems.clear();
+        menuItems.addAll(Store.getInstance().menuItems);
+         menuAdapter = new MenuAdapter(context,menuItems);
+        menuGrid.setAdapter(menuAdapter);
+        menuGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                gotoAction(context,position,dialog);
+            }
+        });
+
+        addTextListener(searchKey);
+
+        dialog.show();
+    }
+
+    private void gotoAction(final Context context, int position, Dialog dialog) {
+        MenuItems menuItem = (MenuItems) menuAdapter.getItem(position);
+        dialog.dismiss();
+        if(menuItem.getName().toLowerCase().equals("sync"))
+        {
+            if (Store.getInstance().waiter != null) {
+                Store.getInstance().waiter.touch();
+            }
+            sync(context, "manual");
+        }
+        else if(menuItem.getName().equals("Load Storage"))
+        {
+            BizUtils.readAsJSON("customerList", context);
+
+        }
+        else  if (menuItem.getName().equals("Logout"))
+        {
+            android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(context);
+            alertDialog.setMessage("Are you sure you want to logout ?");
+            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    logout(context);
+
+
+                }
+            });
+            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.out.println("Do nothing....");
+                }
+            });
+
+            alertDialog.create();
+            alertDialog.show();
+
+        }
+
+        else {
+
+            Intent intent = new Intent(context, (Class<?>) menuItem.classToCall);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
+        }
+    }
+
+    public int getScreenOrientation(Context context)
+    {
+        Display getOrient = ((Activity)context).getWindowManager().getDefaultDisplay();
+        int orientation = Configuration.ORIENTATION_UNDEFINED;
+        if(getOrient.getWidth()==getOrient.getHeight()){
+            orientation = Configuration.ORIENTATION_SQUARE;
+        } else{
+            if(getOrient.getWidth() < getOrient.getHeight()){
+                orientation = Configuration.ORIENTATION_PORTRAIT;
+            }else {
+                orientation = Configuration.ORIENTATION_LANDSCAPE;
+            }
+        }
+        return orientation;
+    }
+    private void addTextListener(final AutoCompleteTextView searchKey) {
+
+        searchKey.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(TextUtils.isEmpty(searchKey.getText()))
+                {
+                    menuItems.clear();
+                    menuItems.addAll(Store.getInstance().menuItems);
+                    menuAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void loadSearchList(final Context context, AutoCompleteTextView searchBar, ArrayList<String> searchNameList) {
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_dropdown_item_1line, searchNameList);
+        searchBar.setThreshold(1);
+        searchBar.setAdapter(adapter);
+        searchBar.setThreshold(1);
+        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) parent.getItemAtPosition(position);
+                Toast.makeText(context, ""+selected, Toast.LENGTH_SHORT).show();
+
+                returnResult(selected,context);
+
+            }
+
+
+        });
+
+    }
+
+    private String returnResult(String selected, Context context) {
+
+
+        for(int i=0;i<Store.getInstance().menuItems.size();i++)
+        {
+            if(Store.getInstance().menuItems.get(i).getName().equals(selected))
+            {
+               // menuItems.clear();
+               //menuItems.add(Store.getInstance().menuItems.get(i));
+               //menuAdapter.notifyDataSetChanged();
+               gotoAction(context,i,dialog);
+
+
+            }
+        }
+
+        return selected;
+    }
+
+
+    private void logout(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
+        prefs.edit().clear().commit();
+
+        ((Activity) context).finish();
+        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 
     public static void syncStockProcessProductList() {
@@ -582,16 +796,36 @@ public class BizUtils {
     public void updateOPBal(Customer customer, Sale sale) {
 
         if (sale.getPaymentMode().contains("PNT")) {
+            if(customer.getLedger().getACType()!=null) {
+                if (customer.getACType().toLowerCase().contains("credit")) {
 
+                    double x = 0;
+                    System.out.println("GT ===" + sale.getGrandTotal());
+                    x = customer.getLedger().getOPBal() + sale.getGrandTotal();
 
-            double x = 0;
+                    System.out.println("OP =" + x);
+                    customer.getLedger().setOPBal(x);
+                }
+                else
+                {
+                    double x = 0;
+                    System.out.println("GT ===" + sale.getGrandTotal());
+                    x = customer.getLedger().getOPBal() -  sale.getGrandTotal();
 
-            System.out.println("GT ===" + sale.getGrandTotal());
-            x = customer.getLedger().getOPBal() + sale.getGrandTotal();
+                    System.out.println("OP =" + x);
+                    customer.getLedger().setOPBal(x);
+                }
+            }
+            else
+            {
+                double x = 0;
+                System.out.println("GT ===" + sale.getGrandTotal());
+                x = customer.getLedger().getOPBal() + sale.getGrandTotal();
 
-            System.out.println("OP =" + x);
-            customer.getLedger().setOPBal(x);
-
+                System.out.println("OP =" + x);
+                customer.getLedger().setOPBal(x);
+                customer.getLedger().setACType("Credit");
+            }
         }
     }
 
@@ -818,21 +1052,8 @@ public class BizUtils {
             if (customerList.get(i).getId() != null) {
 
 
-                System.out.println("Sale size " + customerList.get(i).getSale().size());
 
-                System.out.println("Sale order size " + customerList.get(i).getSaleOrder().size());
-
-                System.out.println("Sale of cus size " + customerList.get(i).getSalesOfCustomer().size());
-
-                System.out.println("Sale order of cus size " + customerList.get(i).getSaleOrdersOfCustomer().size());
-
-                System.out.println("Sale of return size " + customerList.get(i).getSaleReturn().size());
-
-                System.out.println("Sale retutn of cus size " + customerList.get(i).getSaleReturnOfCustomer().size());
-                System.out.println("Receipt size " + customerList.get(i).getReceipts().size());
-                System.out.println("Payments size " + customerList.get(i).getPayments().size());
-                System.out.println("Pending list size " + customerList.get(i).getPayments().size());
-                System.out.println("Cus id " + customerList.get(i).getId());
+                //printSyncData(customerList,i);
 
 
                 if (customerList.get(i).getSale().size() > 0) {
@@ -987,6 +1208,19 @@ public class BizUtils {
                 System.err.println("Unable to write to DB");
             }
         }
+    }
+
+    private void printSyncData(ArrayList<Customer> customerList,int i) {
+        System.out.println("Sale size " + customerList.get(i).getSale().size());
+        System.out.println("Sale order size " + customerList.get(i).getSaleOrder().size());
+        System.out.println("Sale of cus size " + customerList.get(i).getSalesOfCustomer().size());
+        System.out.println("Sale order of cus size " + customerList.get(i).getSaleOrdersOfCustomer().size());
+        System.out.println("Sale of return size " + customerList.get(i).getSaleReturn().size());
+        System.out.println("Sale retutn of cus size " + customerList.get(i).getSaleReturnOfCustomer().size());
+        System.out.println("Receipt size " + customerList.get(i).getReceipts().size());
+        System.out.println("Payments size " + customerList.get(i).getPayments().size());
+        System.out.println("Pending list size " + customerList.get(i).getPayments().size());
+        System.out.println("Cus id " + customerList.get(i).getId());
     }
 
     class Save extends AsyncTask {
@@ -1758,25 +1992,7 @@ public class BizUtils {
 
             if (customerList.get(i).getId() != null) {
 
-
-                System.out.println("Sale size " + customerList.get(i).getSale().size());
-
-                System.out.println("Sale order size " + customerList.get(i).getSaleOrder().size());
-
-                System.out.println("Sale of cus size " + customerList.get(i).getSalesOfCustomer().size());
-
-                System.out.println("Sale order of cus size " + customerList.get(i).getSaleOrdersOfCustomer().size());
-
-                System.out.println("Sale of return size " + customerList.get(i).getSaleReturn().size());
-
-                System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
-
-                System.out.println("Sale retutn of cus size " + customerList.get(i).getSaleReturnOfCustomer().size());
-                System.out.println("Receipt size " + customerList.get(i).getReceipts().size());
-                System.out.println("Payments size " + customerList.get(i).getPayments().size());
-                System.out.println("Pending list size " + customerList.get(i).getPayments().size());
-                System.out.println("Customer Id " + customerList.get(i).getId());
-
+                printSyncData(customerList,i);
 
                 if (customerList.get(i).getSale().size() > 0) {
                     newcustomer = false;
@@ -1862,12 +2078,15 @@ public class BizUtils {
 
                 }
                 System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
+
+
                 if (customerList.get(i).getSOPListDelete().size() > 0) {
                     for (int x = 0; x < customerList.get(i).getSOPListDelete().size(); x++) {
                         if (customerList.get(i).getSOPListDelete().get(x).isSynced()) {
                             System.out.println("SO pendling 'delete' already synced");
                         } else {
-                           boolean status = SignalRService.salesOrderDelete(customerList.get(i).getsOPendingList().get(x));
+
+                            boolean status = SignalRService.salesOrderDelete(customerList.get(i).getSOPListDelete().get(x));
                             if (status) {
                                 System.out.println("SO pending deleted");
                                 customerList.get(i).getSOPListDelete().get(x).setSynced(true);
@@ -1884,8 +2103,9 @@ public class BizUtils {
                             }
                         }
                     }
-
                 }
+
+
                 if (customerList.get(i).getPayments().size() > 0) {
                     newcustomer = false;
                     System.out.println("Called save payments");
@@ -2082,6 +2302,15 @@ public class BizUtils {
         return company;
     }
 
+    public static void windowDetails(Context context)
+    {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        Store.getInstance().height = height;
+        Store.getInstance().width = width;
+    }
     public Boolean write(Context context, String fname, Company company, Customer customer, ArrayList<Product> productList, String refCode,Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
         try {
 
@@ -2303,7 +2532,13 @@ public class BizUtils {
                 table1.addCell(getCell(String.valueOf(productList.get(i).getQty()), PdfPCell.ALIGN_LEFT));
                 if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
                     table1.addCell(getCell(String.valueOf(productList.get(i).getParticulars()), PdfPCell.ALIGN_LEFT));
-                    table1.addCell(getCell(String.valueOf(productList.get(i).isResale()), PdfPCell.ALIGN_LEFT));
+                    if(productList.get(i).isResale()) {
+                        table1.addCell(getCell("Yes", PdfPCell.ALIGN_LEFT));
+                    }
+                    else
+                    {
+                        table1.addCell(getCell("No", PdfPCell.ALIGN_LEFT));
+                    }
                 }
                 table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getMRP())), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(String.format("%.2f", productList.get(i).getDiscountAmount())), PdfPCell.ALIGN_LEFT));

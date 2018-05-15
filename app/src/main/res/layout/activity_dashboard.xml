@@ -23,7 +23,7 @@
             android:layout_marginTop="8dp"
             android:text="Round Off (RM)"
             android:textColor="#000"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/round_off_value"
             app:layout_constraintEnd_toStartOf="@+id/round_off_value"
@@ -160,7 +160,7 @@
             android:layout_marginTop="13dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:hint="search categories"
+            android:hint="Search categories"
             android:inputType="textPersonName"
             android:padding="5dp"
             android:textAllCaps="true"
@@ -236,7 +236,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:hint="search products "
+            android:hint="Search products "
             android:inputType="textPersonName"
             android:padding="5dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -466,7 +466,7 @@
             android:textColor="#000"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view17" />
+            app:layout_constraintTop_toBottomOf="@+id/note" />
 
         <EditText
             android:id="@+id/money_from_customer"
@@ -496,21 +496,21 @@
         <TextView
             android:id="@+id/note"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
 
             android:gravity="left"
             android:inputType="numberDecimal"
-            android:text="Note : Bill can't be raised untill correct amount is received"
+            android:text="@string/cfc_note"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="italic"
 
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tender_amount" />
+            app:layout_constraintTop_toBottomOf="@+id/view17" />
 
 
         <TextView
@@ -691,6 +691,8 @@
             android:hint="Enter cheque raised date"
             android:inputType="date"
             android:padding="5dp"
+
+            android:focusableInTouchMode="false"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -771,7 +773,7 @@
             android:layout_marginTop="8dp"
             android:text="Discount(%)"
             android:textColor="#000"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/discount_value"
             app:layout_constraintEnd_toStartOf="@+id/discount_value"
@@ -812,7 +814,7 @@
             android:background="@color/colorPrimaryDark"
             android:text="Print Last saved (CC)"
             android:textColor="@color/white"
-            android:textStyle="bold"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/dc_print"

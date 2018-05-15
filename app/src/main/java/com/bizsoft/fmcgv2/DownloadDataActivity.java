@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bizsoft.fmcgv2.dataobject.MenuItems;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizLogger;
 import com.bizsoft.fmcgv2.service.BizUtils;
@@ -145,6 +146,8 @@ public class DownloadDataActivity extends AppCompatActivity {
 
             SignalRService.stockHomeList();
             SignalRService.productSpecList();
+            SignalRService.productSpecMasterList();
+           // SignalRService.stockReportList(null,null,"01-01-2018 00:00:00","12-12-2018 23:59:59");
             progressBar.setProgress(75);
             runOnUiThread(new Runnable() {
                 @Override
@@ -178,11 +181,13 @@ public class DownloadDataActivity extends AppCompatActivity {
 
 
             Store.getInstance().dealer.init();
+            MenuItems.init();
             Store.getInstance().dealer.setSynced(true);
 
 
 
             finish();
+            BizUtils.windowDetails(DownloadDataActivity.this);
 
 
             Intent intent = new Intent(DownloadDataActivity.this,DashboardActivity.class);

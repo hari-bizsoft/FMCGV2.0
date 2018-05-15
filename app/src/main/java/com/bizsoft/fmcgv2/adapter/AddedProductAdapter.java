@@ -233,7 +233,7 @@ public class AddedProductAdapter extends BaseAdapter {
                                 notifyDataSetChanged();
                             }
                         });
-
+                        DashboardActivity.addedProductListView.requestFocus();
 
                     }
                     else {
@@ -263,7 +263,7 @@ public class AddedProductAdapter extends BaseAdapter {
                             ((Activity) context).runOnUiThread(new Runnable() {
                                 public void run() {
                                     notifyDataSetChanged();
-
+                                    DashboardActivity.addedProductListView.requestFocus();
                                 }
                             });
 
@@ -308,7 +308,7 @@ public class AddedProductAdapter extends BaseAdapter {
                             ((Activity) context).runOnUiThread(new Runnable() {
                                 public void run() {
                                     notifyDataSetChanged();
-
+                                    DashboardActivity.addedProductListView.requestFocus();
                                 }
                             });
 
@@ -340,6 +340,7 @@ public class AddedProductAdapter extends BaseAdapter {
                             ((Activity) context).runOnUiThread(new Runnable() {
                                 public void run() {
                                     notifyDataSetChanged();
+                                    DashboardActivity.addedProductListView.requestFocus();
                                 }
                             });
 
@@ -370,6 +371,7 @@ public class AddedProductAdapter extends BaseAdapter {
          grandTotal=0;
 
          fromCustomer = 0;
+         double roundOff = 0;
 
 
         if(Store.getInstance().fromCustomer.getText()!= null)
@@ -423,19 +425,28 @@ public class AddedProductAdapter extends BaseAdapter {
         {
             tender =  fromCustomer  - grandTotal;
         }
+        try {
+            roundOff = Double.parseDouble(DashboardActivity.roundOffValue.getText().toString());
+
+        }
+        catch (Exception e)
+        {
+           roundOff =0;
+        }
+        grandTotal = grandTotal - roundOff;
 
 
         Store.getInstance().subTotal.setText(String.valueOf(String.format("%.2f",subTotal)));
         Store.getInstance().GST.setText(String.valueOf( String.format("%.2f", gst)));
         Store.getInstance().grandTotal.setText(String.valueOf( String.format("%.2f", DashboardActivity.roundOff(grandTotal))));
-        Store.getInstance().tenderAmount.setText(String.valueOf(String.format("%.2f", tender)));
-        DashboardActivity.fromCustomer.setText("0");
-        DashboardActivity.roundOffValue.setText("0");
+       // Store.getInstance().tenderAmount.setText(String.valueOf(String.format("%.2f", tender)));
+       // DashboardActivity.fromCustomer.setText("0");
+        //DashboardActivity.roundOffValue.setText("0");
 
         Store.getInstance().grandTotalRef = grandTotal;
 
 
-        DashboardActivity.addedProductListView.requestFocus();
+
 
 
 

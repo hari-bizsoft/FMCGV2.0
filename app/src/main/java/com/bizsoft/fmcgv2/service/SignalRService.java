@@ -37,6 +37,7 @@ import com.bizsoft.fmcgv2.Tables.Sale;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
 import com.bizsoft.fmcgv2.dataobject.ReceiverResponse;
 import com.bizsoft.fmcgv2.dataobject.StockGroup;
+import com.bizsoft.fmcgv2.dataobject.StockReport;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.dataobject.TaxMaster;
 import com.bizsoft.fmcgv2.dataobject.UOM;
@@ -505,9 +506,11 @@ public class SignalRService {
         ArrayList<LinkedTreeMap> companyCollection = new ArrayList<LinkedTreeMap>();
 
         try {
+            Log.d("Connection State", String.valueOf(Store.getInstance().mHubConnectionCaller.getState()));
             companyCollection = Store.getInstance().mHubProxyCaller.invoke(companyCollection.getClass(),"Product_List").get();
           //  BizUtils.prettyJson("Products List",companyCollection);
             Store.getInstance().productList.clear();
+            Store.getInstance().allProductList.clear();
             for(int i=0;i<companyCollection.size();i++)
             {
                 Product product = new Product();
@@ -518,6 +521,7 @@ public class SignalRService {
 
                 BizUtils.prettyJson("product ind item",product);
 
+                Store.getInstance().allProductList.add(product);
                 if(product.getStockGroup().isSale() && product.isDealer()) {
                     product.setSynced(true);
                     product.sellingRateRef = product.getSellingRate();
@@ -1758,7 +1762,7 @@ public class SignalRService {
 
     }
 
-    public static boolean salesOrderDelete(SalesOrder salesOrder) {
+    public static boolean salesOrderDelete(SOPending salesOrder) {
         Object o = new Object();
 
         boolean status = false;
@@ -1771,15 +1775,80 @@ public class SignalRService {
             //System.out.println(" ---------Sales  details size "+sale.getSDetail().size());
             o = Store.getInstance().mHubProxyCaller.invoke(o.getClass(),"salesOrder_Delete",salesOrder.getId()).get();
 
+
             System.out.println(" ---------Sales order  delete"+o.getClass());
 
+
             status = (boolean) o;
+
+            System.out.println(" ---------Sales order  delete status" +status);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
         return status;
+    }
+
+    public static void productSpecMasterList() {
+
+        ArrayList<LinkedTreeMap> companyCollection = new ArrayList<LinkedTreeMap>();
+        try {
+            companyCollection = Store.getInstance().mHubProxyCaller.invoke(companyCollection.getClass(),"Product_Spec_Master_List").get();
+
+            Store.getInstance().productSpecMasterList.clear();
+
+            for(int i=0;i<companyCollection.size();i++)
+            {
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+
+                ProductSpec productSpec = new ProductSpec();
+
+                productSpec  = mapper.convertValue(companyCollection.get(i),ProductSpec.class);
+                System.out.println("stockGroup Id"+productSpec.getId());
+
+                prettyJson("productSpec master item",productSpec);
+
+
+                Store.getInstance().productSpecMasterList.add(productSpec);
+
+
+            }
+
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("productSpecMasterList----"+Store.getInstance().productSpecList.size());
+    }
+
+    public static void stockReportList(Integer PID, Integer LedgerId, String fd, String td) {
+
+        ArrayList<LinkedTreeMap> reportList = new ArrayList<LinkedTreeMap>();
+        try {
+            reportList = Store.getInstance().mHubProxyCaller.invoke(reportList.getClass(),"StockBalance_Individual",PID,LedgerId,fd,td).get();
+
+            Store.getInstance().stockReportList.clear();
+            for(int i=0;i<reportList.size();i++)
+            {
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+
+                StockReport stockReport = new StockReport();
+                stockReport  = mapper.convertValue(reportList.get(i),StockReport.class);
+                prettyJson("stockReport  item",stockReport);
+                Store.getInstance().stockReportList.add(stockReport);
+
+            }
+            Log.d("Stock report Size", String.valueOf(Store.getInstance().stockReportList.size()));
+
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     static class Activate extends AsyncTask

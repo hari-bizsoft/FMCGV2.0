@@ -22,7 +22,9 @@ import java.util.ArrayList;
 
 import static com.bizsoft.fmcgv2.DashboardActivity.appDiscount;
 import static com.bizsoft.fmcgv2.DashboardActivity.currentSaleType;
+import static com.bizsoft.fmcgv2.DashboardActivity.fromCustomer;
 import static com.bizsoft.fmcgv2.DashboardActivity.paymentModeValue;
+import static com.bizsoft.fmcgv2.DashboardActivity.tenderAmount;
 
 
 public class PrintPreview extends AppCompatActivity {
@@ -111,6 +113,25 @@ public class PrintPreview extends AppCompatActivity {
             discountLabel = (TextView) findViewById(R.id.discount_label);
 
             saveAsPdf.setVisibility(View.INVISIBLE);
+
+            if(BizUtils.getTransactionType(DashboardActivity.currentSaleType) == Store.getInstance().SALE)
+            {
+                if(!DashboardActivity.paymentModeValue.toLowerCase().contains("cash"))
+                {
+                    fromCustomer.setVisibility(View.GONE);
+                    tenderAmount.setVisibility(View.GONE);
+                }
+                else
+                {
+                    fromCustomer.setVisibility(View.VISIBLE);
+                    tenderAmount.setVisibility(View.VISIBLE);
+                }
+            }
+            else
+            {
+                fromCustomer.setVisibility(View.GONE);
+                tenderAmount.setVisibility(View.GONE);
+            }
 
 
             System.out.println("currentSaleType ==="+currentSaleType);
@@ -326,24 +347,25 @@ public class PrintPreview extends AppCompatActivity {
 
 
 
-            if(paymentMode.getText().toString().contains("PNT") || paymentMode.getText().toString().contains("cheque"))
-            {
+
+        if(BizUtils.getTransactionType(DashboardActivity.currentSaleType)==Store.getInstance().SALE) {
+            if (DashboardActivity.paymentModeValue.toLowerCase().contains("cash")) {
+
+                brm.setVisibility(View.VISIBLE);
+                rrm.setVisibility(View.VISIBLE);
+                balanceRM.setVisibility(View.VISIBLE);
+                receivedRM.setVisibility(View.VISIBLE);
+
+
+            } else {
 
 
                 brm.setVisibility(View.GONE);
                 rrm.setVisibility(View.GONE);
                 balanceRM.setVisibility(View.GONE);
                 receivedRM.setVisibility(View.GONE);
-
             }
-            else
-            {
-
-                brm.setVisibility(View.VISIBLE);
-                rrm.setVisibility(View.VISIBLE);
-                balanceRM.setVisibility(View.VISIBLE);
-                receivedRM.setVisibility(View.VISIBLE);
-            }
+        }
      /*  }
        catch (Exception e)
        {

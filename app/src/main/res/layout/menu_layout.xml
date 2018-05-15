@@ -251,11 +251,13 @@
         android:id="@+id/clear_data"
         android:layout_width="54dp"
         android:layout_height="54dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/menu_bg"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/home"
         app:layout_constraintTop_toBottomOf="@+id/textView83"
         app:srcCompat="@drawable/logout" />
 
@@ -371,7 +373,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/menu_bg"
         android:scaleType="fitXY"
-        app:layout_constraintEnd_toStartOf="@+id/clear_data"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView93"
         app:srcCompat="@drawable/ic_home_black_24dp" />
@@ -534,5 +536,31 @@
         app:layout_constraintEnd_toEndOf="@+id/product"
         app:layout_constraintStart_toStartOf="@+id/product"
         app:layout_constraintTop_toBottomOf="@+id/product"/>
+
+    <ImageButton
+        android:id="@+id/stock_report"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/menu_bg"
+        android:scaleType="fitXY"
+        android:src="@drawable/stock"
+        app:layout_constraintEnd_toStartOf="@+id/home"
+        app:layout_constraintHorizontal_bias="0.918"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/home" />
+
+    <TextView
+        android:id="@+id/stock_report_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Stock Report"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/stock_report"
+        app:layout_constraintStart_toStartOf="@+id/stock_report"
+        app:layout_constraintTop_toBottomOf="@+id/stock_report" />
 </android.support.constraint.ConstraintLayout>
     </ScrollView>

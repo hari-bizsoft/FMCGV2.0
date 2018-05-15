@@ -80,7 +80,8 @@ public class BankActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(BankActivity.this);
+                //bizUtils.showMenu(BankActivity.this);
+                bizUtils.bizMenu(BankActivity.this);
             }
         });
         enableSearch();

@@ -113,7 +113,7 @@ public class DealerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(DealerActivity.this);
+                bizUtils.bizMenu(DealerActivity.this);
             }
         });
 
@@ -150,6 +150,8 @@ public class DealerActivity extends AppCompatActivity {
                 Toast.makeText(this, "No Bank Found..", Toast.LENGTH_SHORT).show();
             }
         }
+
+        choosedBank = currentBank;
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

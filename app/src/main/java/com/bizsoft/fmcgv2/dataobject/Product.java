@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by shri on 9/8/17.
  */
@@ -63,6 +66,16 @@ public class Product {
     boolean synced;
 
     double discountPercentage;
+
+    Long SODId;
+
+    public Long getSODId() {
+        return SODId;
+    }
+
+    public void setSODId(Long SODId) {
+        this.SODId = SODId;
+    }
 
     public double getDiscountPercentage() {
         return discountPercentage;
@@ -466,4 +479,17 @@ public class Product {
             String UOM;
     @JsonProperty("StockGroup")
             StockGroup StockGroup;
+
+    public static ArrayList<String> getNames() {
+        ArrayList<String> p = new ArrayList<String>();
+        HashMap<Long,Product> productHashMap = new HashMap<Long, Product>();
+
+        for(int i=0;i<Store.getInstance().allProductList.size();i++)
+        {
+            productHashMap.put(Store.getInstance().allProductList.get(i).getId(),Store.getInstance().allProductList.get(i));
+            p.add(Store.getInstance().allProductList.get(i).getProductName());
+        }
+        Store.getInstance().allProductHashMap = productHashMap;
+        return p;
+    }
 }

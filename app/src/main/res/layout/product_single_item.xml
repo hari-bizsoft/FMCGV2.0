@@ -31,6 +31,7 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:text="0"
+
         app:layout_constraintLeft_toRightOf="@+id/discount_label"
         app:layout_constraintTop_toBottomOf="@+id/particulars"
         />
@@ -149,17 +150,18 @@
         android:id="@+id/quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:textSize="30px"
 
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:inputType="number"
         android:text="1"
-        app:layout_constraintLeft_toRightOf="@+id/minus"
-        app:layout_constraintTop_toBottomOf="@+id/stock_left"
-        android:layout_marginStart="24dp" />
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/plus"
+        app:layout_constraintStart_toEndOf="@+id/minus"
+        app:layout_constraintTop_toTopOf="@+id/minus" />
 
     <ImageButton
         android:id="@+id/plus"

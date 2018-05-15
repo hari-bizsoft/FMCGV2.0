@@ -104,7 +104,7 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(ReportActivity.this);
+                bizUtils.bizMenu(ReportActivity.this);
             }
         });
 

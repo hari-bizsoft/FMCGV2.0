@@ -95,7 +95,7 @@ public class SalesReturnActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(SalesReturnActivity.this);
+                bizUtils.bizMenu(SalesReturnActivity.this);
             }
         });
 

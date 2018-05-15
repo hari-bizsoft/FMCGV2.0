@@ -1,337 +1,349 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\7e3e97d7f1feb918e296261e18d2713c\AndroidManifest.xml:2:1-11:12
-MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:17:1-31:12
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:2:1-20:12
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\de3c22b352fe454dc93ce0cfae96d4e6\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\af84f1adecb6ca80c1bbe8eab3c1ece5\AndroidManifest.xml:17:1-26:12
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:17:1-31:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
-INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\b00c4295e90f36c5cc545bdc8bef7db2\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:17:1-31:12
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:2:1-20:12
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\18076700d0e64ec3696a739dddefb7dd\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3180f8bfbf549300af46fb9e16721466\AndroidManifest.xml:17:1-26:12
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:17:1-31:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
+INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
 	package
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:3:11-39
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:4:5-33
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-116:12
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:1-109:12
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.BLUETOOTH
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:5:5-67
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:6:5-68
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:5:22-65
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:6:22-65
 uses-permission#android.permission.BLUETOOTH_ADMIN
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:6:5-73
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:7:5-74
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:6:22-71
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:7:22-71
 uses-permission#android.permission.CHANGE_WIFI_STATE
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:7:5-75
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:8:5-76
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:7:22-73
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:8:22-73
 uses-permission#android.permission.INTERNET
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:8:5-66
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:12:5-67
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:12:5-67
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:9:5-67
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:12:5-67
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:12:5-67
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:8:22-64
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:9:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:9:5-78
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:11:5-79
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:11:5-79
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:10:5-79
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:11:5-79
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:11:5-79
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:9:22-76
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:10:22-76
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:10:5-80
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:11:5-81
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:10:22-78
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:11:22-78
 uses-permission#android.permission.READ_CONTACTS
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:11:5-71
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:12:5-72
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:11:22-69
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:12:22-69
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:12:5-74
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:13:5-75
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:12:22-72
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:13:22-72
 uses-permission#android.permission.WRITE_CONTACTS
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:13:5-72
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:14:5-73
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:13:22-70
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:14:22-70
 uses-permission#android.permission.GET_ACCOUNTS
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:14:5-70
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:15:5-71
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:14:22-68
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:15:22-68
 supports-screens
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:16:5-53
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:17:5-54
 	android:xlargeScreens
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:16:23-51
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:17:23-51
 permission#android.permission.INTERACT_ACROSS_USERS_FULL
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:18:5-20:46
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:19:5-21:47
 	android:protectionLevel
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:20:9-44
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:21:9-44
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:19:9-69
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:20:9-69
 uses-permission#android.permission.INTERACT_ACROSS_USERS_FULL
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:22:5-24:46
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:23:5-26:47
 	android:protectionLevel
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:24:9-44
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:25:9-44
+	tools:ignore
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:26:9-44
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:23:9-69
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:24:9-69
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:25:5-80
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:27:5-81
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:25:22-78
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:27:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:26:5-79
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:28:5-80
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:26:22-77
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:28:22-77
 application
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:28:5-114:19
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\7e3e97d7f1feb918e296261e18d2713c\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\7e3e97d7f1feb918e296261e18d2713c\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:29:5-20
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:14:5-18:19
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:14:5-18:19
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:29:5-20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:30:5-107:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\b00c4295e90f36c5cc545bdc8bef7db2\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\b00c4295e90f36c5cc545bdc8bef7db2\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:29:5-20
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:14:5-18:19
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:14:5-18:19
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:29:5-20
 	android:supportsRtl
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:33:9-35
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:35:9-35
 	android:label
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:31:9-41
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:33:9-41
 	android:roundIcon
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:32:9-49
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:34:9-49
 	android:icon
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:30:9-44
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:32:9-44
 	android:allowBackup
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:29:9-35
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:31:9-35
 	android:theme
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:34:9-40
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:36:9-40
 activity#com.bizsoft.fmcgv2.MainActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:35:9-43:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:37:9-45:20
 	android:theme
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:37:13-69
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:39:13-69
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:36:13-41
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:38:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:38:13-42:29
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:40:13-44:29
 action#android.intent.action.MAIN
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:39:17-68
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:41:17-69
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:39:25-66
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:41:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:41:17-76
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:43:17-77
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:41:27-74
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:43:27-74
 activity#com.bizsoft.fmcgv2.LoginActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:44:9-46:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:46:9-48:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:46:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:48:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:45:13-42
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:47:13-42
 activity#com.bizsoft.fmcgv2.DashboardActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:47:9-49:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:49:9-51:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:49:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:51:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:48:13-46
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:50:13-46
 activity#com.bizsoft.fmcgv2.CustomerActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:50:9-52:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:52:9-54:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:52:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:54:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:51:13-45
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:53:13-45
 activity#com.bizsoft.fmcgv2.AddCustomerActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:53:9-55:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:55:9-57:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:55:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:57:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:54:13-48
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:56:13-48
 activity#com.bizsoft.fmcgv2.SalesActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:56:9-60:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:58:9-62:20
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:56:19-48
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:58:19-48
 meta-data#android.app.searchable
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:57:13-59:53
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:59:13-61:54
 	android:resource
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:59:17-51
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:61:17-51
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:58:17-54
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:60:17-54
 activity#com.bizsoft.fmcgv2.SalesOrderActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:61:9-63:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:63:9-65:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:63:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:65:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:62:13-47
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:64:13-47
 activity#com.bizsoft.fmcgv2.BTLib.BTDeviceList
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:64:9-66:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:66:9-68:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:66:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:68:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:65:13-47
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:67:13-47
 activity#com.bizsoft.fmcgv2.BTLib.BTPrint
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:67:9-69:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:69:9-71:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:69:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:71:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:68:13-42
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:70:13-42
 activity#com.bizsoft.fmcgv2.ReportActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:70:9-72:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:72:9-74:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:72:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:74:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:71:13-43
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:73:13-43
 activity#com.bizsoft.fmcgv2.PrintPreview
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:73:9-75:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:75:9-77:62
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:75:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:77:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:74:13-41
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:76:13-41
 activity#com.bizsoft.fmcgv2.ReprintActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:76:9-78:61
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:78:9-80:72
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:78:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:80:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:77:13-44
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:79:13-44
 activity#com.bizsoft.fmcgv2.InvoiceListActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:79:9-82:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:81:9-83:71
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:81:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:83:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:80:13-48
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:82:13-48
 activity#com.bizsoft.fmcgv2.SalesReturnActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:83:9-86:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:84:9-86:71
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:85:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:86:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:84:13-48
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:85:13-48
 activity#com.bizsoft.fmcgv2.ReceiptActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:87:9-90:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:87:9-89:71
 	android:configChanges
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:89:13-59
 	android:name
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:88:13-44
 activity#com.bizsoft.fmcgv2.PaymentActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:91:9-94:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:90:9-92:71
 	android:configChanges
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:93:13-59
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:92:13-59
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:92:13-44
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:91:13-44
 activity#com.bizsoft.fmcgv2.service.BlockPage
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:95:9-54
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:93:9-55
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:95:19-52
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:93:19-52
 activity#com.bizsoft.fmcgv2.DownloadDataActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:96:9-97:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:94:9-95:75
+	android:configChanges
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:95:13-63
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:96:19-55
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:94:19-55
 activity#com.bizsoft.fmcgv2.STOSOActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:98:9-99:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:96:9-60
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:98:19-48
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:96:19-48
 activity#com.bizsoft.fmcgv2.AppActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:100:9-101:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:97:9-58
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:100:19-46
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:97:19-46
 activity#com.bizsoft.fmcgv2.DealerActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:102:9-103:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:98:9-61
 	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:102:19-49
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:98:19-49
 activity#com.bizsoft.fmcgv2.ProductSpecActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:104:9-105:20
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:99:9-66
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:99:19-54
+activity#com.bizsoft.fmcgv2.BankActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:100:9-59
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:100:19-47
+activity#com.bizsoft.fmcgv2.CreateBankActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:101:9-65
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:101:19-53
+activity#com.bizsoft.fmcgv2.ProductListActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:102:9-66
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:102:19-54
+activity#com.bizsoft.fmcgv2.AddProductActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:103:9-65
+	android:name
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:103:19-53
+activity#com.bizsoft.fmcgv2.StockReportActivity
+ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:104:9-106:25
+	android:configChanges
+		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:105:13-63
 	android:name
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:104:19-54
-activity#com.bizsoft.fmcgv2.BankActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:106:9-107:20
-	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:106:19-47
-activity#com.bizsoft.fmcgv2.CreateBankActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:108:9-109:20
-	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:108:19-53
-activity#com.bizsoft.fmcgv2.ProductListActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:110:9-111:20
-	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:110:19-54
-activity#com.bizsoft.fmcgv2.AddProductActivity
-ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:112:9-113:20
-	android:name
-		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml:112:19-53
 uses-sdk
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\7e3e97d7f1feb918e296261e18d2713c\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\7e3e97d7f1feb918e296261e18d2713c\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:21:5-23:78
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\2b82e2f4ad8245b62b31d67990dcc634\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\de3c22b352fe454dc93ce0cfae96d4e6\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\de3c22b352fe454dc93ce0cfae96d4e6\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\af84f1adecb6ca80c1bbe8eab3c1ece5\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\af84f1adecb6ca80c1bbe8eab3c1ece5\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\b00c4295e90f36c5cc545bdc8bef7db2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\b00c4295e90f36c5cc545bdc8bef7db2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:21:5-23:78
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\ae61aea48d031454c204e43cd4978ec5\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\18076700d0e64ec3696a739dddefb7dd\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\18076700d0e64ec3696a739dddefb7dd\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3180f8bfbf549300af46fb9e16721466\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3180f8bfbf549300af46fb9e16721466\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:21:5-23:58
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:23:9-59
+		ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
@@ -341,30 +353,30 @@ INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 		ADDED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 		INJECTED from D:\R&D\FMCGV22\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\ee3eb408ee17b3f5c8c2598174d27303\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\a44bdec7bd7c7428476e644f1320e15d\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\d7e56cf651aeea8c9c2ca95d36a6c188\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\af84f1adecb6ca80c1bbe8eab3c1ece5\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\af84f1adecb6ca80c1bbe8eab3c1ece5\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\b2b8ad83dabd9707d5b07118acf4240e\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\ddf28067b4c62e4a014cd3c56887580b\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\ad05a01d86eb924dc350b2bc93fead04\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\155e3498e4116bd348f3e4f61d99aedd\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\50c62a52d4b527a60781dda2cc38d3ce\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\954b465c97c72910e180fcf9eee941e8\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\d62ac70d63cebcd56dd52336c574ee1d\AndroidManifest.xml:25:5-27:34
+ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\fe46260b73287402fbe181a3487ebf2c\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\d94c17c90fc41260477bcba772bf3442\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\06c1c08a99218ebad7bc84ed24cf96a0\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3180f8bfbf549300af46fb9e16721466\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3180f8bfbf549300af46fb9e16721466\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\2129a055343ecfa71b4f07e45138dc1c\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\12b379e8290f92dfb7548cf20b1bd5ad\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\7cc5aee00c32b8c93c8a59279d0d35ef\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\843d3ba0be61793daeb90b4e84f258ef\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\17c02bbb9a2e4508cd86e4aebdfd6ef7\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\9d848e6b9dea0ce9c0cfdee80dfc50c8\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\9ec997203bba121586ca9a02cbd2f330\AndroidManifest.xml:25:5-27:34
 	android:value
-		ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:27:9-31
+		ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:27:9-31
 	android:name
-		ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fe51a3db0062585325529428c82dbc46\AndroidManifest.xml:26:9-47
+		ADDED from [com.android.support:design:25.3.1] C:\Users\GopiKing\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\4a68bfdfb7a3592697cd65bbda2873f3\AndroidManifest.xml:26:9-47

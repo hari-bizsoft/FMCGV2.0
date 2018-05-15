@@ -55,7 +55,7 @@ public class Waiter extends Thread
 
 
             }
-            catch (InterruptedException e)
+            catch (Exception e)
             {
                 Log.d(TAG, "com.bizsoft.fmcgv2.service.Waiter interrupted!");
             }

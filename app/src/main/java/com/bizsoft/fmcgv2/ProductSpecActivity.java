@@ -15,17 +15,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.adapter.ProductAdapter;
 import com.bizsoft.fmcgv2.adapter.ProductSpecAdapter;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcessDetails;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
-import com.bizsoft.fmcgv2.service.SignalRService;
 import com.bizsoft.fmcgv2.signalr.pojo.PDetailsItem;
 import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 
@@ -53,6 +53,11 @@ public class ProductSpecActivity extends AppCompatActivity {
     ProductSpecAdapter productAdapter;
     private ArrayList<PDetailsItem> choosedOutputProd = new ArrayList<PDetailsItem>();
     private FloatingActionButton menu;
+    RadioButton packaging,dispatching;
+    RadioGroup group;
+    private String currentStockProcessType;
+    final static String PACKAGING = "packaging";
+    final static String DISPATCHING = "dispatching";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,7 @@ public class ProductSpecActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Product Specification");
 
-        date_chooser = (EditText) findViewById(R.id.date_chooser_text_box);
+        date_chooser = (EditText) findViewById(R.id.from_date_chooser_text_box);
         productName = (EditText) findViewById(R.id.product_name);
         quatity = (EditText) findViewById(R.id.quantity_text);
 
@@ -73,7 +78,12 @@ public class ProductSpecActivity extends AppCompatActivity {
         clear = (Button) findViewById(R.id.clear);
         save= (Button) findViewById(R.id.save);
         menu= (FloatingActionButton) findViewById(R.id.menu);
+        packaging = (RadioButton) findViewById(R.id.packaging);
+        dispatching = (RadioButton) findViewById(R.id.dispatching);
+        group = (RadioGroup) findViewById(R.id.radiogroup);
 
+        dispatching.setChecked(true);
+        currentStockProcessType = "dispatching";
 
         init();
 
@@ -83,12 +93,26 @@ public class ProductSpecActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(ProductSpecActivity.this);
+                bizUtils.bizMenu(ProductSpecActivity.this);
             }
         });
        productAdapter = new ProductSpecAdapter(ProductSpecActivity.this,choosedOutputProd);
         productList.setAdapter(productAdapter);
 
+
+
+
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                int selectedId=group.getCheckedRadioButtonId();
+                RadioButton currentStockType = (RadioButton) findViewById(selectedId);
+                Toast.makeText(ProductSpecActivity.this,currentStockType.getText(),Toast.LENGTH_SHORT).show();
+                currentStockProcessType = currentStockType.getText().toString();
+
+            }
+        });
 
 
       /*  date_chooser.setEnabled(false);
@@ -215,22 +239,51 @@ public class ProductSpecActivity extends AppCompatActivity {
 
         int fromUser = Integer.parseInt(quatity.getText().toString());
 
-        int newQuantityofMaster = masterQuantity - fromUser;
-
-        choosedProduct.setAvailable(newQuantityofMaster);
-        choosedProduct.setRQty(fromUser);
 
 
 
 
 
-        for(int i=0;i<choosedOutputProd.size();i++)
+
+        if(currentStockProcessType.toLowerCase().toLowerCase().contains(DISPATCHING)) {
+            int newQuantityofMaster = masterQuantity - fromUser;
+
+            choosedProduct.setAvailable(newQuantityofMaster);
+            choosedProduct.setRQty(fromUser);
+
+
+            syncProductMasterList(choosedProduct.getProductId(),choosedProduct.getAvailable());
+            for (int i = 0; i < choosedOutputProd.size(); i++) {
+
+                int detailAvailableStock = ((int) choosedOutputProd.get(i).getAvailable());
+                int detailQuantity = ((int) choosedOutputProd.get(i).getQty());
+                int newDetailsStock = detailAvailableStock + detailQuantity;
+                choosedOutputProd.get(i).setAvailable(newDetailsStock);
+
+
+                syncProductMasterList(choosedOutputProd.get(i).getProductId(), (long) choosedOutputProd.get(i).getAvailable());
+
+            }
+
+        }
+        else
         {
+            int newQuantityofMaster = masterQuantity + fromUser;
 
-            int detailAvailableStock = ((int) choosedOutputProd.get(i).getAvailable());
-            int detailQuantity = ((int)choosedOutputProd.get(i).getQty());
-            int newDetailsStock = detailAvailableStock + detailQuantity;
-            choosedOutputProd.get(i).setAvailable(newDetailsStock);
+            choosedProduct.setAvailable(newQuantityofMaster);
+            choosedProduct.setRQty(fromUser);
+            syncProductSpecList(choosedProduct.getProductId(),choosedProduct.getAvailable());
+
+            for (int i = 0; i < choosedOutputProd.size(); i++) {
+
+                int detailAvailableStock = ((int) choosedOutputProd.get(i).getAvailable());
+                int detailQuantity = ((int) choosedOutputProd.get(i).getQty());
+                int newDetailsStock = detailAvailableStock - detailQuantity;
+
+                choosedOutputProd.get(i).setAvailable(newDetailsStock);
+
+                syncProductSpecList(choosedOutputProd.get(i).getProductId(), (long) choosedOutputProd.get(i).getAvailable());
+            }
         }
 
 
@@ -265,6 +318,51 @@ public class ProductSpecActivity extends AppCompatActivity {
 
     }
 
+    private void syncProductMasterList(double productId, long available) {
+
+        ArrayList<ProductSpec> productSpecMasterList = Store.getInstance().productSpecMasterList;
+        for(int i = 0; i<productSpecMasterList.size(); i++)
+        {
+            if(productSpecMasterList.get(i).getProductId()==productId)
+            {
+                productSpecMasterList.get(i).setAvailable(available);
+            }
+
+            for(int j=0;j<Store.getInstance().productSpecMasterList.get(i).getPDetails().size();j++)
+            {
+                PDetailsItem currentProduct = Store.getInstance().productSpecMasterList.get(i).getPDetails().get(j);
+                if(currentProduct.getProductId() == productId )
+                {
+                    currentProduct.setAvailable(available);
+
+                }
+            }
+
+        }
+    }
+    private void syncProductSpecList(double productId, long available) {
+
+        ArrayList<ProductSpec> productSpecMasterList = Store.getInstance().productSpecList;
+        for(int i = 0; i<productSpecMasterList.size(); i++)
+        {
+            if(productSpecMasterList.get(i).getProductId()==productId)
+            {
+                productSpecMasterList.get(i).setAvailable(available);
+            }
+
+            for(int j=0;j<Store.getInstance().productSpecList.get(i).getPDetails().size();j++)
+            {
+                PDetailsItem currentProduct = Store.getInstance().productSpecList.get(i).getPDetails().get(j);
+                if(currentProduct.getProductId() == productId )
+                {
+                    currentProduct.setAvailable(available);
+
+                }
+            }
+
+        }
+    }
+
     private void createProductSpecProcess() throws ParseException {
 
         ProductSpecProcess productSpecProcess = new ProductSpecProcess();
@@ -285,7 +383,15 @@ public class ProductSpecActivity extends AppCompatActivity {
             ProductSpecProcessDetails productSpecProcessDetails = new ProductSpecProcessDetails();
             productSpecProcessDetails.setId((long) choosedOutputProd.get(i).getId());
             productSpecProcessDetails.setProductId((int) choosedOutputProd.get(i).getProductId());
-            productSpecProcessDetails.setPSId(2);
+            if(currentStockProcessType.toLowerCase().contains("packaging"))
+            {
+                productSpecProcessDetails.setPSId(1);
+            }
+            else
+            {
+                productSpecProcessDetails.setPSId(2);
+            }
+
             productSpecProcessDetails.setQty(choosedOutputProd.get(i).getQty());
             productSpecProcess.getPDetails().add(productSpecProcessDetails);
         }
@@ -309,32 +415,41 @@ public class ProductSpecActivity extends AppCompatActivity {
 
 
         try {
+
             BizUtils.storeAsJSON("ProductSpecProcessList",BizUtils.getJSON("productspecprocess",Store.getInstance().prodcutSpecProcess));
             System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
 
-            for(int i=0;i<choosedOutputProd.size();i++) {
-                for (int k = 0; k < Store.getInstance().productList.size(); k++) {
-                    Product actualProduct = Store.getInstance().productList.get(k);
 
-                    System.out.println("Prod ID 1====" + choosedOutputProd.get(i).getId() + "=====" + choosedOutputProd.get(i).getProductId());
-                    System.out.println("Prod ID 2====" + actualProduct.getId());
-                    if (choosedOutputProd.get(i).getProductId() == actualProduct.getId()) {
-                        actualProduct.setAvailableStock((long) (choosedOutputProd.get(i).getAvailable()));
+            // if process type is dispatching
 
-                        synchronized(actualProduct){
-                            actualProduct.notify();
+
+                for(int i=0;i<choosedOutputProd.size();i++) {
+                    for (int k = 0; k < Store.getInstance().productList.size(); k++) {
+                        Product actualProduct = Store.getInstance().productList.get(k);
+
+                        System.out.println("Prod ID 1====" + choosedOutputProd.get(i).getId() + "=====" + choosedOutputProd.get(i).getProductId());
+                        System.out.println("Prod ID 2====" + actualProduct.getId());
+                        if (choosedOutputProd.get(i).getProductId() == actualProduct.getId()) {
+                            actualProduct.setAvailableStock((long) (choosedOutputProd.get(i).getAvailable()));
+
+                            synchronized(actualProduct){
+                                actualProduct.notify();
+                            }
                         }
-                    }
-                    if(choosedProduct.getProductId() == actualProduct.getId())
-                    {
-                        actualProduct.setAvailableStock(choosedProduct.getAvailable());
-                        synchronized(actualProduct){
-                            actualProduct.notify();
+                        if(choosedProduct.getProductId() == actualProduct.getId())
+                        {
+                            actualProduct.setAvailableStock(choosedProduct.getAvailable());
+                            synchronized(actualProduct){
+                                actualProduct.notify();
+                            }
                         }
-                    }
 
+                    }
                 }
-            }
+
+
+
+            //
 
 
 
@@ -394,10 +509,21 @@ public class ProductSpecActivity extends AppCompatActivity {
 
         numberPicker.setMinValue(1);
         //Specify the maximum value/number of NumberPicker
-
-
         System.out.println("available = "+prod.getAvailable());
-        numberPicker.setMaxValue(Integer.parseInt(String.valueOf(prod.getAvailable())));
+
+        if(prod.getAvailable()<0)
+        {
+
+            Toast.makeText(this, "Product out of stock..", Toast.LENGTH_SHORT).show();
+            quatity.setText("0");
+
+        }
+        else {
+            numberPicker.setMaxValue(Integer.parseInt(String.valueOf(prod.getAvailable())));
+        }
+
+
+
 
         //Gets whether the selector wheel wraps when reaching the min/max value.
         numberPicker.setWrapSelectorWheel(true);
@@ -446,7 +572,15 @@ public class ProductSpecActivity extends AppCompatActivity {
     public  void showProducts()
     {
         productSpecList  = new ArrayList<ProductSpec>();
-        productSpecList = Store.getInstance().productSpecList;
+        if(currentStockProcessType.toLowerCase().contains("packaging"))
+        {
+            productSpecList = Store.getInstance().productSpecMasterList;
+        }
+        else
+        {
+            productSpecList = Store.getInstance().productSpecList;
+        }
+
         final ArrayList<String> strings = new ArrayList<String>();
         for(int i=0;i<productSpecList.size();i++)
         {
@@ -489,7 +623,6 @@ public class ProductSpecActivity extends AppCompatActivity {
     public void init()
     {
         ArrayList<ProductSpec> productSpecs = Store.getInstance().productSpecList;
-
         for(int i=0;i<productSpecs.size();i++)
         {
             ArrayList<PDetailsItem> pDetails = (ArrayList<PDetailsItem>) productSpecs.get(i).getPDetails();
@@ -501,9 +634,19 @@ public class ProductSpecActivity extends AppCompatActivity {
 
             }
 
+        }
 
+        ArrayList<ProductSpec> productSpecsML = Store.getInstance().productSpecMasterList;
+        for(int i=0;i<productSpecsML.size();i++)
+        {
+            ArrayList<PDetailsItem> pDetails = (ArrayList<PDetailsItem>) productSpecsML.get(i).getPDetails();
 
+            for(int x = 0;x<pDetails.size();x++)
+            {
+                pDetails.get(x).setRefQty(pDetails.get(x).getQty());
+                pDetails.get(x).setRefAvailable(pDetails.get(x).getAvailable());
 
+            }
 
         }
 
@@ -514,11 +657,9 @@ public class ProductSpecActivity extends AppCompatActivity {
     public void clear()
     {
         ArrayList<ProductSpec> productSpecs = Store.getInstance().productSpecList;
-
         for(int i=0;i<productSpecs.size();i++)
         {
             ArrayList<PDetailsItem> pDetails = (ArrayList<PDetailsItem>) productSpecs.get(i).getPDetails();
-
             for(int x = 0;x<pDetails.size();x++)
             {
                 pDetails.get(x).setQty(pDetails.get(x).getRefQty());
@@ -528,12 +669,26 @@ public class ProductSpecActivity extends AppCompatActivity {
             quatity.setText("1");
             productName.setText("");
             date_chooser.setText(String.valueOf(BizUtils.getCurrentDate()));
-
             productAdapter.productList = new ArrayList<PDetailsItem>();
             productAdapter.notifyDataSetChanged();
 
+        }
+
+        ArrayList<ProductSpec> productSpecsML = Store.getInstance().productSpecMasterList;
+        for(int i=0;i<productSpecsML.size();i++)
+        {
+            ArrayList<PDetailsItem> pDetails = (ArrayList<PDetailsItem>) productSpecsML.get(i).getPDetails();
+            for(int x = 0;x<pDetails.size();x++)
+            {
+                pDetails.get(x).setQty(pDetails.get(x).getRefQty());
 
 
+            }
+            quatity.setText("1");
+            productName.setText("");
+            date_chooser.setText(String.valueOf(BizUtils.getCurrentDate()));
+            productAdapter.productList = new ArrayList<PDetailsItem>();
+            productAdapter.notifyDataSetChanged();
 
         }
     }

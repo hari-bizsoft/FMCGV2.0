@@ -128,7 +128,7 @@ public class CustomerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                bizUtils.showMenu(CustomerActivity.this);
+                bizUtils.bizMenu(CustomerActivity.this);
             }
         });
     }
