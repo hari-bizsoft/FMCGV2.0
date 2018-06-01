@@ -63,7 +63,6 @@ public class ReportAdapter extends BaseAdapter {
 
         holder.amount.setText(String.valueOf(String.format("%.2f",product.getAmount())));
 
-
         System.out.println("=============="+ reportUrl);
         System.out.println("=============="+reportUrl.contains("customer"));
         if(reportUrl.toLowerCase().contains("customer"))

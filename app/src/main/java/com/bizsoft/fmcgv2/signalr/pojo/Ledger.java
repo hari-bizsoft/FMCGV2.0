@@ -1,5 +1,6 @@
 package com.bizsoft.fmcgv2.signalr.pojo;
 
+import com.bizsoft.fmcgv2.dataobject.CreditLimitType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.annotation.Generated;
 

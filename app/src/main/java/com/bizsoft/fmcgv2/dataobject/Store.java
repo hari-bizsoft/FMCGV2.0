@@ -77,7 +77,7 @@ public class Store {
     public TextView reprintSpinnerText;
     public  ArrayList<Receipt> receipts = new ArrayList<Receipt>();
     public ArrayList<Payment> payments = new ArrayList<>();
-    public int idleTimeLimit = 1;
+    public int idleTimeLimit = 3;
     public String serverStatus;
     public String appId;
     public String deviceName;
@@ -134,6 +134,10 @@ public class Store {
     public ArrayList<MenuItems> menuItems = new ArrayList<MenuItems>();
     public HashMap<Long, Product> allProductHashMap = new HashMap<Long, Product>();
     public ArrayList<String> menuNameList = new ArrayList<>();
+    public ArrayList<CreditLimitType> customerCreditLimitTypeList = new ArrayList<CreditLimitType>();
+    public ArrayList<String> customerNameList = new ArrayList<String>();
+    public final String discountTypeRM = "RM";
+    public String discountTypePercentage = "% ";
 
 
     public static Store getInstance() {

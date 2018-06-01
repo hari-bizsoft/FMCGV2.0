@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,13 +32,17 @@ import com.bizsoft.fmcgv2.dataobject.SaleOrder;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.PrinterService;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 import static com.bizsoft.fmcgv2.ReprintActivity.bizRound;
+import static com.bizsoft.fmcgv2.service.BizUtils.getTransactionType;
 import static com.bizsoft.fmcgv2.service.BizUtils.syncStockProcessProductList;
 
 public class STOSOActivity extends AppCompatActivity {
@@ -54,7 +59,7 @@ public class STOSOActivity extends AppCompatActivity {
     Button print;
     private double tenderAmountValue = 0;
     private  double fromCustomerValue = 0;
-    TextView balance,received;
+
     Spinner billID;
     private String billIDValue;
     Sale currentSales;
@@ -63,16 +68,19 @@ public class STOSOActivity extends AppCompatActivity {
     DecimalFormat df ;
     private double subTotal,gst,grandTotal;
     BizUtils bizUtils;
-    FloatingActionButton menu;
+
     TextView discountValue;
     private Button delete;
+    TextView discountLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stoso);
 
-        getSupportActionBar().setTitle("Sale Order Conversion");
+        UIUtil.setActionBarMenu(STOSOActivity.this,getSupportActionBar(),"Sales Order To Sale");
+
+
         customerSpinner = (Spinner) findViewById(R.id.customer_spinner);
         saleType = (Spinner) findViewById(R.id.sale_type_spinner);
         listView = (ListView) findViewById(R.id.listview);
@@ -80,13 +88,15 @@ public class STOSOActivity extends AppCompatActivity {
         gstT = (TextView) findViewById(R.id.GST);
         grandTotalT = (TextView) findViewById(R.id.grand_total);
         print = (Button) findViewById(R.id.dc_print);
-        balance = (TextView) findViewById(R.id.balance_amount);
-        received = (TextView) findViewById(R.id.received_amount);
+
         billID = (Spinner) findViewById(R.id.bill_id);
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
+
         discountValue = (TextView) findViewById(R.id.discount_value);
         bizUtils = new BizUtils();
         delete = (Button) findViewById(R.id.delete);
+        discountLabel = (TextView) findViewById(R.id.discount_label);
+
+
 
 
 
@@ -100,13 +110,7 @@ public class STOSOActivity extends AppCompatActivity {
 
         setCustomerSpinner();
 
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                bizUtils.bizMenu(STOSOActivity.this);
-            }
-        });
 
         adapter = new SalesAdapter(STOSOActivity.this,products);
         listView.setAdapter(adapter);
@@ -125,7 +129,6 @@ public class STOSOActivity extends AppCompatActivity {
 
 
                         for(  int i=0;i<Store.getInstance().customerList.size();i++) {
-
                             System.out.println(Store.getInstance().customerList.get(i).getLedger().getId() + "=====================" + currentCustomer.getLedger().getId());
                             System.out.println(Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()));
                             if (Store.getInstance().customerList.get(i).getLedger().getId().compareTo(currentCustomer.getLedger().getId()) == 0) {
@@ -309,6 +312,8 @@ public class STOSOActivity extends AppCompatActivity {
         sale.setReceivedAmount(0.00);
         sale.setRefCode(salesOrder.getRefNo());
         sale.setSaleType("sale");
+        sale.setPaymentMode("none");
+        sale.setDiscountType("grand total");
 
         ArrayList<Product> products = new ArrayList<Product>();
         for(int i=0;i<salesOrder.getSODetails().size();i++)
@@ -318,17 +323,28 @@ public class STOSOActivity extends AppCompatActivity {
             Product product = new Product();
             product.setId(salesOrderDetails.get(i).getId());
             product.setFinalPrice(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
-            product.setMRP(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
-            product.setSellingRate(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
-            product.setDiscountAmount(0.00);
+            product.setMRP(salesOrderDetails.get(i).getUnitPrice());
+            product.setSellingRate(salesOrderDetails.get(i).getUnitPrice());
+            product.setDiscountAmount(salesOrderDetails.get(i).getDiscountAmount());
+
             product.setQty((long) salesOrderDetails.get(i).getQuantity());
             product.setUOM("");
             product.setSODId(salesOrder.getId());
             product.setProductName(salesOrderDetails.get(i).getProductName());
-            products.add(product);
+            double dp = (product.getDiscountAmount() * 100) / product.getDiscountAmount()+product.getFinalPrice();
+            product.setDiscountPercentage(dp);
+
+
+                    products.add(product);
 
         }
+        double a =  (sale.getDiscountValue() * 100);
+        double b =  sale.getDiscountValue()+sale.getGrandTotal();
+        double dp = a/b;
+        sale.setDiscountPercentage(dp);
+
         sale.setProducts(products);
+
 
         BizUtils.prettyJson("product json",products);
 
@@ -353,7 +369,15 @@ public class STOSOActivity extends AppCompatActivity {
         }
         syncStockProcessProductList();
 
-        print(customer, "Sale Bill", products,sale, null, null);
+
+
+        PrinterService.print(STOSOActivity.this,customer, "Sale", products,sale, null, null,"Customer Copy");
+
+        DashboardActivity dashboardActivity = new DashboardActivity();
+
+
+
+        //DashboardActivity.lastSavedBillType = "Sale";
 
 
     }
@@ -366,8 +390,7 @@ public class STOSOActivity extends AppCompatActivity {
         gstT.setText("0.00");
         grandTotalT.setText("0.00");
         discountValue.setText("0.00");
-        received.setText("0.00");
-        balance.setText("0.00");
+
 
         for(int i=0;i<Store.getInstance().SOPendingList.size();i++)
         {
@@ -464,8 +487,7 @@ public class STOSOActivity extends AppCompatActivity {
             subTotalT.setText(String.valueOf("0.00"));
             gstT.setText(String.valueOf("0.00"));
             grandTotalT.setText(String.valueOf("0.00"));
-            received.setText(String.valueOf("0.00"));
-            balance.setText(String.valueOf("0.00"));
+
             discountValue.setText(String.valueOf("0.00"));
 
         }
@@ -628,8 +650,14 @@ public class STOSOActivity extends AppCompatActivity {
             gstT.setText(String.valueOf(String.format("%.2f",gst)));
             grandTotalT.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getTotalAmount())));
             discountValue.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getDiscountAmount())));
-            received.setText(String.valueOf(String.format("%.2f",rec)));
-            balance.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getExtraAmount())));
+
+        double a =  (currentSaleOrder.getDiscountAmount() * 100);
+        double b =  currentSaleOrder.getDiscountAmount() + currentSaleOrder.getTotalAmount();
+        double dp = a/b;
+
+        discountLabel.setText("Discount("+String.valueOf(String.format("%.2f",dp))+"%) =");
+
+
 
 
 
@@ -673,7 +701,7 @@ public class STOSOActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Bill Ref No :" + String.valueOf(refNo));
         BTPrint.PrintTextLine("Bill Date :" + bizUtils.getCurrentTime());
         BTPrint.PrintTextLine("------------------------------");
-        Customer customer1 = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
+        Customer customer1 = currentCustomer;
 
 
         if (customer1.getId() == null) {
@@ -715,12 +743,12 @@ public class STOSOActivity extends AppCompatActivity {
         BTPrint.SetAlign(Paint.Align.LEFT);
         //  BTPrint.PrintTextLine("NAME     QTY    PRICE   AMOUNT ");
 
-        customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
+        customer = currentCustomer;
 
 
         String gstSpace = "";
 
-        System.out.println("Sale list" + customer.getSale().size());
+
         double mainSubTotal = 0;
         double mainGst = 0;
         double mainGrantTotal = 0;
@@ -906,7 +934,37 @@ public class STOSOActivity extends AppCompatActivity {
 
 
 
-            BTPrint.PrintTextLine( " "+iq + q + ip + dis + id +pr + ir);
+
+            if(!TextUtils.isEmpty(id.trim())) {
+                id = String.valueOf(String.format("%.2f", Double.parseDouble(id)));
+            }
+            ir = String.valueOf(String.format("%.2f", Double.parseDouble(ir)));
+
+            String print_line =   " "+iq + q + ip + dis + id +pr + ir;
+            System.out.println("Print Line = "+print_line);
+
+            Formatter fmt = new Formatter();
+            fmt.format("|%6.2f|", Double.parseDouble(ir));
+
+            String oldPrintStmt  =  " "+iq + q + ip + dis + id +pr + ir;
+
+            String qStr = String.format("%4d",  Integer.parseInt(iq));
+            qStr = qStr+" ";
+            String pStr = String.format("%6.2f",Double.parseDouble(ip));
+            pStr = pStr+" ";
+            String dStr = "";
+            if(TextUtils.isEmpty(id.trim())) {
+                dStr = String.format("%7s", id);
+            }else
+            {
+                dStr = "-"+String.format("%6s", id);
+            }
+            dStr = dStr+" ";
+            String rStr = "="+String.format("%8.2f",Double.parseDouble(ir));
+
+            String newPrintStmnt = qStr+"X"+pStr+dStr+rStr;
+
+            BTPrint.PrintTextLine( newPrintStmnt);
 
         }
 
@@ -916,13 +974,16 @@ public class STOSOActivity extends AppCompatActivity {
 
         String ra="0.00",ba="0.00";
         Double disV = 0.00;
+        double roundOffValue = 0.00;
         if(sale!=null) {
+
 
             ra = String.valueOf(String.format("%.2f", sale.getReceivedAmount()));
             ba = String.valueOf(String.format("%.2f", sale.getBalance()));
             mgt = String.valueOf(String.format("%.2f", sale.getGrandTotal()));
             mainGst = sale.getGst();
             disV = sale.getDiscountValue();
+            roundOffValue =  sale.getRoundOffValue();
 
         }
         if(saleOrder !=null)
@@ -933,6 +994,7 @@ public class STOSOActivity extends AppCompatActivity {
             disV = saleOrder.getDiscountValue();
             mgt = String.valueOf(String.format("%.2f", saleOrder.getGrandTotal()));
             mainGst = saleOrder.getGst();
+            roundOffValue =  saleOrder.getRoundOffValue();
         }
         if(saleReturn !=null)
         {
@@ -941,9 +1003,90 @@ public class STOSOActivity extends AppCompatActivity {
             disV = saleReturn.getDiscountValue();
             mgt = String.valueOf(String.format("%.2f", saleReturn.getGrandTotal()));
             mainGst = saleReturn.getGst();
+            roundOffValue =  saleReturn.getRoundOffValue();
         }
 
-        int mgtL = mgt.length();
+
+         gstSpace = "";
+        String discountSpace="";
+        String roundOffSpace="";
+        System.out.println("on test");
+        String subTotal = String.valueOf(String.format("%.2f",mainSubTotal));
+        int subTotalLength = subTotal.length();
+
+        String gst = String.valueOf(String.format("%.2f",mainGst));
+        int gstLength = gst.length();
+
+        String disString =String.valueOf(String.format("%.2f",disV));
+        int disLength = disString.length();
+
+        String roundOffStr = String.valueOf(String.format("%.2f",roundOffValue));
+        int roundOFFlenght = roundOffStr.length();
+
+
+
+
+
+        int c = subTotalLength - gstLength;
+        int dl = subTotalLength - disLength;
+        int rl = subTotalLength - roundOFFlenght;
+
+        for (int f = 0; f < c; f++) {
+            gstSpace = gstSpace + " ";
+        }
+        for (int f = 0; f < dl; f++) {
+            discountSpace = discountSpace+ " ";
+        }
+        for (int f = 0; f < rl; f++) {
+            roundOffSpace = roundOffSpace+ " ";
+        }
+
+        BTPrint.PrintTextLine("------------------------------");
+        BTPrint.SetAlign(Paint.Align.RIGHT);
+        BTPrint.PrintTextLine("Sub total RM " + String.format("%.2f",mainSubTotal));
+        BTPrint.PrintTextLine("GST RM " + gstSpace + String.format("%.2f",mainGst));
+
+
+
+
+
+
+        String discountPer = "0.00";
+        String disType ="";
+        double disAmt = 0.0;
+        if(sale!=null)
+        {
+            mainGrantTotal = sale.getGrandTotal();
+            ba = String.valueOf(sale.getBalance());
+            discountPer = String.format("%.2f",sale.getDiscountPercentage());
+            disType = sale.getDiscountType();
+            disAmt = sale.getDiscountValue();
+
+        }
+        if(saleOrder!=null)
+        {
+            mainGrantTotal = saleOrder.getGrandTotal();
+            ba = String.valueOf(saleOrder.getBalance());
+            discountPer = String.format("%.2f",saleOrder.getDiscountPercentage());
+            disType = saleOrder.getDiscountType();
+            disAmt = saleOrder.getDiscountValue();
+        }
+        if(saleReturn!=null)
+        {
+            mainGrantTotal = saleReturn.getGrandTotal();
+            ba = String.valueOf(saleReturn.getBalance());
+            disAmt = saleReturn.getDiscountValue();
+        }
+        if(disAmt>0)
+        {
+
+            BTPrint.PrintTextLine("Discount("+discountPer+"%) RM " + discountSpace + String.format("%.2f",disV));
+        }
+        ba = String.format("%.2f",Double.parseDouble(ba));
+        if(roundOffValue>0) {
+            BTPrint.PrintTextLine("Round Off RM " + roundOffSpace + String.format("%.2f", roundOffValue));
+        }
+        int mgtL =  String.valueOf(String.format("%.2f",mainGrantTotal)).length();
         int raL = ra.length();
         int baL = ba.length();
 
@@ -973,40 +1116,24 @@ public class STOSOActivity extends AppCompatActivity {
                 baSpace = baSpace + " ";
 
             }
-        }
 
+        }
+        else
+        {
+            x = mgtL - raL;
+            y = mgtL - baL;
+            for (int i = 0; i < x; i++) {
+                raSpace = raSpace + " ";
+
+            }
+            for (int i = 0; i < y; i++) {
+                baSpace = baSpace + " ";
+
+            }
+        }
 
         BTPrint.PrintTextLine("------------------------------");
-        BTPrint.SetAlign(Paint.Align.RIGHT);
-        BTPrint.PrintTextLine("Sub total RM " + String.format("%.2f",mainSubTotal));
-        BTPrint.PrintTextLine("GST RM " + gstSpace + String.format("%.2f",mainGst));
-
-
-
-        BTPrint.PrintTextLine("Discount RM " + gstSpace + String.format("%.2f",disV));
-
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("------------------------------");
-
-        if(sale!=null)
-        {
-            mainGrantTotal = sale.getGrandTotal();
-            ba = String.valueOf(sale.getBalance());
-
-        }
-        if(saleOrder!=null)
-        {
-            mainGrantTotal = saleOrder.getGrandTotal();
-            ba = String.valueOf(saleOrder.getBalance());
-        }
-        if(saleReturn!=null)
-        {
-            mainGrantTotal = saleReturn.getGrandTotal();
-            ba = String.valueOf(saleReturn.getBalance());
-        }
-        BTPrint.PrintTextLine("Grand total " + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
-        BTPrint.PrintTextLine("Received amount " + raSpace + " RM " + String.format("%.2f",Double.parseDouble(ra)));
-        BTPrint.PrintTextLine("Balance amount " + baSpace + " RM " + String.format("%.2f",Double.parseDouble(ba)));
+        BTPrint.PrintTextLine("Grand total" + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("*****THANK YOU*****");
@@ -1016,28 +1143,12 @@ public class STOSOActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
+        BTPrint.SetAlign(Paint.Align.CENTER);
+        BTPrint.PrintTextLine("***"+"Customer Copy"+"***");
         BTPrint.printLineFeed();
 
 
 
-       /* if(currentSaleType.toLowerCase().contains("order"))
-        {
-
-            customer.getSaleOrder().removeAll(products);
-        }
-        else
-        if(currentSaleType.toLowerCase().contains("return"))
-        {
-            customer.getSaleReturn().removeAll(products);
-        }
-        else
-        {
-            customer.getSale().removeAll(products);
-
-        }
-        System.out.println("Product Size = "+products.size());
-
-*/
     }
 }
 

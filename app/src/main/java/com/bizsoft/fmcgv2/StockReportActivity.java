@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import com.bizsoft.fmcgv2.dataobject.StockReport;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.SignalRService;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,14 +59,15 @@ public class StockReportActivity extends AppCompatActivity {
     private Product searchProduct;
     private HashMap<String, StockReport> stockReportMap;
     ImageButton clear;
-
+    private Dialog dialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_report);
-        getSupportActionBar().setTitle("Stock Report");
+        UIUtil.setActionStockMenu(StockReportActivity.this,getSupportActionBar(),dialog,"Stock Report");
+
 
         listView = (ListView) findViewById(R.id.listview);
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
@@ -98,30 +101,11 @@ public class StockReportActivity extends AppCompatActivity {
 
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.stock_menu, menu);
-        return true;
-    }
-    //and this to handle actions
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.filter) {
-
-            showDialog();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
-    private void showDialog() {
-        final Dialog dialog = new Dialog(StockReportActivity.this);
+
+    public void showDialog(Context context) {
+        dialog = new Dialog(context);
         dialog.setTitle("Filter");
         dialog.setContentView(R.layout.filter_dialog);
 
@@ -151,7 +135,7 @@ public class StockReportActivity extends AppCompatActivity {
             }
         });
 
-        loadProductName(productName);
+        loadProductName(productName,context);
 
 
         generate.setOnClickListener(new View.OnClickListener() {
@@ -204,8 +188,8 @@ public class StockReportActivity extends AppCompatActivity {
         return status;
     }
 
-    private void loadProductName(AutoCompleteTextView productName) {
-        ArrayAdapter<String> StockGroupAdapter = new ArrayAdapter<String>(this,
+    private void loadProductName(AutoCompleteTextView productName,Context context) {
+        ArrayAdapter<String> StockGroupAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_dropdown_item_1line, allProductList);
         productName.setThreshold(1);
         productName.setAdapter(StockGroupAdapter);

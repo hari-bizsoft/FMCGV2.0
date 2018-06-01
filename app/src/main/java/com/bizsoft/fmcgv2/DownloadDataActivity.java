@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.dataobject.MenuItems;
 import com.bizsoft.fmcgv2.dataobject.Store;
+import com.bizsoft.fmcgv2.service.ApplicationSheild;
 import com.bizsoft.fmcgv2.service.BizLogger;
 import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.SignalRService;
@@ -89,13 +90,20 @@ public class DownloadDataActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
-                    if(Store.getInstance().dealerLogo!=null)
+                    try {
+                        Store.getInstance().dealerLogo = SignalRService.companyLogo();
+
+                        if (Store.getInstance().dealerLogo != null) {
+                            Bitmap bmp = BizUtils.StringToBitMap(Store.getInstance().dealerLogo);
+
+                            companyLogo.setImageBitmap(bmp);
+
+                            Store.getInstance().dealerLogoBitmap = bmp;
+                        }
+                    }
+                    catch (Exception e)
                     {
-                        Bitmap bmp= BizUtils.StringToBitMap(Store.getInstance().dealerLogo);
-
-                        companyLogo.setImageBitmap(bmp);
-
-                        Store.getInstance().dealerLogoBitmap = bmp;
+                        Log.e("error","download image failed");
                     }
                     textView.setText("Downloading customers..");
                 }
@@ -147,6 +155,7 @@ public class DownloadDataActivity extends AppCompatActivity {
             SignalRService.stockHomeList();
             SignalRService.productSpecList();
             SignalRService.productSpecMasterList();
+            SignalRService.creditLimitTypeList();
            // SignalRService.stockReportList(null,null,"01-01-2018 00:00:00","12-12-2018 23:59:59");
             progressBar.setProgress(75);
             runOnUiThread(new Runnable() {
@@ -163,7 +172,7 @@ public class DownloadDataActivity extends AppCompatActivity {
             SignalRService.getCompanyDetails(DownloadDataActivity.this);
             progressBar.setProgress(100);
 
-          //  SignalRService.taxMasterList();
+            SignalRService.taxMasterList();
          //   progressBar.setProgress(100);
 
             return null;
@@ -171,6 +180,7 @@ public class DownloadDataActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             percentage.setText("100%");
+
 
 
 
@@ -194,6 +204,8 @@ public class DownloadDataActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
 
             startActivity(intent);
 

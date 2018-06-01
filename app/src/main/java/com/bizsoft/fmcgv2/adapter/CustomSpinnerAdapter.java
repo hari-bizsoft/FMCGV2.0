@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
@@ -66,6 +67,7 @@ public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
     public class  Holder
     {
         public TextView name;
+        public ImageView dropdownIcon;
     }
     public View getView(int i, View view, ViewGroup viewgroup) {
 
@@ -73,9 +75,11 @@ public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
         view = layoutInflater.inflate(R.layout.dropdown_style, null);
 
         holder.name = (TextView) view.findViewById(R.id.dealer_name);
+        holder.dropdownIcon = (ImageView) view.findViewById(R.id.imageView7);
         Store.getInstance().reprintSpinnerText = holder.name;
 
         holder.name.setText(String.valueOf(asr.get(i)));
+
         return  view;
 
     }

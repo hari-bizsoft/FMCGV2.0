@@ -50,6 +50,7 @@ public class PrintPreview extends AppCompatActivity {
 
     TextView chequeNumber,chequeLabel;
     TextView paymodeLabel;
+    TextView roundOffValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class PrintPreview extends AppCompatActivity {
 
             subTotal = (TextView) findViewById(R.id.sub_total);
             gst = (TextView) findViewById(R.id.GST);
+            roundOffValue = (TextView) findViewById(R.id.round_off);
             grantTotal= (TextView) findViewById(R.id.grand_total);
             receivedRM= (TextView) findViewById(R.id.received_rm);
             balanceRM= (TextView) findViewById(R.id.balance_rm);
@@ -338,9 +340,15 @@ public class PrintPreview extends AppCompatActivity {
 
             discountLabel.setVisibility(View.VISIBLE);
             discountValue.setVisibility(View.VISIBLE);
-            discountLabel.setText(String.valueOf("Discount ( "+dp+" %)= "));
+            if(DashboardActivity.grandDiscountTypeSpinner.getSelectedItem().toString().equals(Store.getInstance().discountTypePercentage)) {
+                discountLabel.setText(String.valueOf("Discount ( " + dp + " " + DashboardActivity.grandDiscountTypeSpinner.getSelectedItem().toString() + ")= "));
+            }else
+            {
+                discountLabel.setText(String.valueOf("Discount ( " + DashboardActivity.grandDiscountTypeSpinner.getSelectedItem().toString() + " )= "));
+            }
             discountValue.setText(String.valueOf(String.format("%.2f",discount)));
         }
+        roundOffValue.setText(String.valueOf(DashboardActivity.roundOffText.getText().toString()));
 
 
 
@@ -365,6 +373,13 @@ public class PrintPreview extends AppCompatActivity {
                 balanceRM.setVisibility(View.GONE);
                 receivedRM.setVisibility(View.GONE);
             }
+        }
+        else
+        {
+            brm.setVisibility(View.GONE);
+            rrm.setVisibility(View.GONE);
+            balanceRM.setVisibility(View.GONE);
+            receivedRM.setVisibility(View.GONE);
         }
      /*  }
        catch (Exception e)

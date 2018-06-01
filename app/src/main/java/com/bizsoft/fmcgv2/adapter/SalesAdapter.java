@@ -51,6 +51,7 @@ public class SalesAdapter extends BaseAdapter {
         TextView calculatedAmount;
         TextView quantity;
         TextView discountAmount,finalPrice;
+        TextView discountPercent;
 
     }
     @Override
@@ -70,6 +71,7 @@ public class SalesAdapter extends BaseAdapter {
 
         holder.calculatedAmount = (TextView) convertView.findViewById(R.id.calculated_amount);
         holder.quantity = (TextView) convertView.findViewById(R.id.quantity);
+        holder.discountPercent =(TextView) convertView.findViewById(R.id.discount_label);
 
 
 
@@ -89,6 +91,30 @@ public class SalesAdapter extends BaseAdapter {
         holder.calculatedAmount.setText(" = "+String.valueOf(String.format("%.2f",amount)));
 
         holder.discountAmount.setText(String.valueOf(String.format("%.2f",product.getDiscountAmount())));
+
+        try
+        {
+
+            if(product.getDiscountAmount()>0 && product.getDiscountPercentage()==0)
+            {
+                double a =  (product.getDiscountAmount() * 100);
+                double b =  product.getDiscountAmount() + product.getSellingRate();
+                double dp = a/b;
+                holder.discountPercent.setText("Discount("+String.valueOf(String.format("%.2f",dp))+"%)");
+            }
+            else
+            {
+                holder.discountPercent.setText("Discount("+String.valueOf(String.format("%.2f",product.getDiscountPercentage()))+"%)");
+            }
+
+        }
+        catch (Exception e)
+        {
+
+        }
+
+
+
 
 
         double fp = amount - product.getDiscountAmount();

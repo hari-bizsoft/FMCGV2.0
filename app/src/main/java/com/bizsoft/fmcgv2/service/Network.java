@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AlertDialog;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,8 +30,8 @@ public class Network {
 
     private static Network instance = new Network();
     static Context context;
-    ConnectivityManager connectivityManager;
-    boolean connected = false;
+    static ConnectivityManager connectivityManager;
+    static boolean connected = false;
 
     static final String TAG = "Network_State";
 
@@ -39,7 +40,7 @@ public class Network {
         return instance;
     }
 
-    public boolean isOnline() {
+    public static  boolean isOnline() {
         try {
             connectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -114,7 +115,7 @@ public class Network {
         connectivityManagerField.setAccessible(true);
         final Object connectivityManager = connectivityManagerField.get(conman);
         final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
-        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setDataEnabled ", Boolean.TYPE);
         setMobileDataEnabledMethod.setAccessible(true);
 
         try {
@@ -123,7 +124,24 @@ public class Network {
             e.printStackTrace();
         }
     }
+    public void setMobileDataState(Context context,boolean mobileDataEnabled)
+    {
+        try
+        {
+            TelephonyManager telephonyService = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
+            Method setMobileDataEnabledMethod = telephonyService.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
+
+            if (null != setMobileDataEnabledMethod)
+            {
+                setMobileDataEnabledMethod.invoke(telephonyService, mobileDataEnabled);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e(TAG, "Error setting mobile data state", ex);
+        }
+    }
     public static void sendMail(Context context, String subject, String body){
         try{
 

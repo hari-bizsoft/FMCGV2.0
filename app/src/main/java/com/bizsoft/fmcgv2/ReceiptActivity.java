@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,9 @@ import com.bizsoft.fmcgv2.dataobject.Sale;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -57,7 +61,7 @@ public class ReceiptActivity extends AppCompatActivity {
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     private static final int REQUEST_PERMISSION_SETTING1 = 102;
-    FloatingActionButton menu;
+
     private BizUtils bizUtils;
     private TextView cn;
     private TextView chequeNo,cdl,bnl;
@@ -65,15 +69,16 @@ public class ReceiptActivity extends AppCompatActivity {
     ImageButton dateChooser;
     private int year,month,day;
     final static int BLUETOOTH_FLAG = 619;
+    private String type;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
+        UIUtil.setActionBarMenu(ReceiptActivity.this,getSupportActionBar(),"Receipt");
 
-        getSupportActionBar().setTitle("Receipt");
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
+
         bizUtils = new BizUtils();
 
 
@@ -105,14 +110,14 @@ public class ReceiptActivity extends AppCompatActivity {
                 showDialog(999);
             }
         });
-
-        menu.setOnClickListener(new View.OnClickListener() {
+        chequeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                bizUtils.bizMenu(ReceiptActivity.this);
+                showDialog(999);
             }
         });
+
         print.setVisibility(View.INVISIBLE);
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +165,9 @@ public class ReceiptActivity extends AppCompatActivity {
 
                 currentCustomer.getReceipts().add(receipt);
 
+                currentCustomer.getLedger().setOPBal(Double.valueOf(outStandingAmount.getText().toString()));
+
+
                 //Saving to local storage as JSON
                     try {
                         BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
@@ -171,7 +179,10 @@ public class ReceiptActivity extends AppCompatActivity {
 
                 Toast.makeText(ReceiptActivity.this, "Saved...", Toast.LENGTH_SHORT).show();
 
-                clearData();
+                    print();
+
+
+
 
 
                 }
@@ -219,7 +230,17 @@ public class ReceiptActivity extends AppCompatActivity {
 
                             if(fc <= openingBalanceValue)
                             {
-                                balance = gt-fc;
+                                if(currentCustomer.getLedger().getACType().toLowerCase().contains("credit")) {
+                                    balance = gt + fc;
+                                }
+                                else
+                                {
+                                    balance = gt - fc;
+                                }
+                            }
+                            else
+                            {
+
                             }
 
 
@@ -310,6 +331,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
         } catch (Exception e) {
 
+            Log.e("exc", String.valueOf(e));
         }
     }
 
@@ -323,9 +345,11 @@ public class ReceiptActivity extends AppCompatActivity {
         chequeDate.setText("");
         bankName.setText("");
 
+        openingBalance.setText(currentCustomer.getLedger().getOPBal()+"("+type+")");
+
         Toast.makeText(this, "Receipt Saved.", Toast.LENGTH_SHORT).show();
 
-        print();
+
 
 
     }
@@ -384,7 +408,24 @@ public class ReceiptActivity extends AppCompatActivity {
                 openingBalanceValue = tmp;
 
                 System.out.print("OP BAL = "+openingBalanceValue);
-                openingBalance.setText(String.valueOf(String.format("%.2f",openingBalanceValue)));
+
+
+                type = currentCustomer.getLedger().getACType();
+                type = currentCustomer.getLedger().getACType();
+                if(currentCustomer.getLedger().getACType()==null)
+                {
+                    type = "Credit";
+                }
+                else
+                {
+                    if(TextUtils.isEmpty(currentCustomer.getLedger().getACType()))
+                    {
+                        type = "Debit";
+                    }
+                }
+
+
+                openingBalance.setText(String.valueOf(String.format("%.2f",openingBalanceValue) +" ("+type+")"));
                 outStandingAmount.setText(String.valueOf(String.format("%.2f",openingBalanceValue)));
             }
 
@@ -410,8 +451,20 @@ public class ReceiptActivity extends AppCompatActivity {
                 openingBalanceValue = tmp;
 
 
+                String type = null;
+                if(currentCustomer.getLedger().getACType()==null)
+                {
+                    type = "Debit";
+                }
+                else
+                {
+                    if(TextUtils.isEmpty(currentCustomer.getLedger().getACType()))
+                    {
+                        type = "Debit";
+                    }
+                }
 
-                openingBalance.setText(String.valueOf(String.format("%.2f",openingBalanceValue)));
+                openingBalance.setText(String.valueOf(String.format("%.2f",openingBalanceValue) +" ("+type+")"));
                 outStandingAmount.setText(String.valueOf(String.format("%.2f",openingBalanceValue)));
             }
 
@@ -486,6 +539,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
 
     }
+/*
     public double calculateOutStanding()
     {
         outStandingAmountValue =0;
@@ -515,6 +569,7 @@ public class ReceiptActivity extends AppCompatActivity {
         return outStandingAmountValue;
 
     }
+*/
 
     public void print(Customer customer)
     {
@@ -544,7 +599,7 @@ public class ReceiptActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Bill ID :"+String.valueOf(Store.getInstance().companyID+"-"+ Store.getInstance().dealerId+"-"+customer.getId()));
         BTPrint.PrintTextLine("Bill Date :"+bizUtils.getCurrentTime());
         BTPrint.PrintTextLine("------------------------------");
-        Customer customer1 = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
+        Customer customer1 =currentCustomer;
 
         Receipt receipt = customer1.getReceipts().get(customer1.getReceipts().size()-1);
         if(customer1.getId()==null)
@@ -568,10 +623,11 @@ public class ReceiptActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Payment Mode :"+receipt.getPaymentMode());
 
 
-        BTPrint.PrintTextLine("OP Balance   : RM "+String.format("%.2f",customer1.getLedger().getOPBal()));
-        BTPrint.PrintTextLine("Received     : RM "+String.format("%.2f",receipt.getAmount()));
 
-        BTPrint.PrintTextLine("Outstanding  : RM "+ String.format("%.2f",(customer1.getLedger().getOPBal()- receipt.getAmount())));
+
+        BTPrint.PrintTextLine("OP Balance : RM "+String.format("%7.2f",openingBalanceValue)+"("+type+")");
+        BTPrint.PrintTextLine("Received   : RM "+String.format("%7.2f",receipt.getAmount()));
+        BTPrint.PrintTextLine("Outstanding: RM "+ String.format("%7.2f",currentCustomer.getLedger().getOPBal()));
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("*****THANK YOU*****");
@@ -583,6 +639,7 @@ public class ReceiptActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
         BTPrint.printLineFeed();
 
+        clearData();
 
 
     }

@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -25,37 +24,17 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.AddCustomerActivity;
-import com.bizsoft.fmcgv2.AppActivity;
-import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
-import com.bizsoft.fmcgv2.BankActivity;
-import com.bizsoft.fmcgv2.CustomerActivity;
 import com.bizsoft.fmcgv2.DashboardActivity;
-import com.bizsoft.fmcgv2.DealerActivity;
-import com.bizsoft.fmcgv2.InvoiceListActivity;
 import com.bizsoft.fmcgv2.MainActivity;
-import com.bizsoft.fmcgv2.ProductListActivity;
-import com.bizsoft.fmcgv2.ProductSpecActivity;
 import com.bizsoft.fmcgv2.R;
-import com.bizsoft.fmcgv2.ReceiptActivity;
-import com.bizsoft.fmcgv2.ReportActivity;
-import com.bizsoft.fmcgv2.ReprintActivity;
-import com.bizsoft.fmcgv2.STOSOActivity;
-import com.bizsoft.fmcgv2.SalesActivity;
-import com.bizsoft.fmcgv2.SalesOrderActivity;
-import com.bizsoft.fmcgv2.SalesReturnActivity;
-import com.bizsoft.fmcgv2.StockReportActivity;
 import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.Tables.ReceiptDetail;
 import com.bizsoft.fmcgv2.Tables.SaleDetail;
@@ -115,6 +94,7 @@ import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.bizsoft.fmcgv2.DashboardActivity.appDiscount;
+import static com.bizsoft.fmcgv2.DashboardActivity.customerNameListAdapter;
 import static com.bizsoft.fmcgv2.DashboardActivity.discountType;
 import static com.bizsoft.fmcgv2.DashboardActivity.fromCustomer;
 import static com.bizsoft.fmcgv2.DashboardActivity.paymentModeValue;
@@ -796,8 +776,13 @@ public class BizUtils {
     public void updateOPBal(Customer customer, Sale sale) {
 
         if (sale.getPaymentMode().contains("PNT")) {
+
+
+
+
+
             if(customer.getLedger().getACType()!=null) {
-                if (customer.getACType().toLowerCase().contains("credit")) {
+                if (customer.getLedger().getACType().toLowerCase().contains("debit")) {
 
                     double x = 0;
                     System.out.println("GT ===" + sale.getGrandTotal());
@@ -821,10 +806,9 @@ public class BizUtils {
                 double x = 0;
                 System.out.println("GT ===" + sale.getGrandTotal());
                 x = customer.getLedger().getOPBal() + sale.getGrandTotal();
-
                 System.out.println("OP =" + x);
                 customer.getLedger().setOPBal(x);
-                customer.getLedger().setACType("Credit");
+                customer.getLedger().setACType("Debit");
             }
         }
     }
@@ -889,7 +873,7 @@ public class BizUtils {
 
 
             customerResponse = SignalRService.saveCustomer(customers);
-            ;
+
 
             return true;
         }
@@ -903,13 +887,12 @@ public class BizUtils {
             if (customerResponse != null) {
 
                 if (customerResponse.getId() == 0) {
-                    Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
+                    Log.e("Customer save","not saved");
 
 
                 } else {
                     Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
-
-
                     this.customers.setId(customerResponse.getId());
                     int size = Store.getInstance().customerList.size();
                     System.out.println("Received ID " + customerResponse.getId());
@@ -929,6 +912,14 @@ public class BizUtils {
                             try {
                                 BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
                                 System.out.println("DB Updated..on local storage");
+
+                                customerNameListAdapter= new ArrayAdapter<String>(context,
+                                        android.R.layout.simple_dropdown_item_1line, Customer.getCustomerNameList());
+
+
+                                DashboardActivity.customerNameKey.setAdapter(customerNameListAdapter);
+                                customerNameListAdapter.notifyDataSetChanged();
+
                             } catch (ClassNotFoundException e) {
 
                                 System.err.println("Unable to write to DB");
@@ -1047,7 +1038,7 @@ public class BizUtils {
 
         ArrayList<Customer> customerList = Store.getInstance().customerList;
         for (int i = 0; i < customerList.size(); i++) {
-            System.out.println("OBJ =" + customerList.get(i).getSale().size());
+            //System.out.println("OBJ =" + customerList.get(i).getSale().size());
 
             if (customerList.get(i).getId() != null) {
 
@@ -1114,8 +1105,8 @@ public class BizUtils {
 
                 }
 
-                System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
-                System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+               // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+              //  System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
                 if (customerList.get(i).getsOPendingList().size() > 0) {
                     for (int x = 0; x < customerList.get(i).getsOPendingList().size(); x++) {
                         if (customerList.get(i).getsOPendingList().get(x).isSynced()) {
@@ -1971,14 +1962,14 @@ public class BizUtils {
         }
         for (int i = 0; i < customerList.size(); i++) {
             System.out.println("OBJ =" + customerList.get(i));
+            System.out.println("cus OBJ =" + customerList.get(i).isSynced());
             if (!customerList.get(i).isSynced()) {
                 sync = true;
 
                 newcustomer = true;
-
                 Customer customer = createCustomer(customerList.get(i));
                 //BizUtils.prettyJson("new customer \n",customer);
-
+                System.out.println("cus OBJ new =" + customer.isSynced());
                 customerStatus = new SaveCustomer(context, customer, i, from).execute();
             }
 
@@ -1992,7 +1983,7 @@ public class BizUtils {
 
             if (customerList.get(i).getId() != null) {
 
-                printSyncData(customerList,i);
+               // printSyncData(customerList,i);
 
                 if (customerList.get(i).getSale().size() > 0) {
                     newcustomer = false;
@@ -2051,8 +2042,8 @@ public class BizUtils {
 
                 }
 
-                System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
-                System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+               // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+               // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
                 if (customerList.get(i).getsOPendingList().size() > 0) {
                     for (int x = 0; x < customerList.get(i).getsOPendingList().size(); x++) {
                         if (customerList.get(i).getsOPendingList().get(x).isSynced()) {
@@ -2077,7 +2068,7 @@ public class BizUtils {
                     }
 
                 }
-                System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
+               // System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
 
 
                 if (customerList.get(i).getSOPListDelete().size() > 0) {
@@ -2623,13 +2614,13 @@ public class BizUtils {
             PdfPTable stx = new PdfPTable(1);
             stx.setWidthPercentage(97);
 
-            stx.addCell(getCell("Sub Total RM " + subTotal.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            stx.addCell(getCell("Sub Total RM = " + String.format("%7.2f",Double.parseDouble( subTotal.getText().toString() ))+  "  ", PdfPCell.ALIGN_RIGHT));
             stx.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
             document.add(stx);
             PdfPTable gst = new PdfPTable(1);
             gst.setWidthPercentage(97);
 
-            gst.addCell(getCell("GST RM " + gstSpace + Store.getInstance().GST.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            gst.addCell(getCell("GST RM = " + String.format("%7.2f",Double.parseDouble(  Store.getInstance().GST.getText().toString()  ))+ "  ", PdfPCell.ALIGN_RIGHT));
             document.add(gst);
 
 
@@ -2645,13 +2636,23 @@ public class BizUtils {
             }
             if(BizUtils.getDiscountType(discountType)==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL) {
                 gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
-                gt.addCell(getCell("Discount ( " + disAmnt + ") % " + gstSpace + appDiscount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+
+
+                if(DashboardActivity.grandDiscountTypeSpinner.getSelectedItem().toString().equals(Store.getInstance().discountTypePercentage)) {
+
+                    gt.addCell(getCell("Discount ( " + disAmnt + " "+DashboardActivity.grandDiscountTypeSpinner.getSelectedItem().toString()+" ) = " + String.format("%7.2f",Double.parseDouble(appDiscount.getText().toString()))  + "  ", PdfPCell.ALIGN_RIGHT));
+
+                }else
+                {
+                    gt.addCell(getCell("Discount ( "+DashboardActivity.grandDiscountTypeSpinner.getSelectedItem().toString()+" ) = " + String.format("%7.2f",Double.parseDouble(appDiscount.getText().toString()))  + "  ", PdfPCell.ALIGN_RIGHT));
+                }
+
             }
             gt.addCell(getCell("      ", PdfPCell.ALIGN_RIGHT));
-            gt.addCell(getCell("Round Off RM " + gstSpace + roundOffValue + "  ", PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("Round Off RM = " +String.format("%7.2f",Double.parseDouble(roundOffValue)) + "  ", PdfPCell.ALIGN_RIGHT));
 
             gt.addCell(getCell("      ", PdfPCell.ALIGN_RIGHT));
-            gt.addCell(getCell("Grand Total RM " + mgSpace + DashboardActivity.grandTotal.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+            gt.addCell(getCell("Grand Total RM = " + String.format("%7.2f",Double.parseDouble(DashboardActivity.grandTotal.getText().toString() ))+ "  ", PdfPCell.ALIGN_RIGHT));
             gt.addCell(getCell("____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
 
             gt.addCell(getCell("  ", PdfPCell.ALIGN_RIGHT));
@@ -2662,12 +2663,12 @@ public class BizUtils {
                 if(getTransactionType(currentSaleType)==Store.getInstance().SALE) {
                     if(sale.getPaymentMode().toLowerCase().contains("cash")) {
                 if (TextUtils.isEmpty(fromCustomer.getText().toString())) {
-                    gt.addCell(getCell("Received RM " + raSpace + String.format("%.2f", Double.parseDouble("0")) + "  ", PdfPCell.ALIGN_RIGHT));
+                    gt.addCell(getCell("Received RM = " +  String.format("%7.2f", Double.parseDouble("0")) + "  ", PdfPCell.ALIGN_RIGHT));
                 } else {
-                    gt.addCell(getCell("Received RM " + raSpace + String.format("%.2f", Double.parseDouble(fromCustomer.getText().toString())) + "  ", PdfPCell.ALIGN_RIGHT));
+                    gt.addCell(getCell("Received RM = " +  String.format("%7.2f", Double.parseDouble(fromCustomer.getText().toString())) + "  ", PdfPCell.ALIGN_RIGHT));
                 }
                 gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
-                gt.addCell(getCell("Balance RM " + baSpace + DashboardActivity.tenderAmount.getText().toString() + "  ", PdfPCell.ALIGN_RIGHT));
+                gt.addCell(getCell("Balance RM = " +  String.format("%7.2f", Double.parseDouble(DashboardActivity.tenderAmount.getText().toString()))  + "  ", PdfPCell.ALIGN_RIGHT));
                 gt.addCell(getCell("___________________________________________________________________________", PdfPCell.ALIGN_LEFT));
             }}
 
@@ -3118,6 +3119,7 @@ public class BizUtils {
         customer.setCityName(customer_.getLedger().getCityName());
         customer.setMobileNo(customer_.getLedger().getMobileNo());
         customer.setGSTNo(customer_.getLedger().getGSTNo());
+        customer.setSynced(customer_.isSynced());
 
 
         Ledger ledger = new Ledger();
@@ -3207,6 +3209,48 @@ public class BizUtils {
             }
         }
 
+        File file4 = new File(root, "NewBankList");
+        if (!file4.exists()) {
+            file4.createNewFile();
+            Log.d("DB", "New DB- NewBankList");
+            try {
+                BizUtils.storeAsJSON("NewBankList", BizUtils.getJSON("bankList", Store.getInstance().customerList));
 
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
+    public static boolean decimalFormatter(double d)
+    {
+        boolean stat = false;
+
+
+        String text = Double.toString(Math.abs(d));
+        Log.d("decimal points = ",text);
+        int integerPlaces = text.indexOf('.');
+        int decimalPlaces = text.length() - integerPlaces - 1;
+
+
+        if(decimalPlaces>2)
+        {
+            stat = false;
+        }
+        else
+        {
+            stat = true;
+        }
+
+        return stat;
+    }
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
     }
 }

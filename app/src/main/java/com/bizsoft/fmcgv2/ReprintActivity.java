@@ -1,11 +1,13 @@
 package com.bizsoft.fmcgv2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,15 +28,19 @@ import com.bizsoft.fmcgv2.dataobject.SaleOrder;
 import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.PrinterService;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 import static com.bizsoft.fmcgv2.DashboardActivity.BLUETOOTH_FLAG;
+import static com.bizsoft.fmcgv2.service.BizUtils.getTransactionType;
 
 public class ReprintActivity extends AppCompatActivity {
 
@@ -61,9 +67,12 @@ public class ReprintActivity extends AppCompatActivity {
     DecimalFormat df ;
     private double subTotal,gst,grandTotal;
     BizUtils bizUtils;
-    FloatingActionButton menu;
+
     TextView discountValue;
     private int currentPrintPosition = 0;
+    public static String lastSavedBillType = "none";
+    private TextView discountLabel;
+    private TextView balanceLabel,receivedLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,20 +90,21 @@ public class ReprintActivity extends AppCompatActivity {
         balance = (TextView) findViewById(R.id.balance_amount);
         received = (TextView) findViewById(R.id.received_amount);
         billID = (Spinner) findViewById(R.id.bill_id);
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
+
         discountValue = (TextView) findViewById(R.id.discount_value);
+        discountLabel = (TextView) findViewById(R.id.discount_label);
+        receivedLabel = (TextView) findViewById(R.id.received_label);
+        balanceLabel = (TextView) findViewById(R.id.balance_label);
+
         bizUtils = new BizUtils();
 
-        getSupportActionBar().setTitle("Reprint Bills");
+        UIUtil.setActionBarMenu(ReprintActivity.this,getSupportActionBar(),"Reprint Bills");
+
+
         df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
         setCustomerSpinner();
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bizUtils.bizMenu(ReprintActivity.this);
-            }
-        });
+
 
             adapter = new SalesAdapter(ReprintActivity.this,products);
             listView.setAdapter(adapter);
@@ -117,62 +127,31 @@ public class ReprintActivity extends AppCompatActivity {
                     {
 
 
-                        Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
 
+                        Customer customer = Store.getInstance().customerList.get(customerPosition);
+                        ArrayList<Product> temp = Store.getInstance().addedProductList;
 
-                        System.out.println("Sales List "+customer.getSale().size());
-                        System.out.println("Sales Order List "+customer.getSaleOrder().size());
-
-                      /*
-                        if(currentSaleType.toLowerCase().contains("order"))
+                        if(currentSaleType .toLowerCase().contains("return"))
                         {
-                            if( (customer.getSaleOrder().size()>0))
-                            {
-                                Toast.makeText(ReprintActivity.this, "Printing", Toast.LENGTH_SHORT).show();
-                                print(currentCustomer, "Sale Order Bill", customer.getSaleOrder(),currentSaleOrder.getPaymentMode());
-                            }
+                            temp =   currentSaleReturn.getProducts();
+                            PrinterService.print(ReprintActivity.this,customer, "Sale Return", temp, null, null, currentSaleReturn,"Customer Copy");
+
                         }
-                        else
-                        if(currentSaleType.toLowerCase().contains("return"))
+                        if(currentSaleType .toLowerCase().contains("order"))
                         {
-                            if( (customer.getSaleReturn().size()>0))
-                            {
-                                Toast.makeText(ReprintActivity.this, "Printing", Toast.LENGTH_SHORT).show();
-                                print(currentCustomer, "Sale return Order Bill", customer.getSaleReturn(),currentSaleReturn.getPaymentMode());
-                            }
+                            temp =   currentSaleOrder.getProducts();
+                            PrinterService.print(ReprintActivity.this,customer, "Sale Order", temp, null,currentSaleOrder, null,"Customer Copy");
+
                         }
-                        else  {
-                            if( (customer.getSale().size()>0)) {
-                                Toast.makeText(ReprintActivity.this, "Printing", Toast.LENGTH_SHORT).show();
-                                print(currentCustomer, "Sale Bill", customer.getSale(),currentSales.getPaymentMode());
-                            }
+                        if(! (currentSaleType .toLowerCase().contains("return") || currentSaleType .toLowerCase().contains("order")) )
+                        {
+                            temp =   currentSales.getProducts();
+                            PrinterService.print(ReprintActivity.this,customer, "Sale",temp, currentSales, null, null,"Customer Copy");
+
                         }
-
-                        */
-
-                        ArrayList<Product> temp = new ArrayList<>();
-                        if (currentCustomer.getSale().size() > 0) {
-
-
-                            int position = currentPrintPosition;
-
-                            temp =   currentCustomer.getSalesOfCustomer().get(position).getProducts();
-
-
-                           print2(currentCustomer, "Sale Bill", temp,currentCustomer.getSalesOfCustomer().get(position), null, null);
-                        } else if (customer.getSaleOrder().size() > 0) {
-
-                            int position = currentPrintPosition;
-
-
-                            temp =   currentCustomer.getSaleOrdersOfCustomer().get(position).getProducts();
-
-                            print2(currentCustomer, "Sale Order Bill", temp, null,currentCustomer.getSaleOrdersOfCustomer().get(position), null);
-                        } else if (customer.getSaleReturn().size() > 0) {
-                            int position = currentPrintPosition;
-
-                            temp =   currentCustomer.getSaleReturnOfCustomer().get(position).getProducts();
-                            print2(currentCustomer, "Sale Return Bill", temp, null, null, currentCustomer.getSaleReturnOfCustomer().get(position));
+                        if(currentSaleType .toLowerCase().contains("none"))
+                        {
+                            Toast.makeText(ReprintActivity.this, "No last bills found..", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -211,6 +190,7 @@ public class ReprintActivity extends AppCompatActivity {
                 {
 
 
+
                     setBillIdSpinner();
                 }
                 else
@@ -223,7 +203,7 @@ public class ReprintActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                currentSaleType = genderList.get(0);
+
                 System.out.println("Sale type order -----"+currentSaleType);
                 setBillIdSpinner();
 
@@ -314,7 +294,7 @@ public class ReprintActivity extends AppCompatActivity {
 
             for(int i=0;i<size;i++) {
 
-                genderList.add(currentCustomer.getSaleOrdersOfCustomer().get(i).getTempId());
+                genderList.add(currentCustomer.getSaleOrdersOfCustomer().get(i).getRefCode());
             }
 
         }
@@ -326,7 +306,7 @@ public class ReprintActivity extends AppCompatActivity {
 
             for(int i=0;i<size;i++) {
 
-                genderList.add(currentCustomer.getSaleReturnOfCustomer().get(i).getTempId());
+                genderList.add(currentCustomer.getSaleReturnOfCustomer().get(i).getRefCode());
             }
 
         }
@@ -336,7 +316,7 @@ public class ReprintActivity extends AppCompatActivity {
             size = sale.size();
 
             for(int i=0;i<size;i++) {
-                genderList.add(currentCustomer.getSalesOfCustomer().get(i).getTempId());
+                genderList.add(currentCustomer.getSalesOfCustomer().get(i).getRefCode());
             }
         }
 
@@ -375,32 +355,54 @@ public class ReprintActivity extends AppCompatActivity {
 
                 if(currentSaleType.toLowerCase().contains("order"))
                 {
-                    currentSaleOrder = finalSaleOrder.get(position);
-                    products.clear();
-                    products.addAll(currentSaleOrder.getProducts());
-                    adapter.notifyDataSetChanged();
-                    System.out.println("Sale order Size"+products.size());
+                    ArrayList<SaleOrder> solist = currentCustomer.getSaleOrdersOfCustomer();
+                    for(int i=0;i< solist.size();i++)
+                    {
+                        if(solist.get(i).getRefCode().equals(billIDValue))
+                        {
+                            currentSaleOrder = solist.get(i);
+                            products.clear();
+                            products.addAll(currentSaleOrder.getProducts());
+                            adapter.notifyDataSetChanged();
+                            System.out.println("Sale order Size"+products.size());
 
-                    generateBill(position);
+                            generateBill(position);
+                        }
+
+                    }
+
+
+
                 }
                 else
                 if(currentSaleType.toLowerCase().contains("return")) {
 
-                    currentSaleReturn = finalSaleReturn.get(position);
-                    products.clear();
-                    products.addAll(currentSaleReturn.getProducts());
-                    adapter.notifyDataSetChanged();
-                    generateBill(position);
-                    System.out.println("Sale  Return Size"+products.size());
+                    ArrayList<SaleReturn> srlist = currentCustomer.getSaleReturnOfCustomer();
+                    for(int i=0;i< srlist.size();i++) {
+                        if (srlist.get(i).getRefCode().equals(billIDValue)) {
+                            currentSaleReturn =srlist.get(i);
+                            products.clear();
+                            products.addAll(currentSaleReturn.getProducts());
+                            adapter.notifyDataSetChanged();
+                            generateBill(position);
+                            System.out.println("Sale  Return Size" + products.size());
+                        }
+
+                    }
                 }
                 else
                 {
-                    currentSales = finalSale.get(position);
-                    products.clear();
-                    products.addAll(currentSales.getProducts());
-                    adapter.notifyDataSetChanged();
-                    generateBill(position);
-                    System.out.println("Sale  Size"+products.size());
+                    ArrayList<Sale> salist = currentCustomer.getSalesOfCustomer();
+                    for(int i=0;i< salist.size();i++) {
+                        if (salist.get(i).getRefCode().equals(billIDValue)) {
+                            currentSales = salist.get(i);
+                            products.clear();
+                            products.addAll(currentSales.getProducts());
+                            adapter.notifyDataSetChanged();
+                            generateBill(position);
+                            System.out.println("Sale  Size" + products.size());
+                        }
+                    }
 
                 }
 
@@ -411,33 +413,57 @@ public class ReprintActivity extends AppCompatActivity {
                 billIDValue = genderList.get(0);
 
 
+
                 if(currentSaleType.toLowerCase().contains("order"))
                 {
-                    currentSaleOrder = finalSaleOrder.get(0);
-                    products.clear();
-                    products.addAll(currentSaleOrder.getProducts());
-                    adapter.notifyDataSetChanged();
-                    generateBill(currentPrintPosition);
-                    System.out.println("Sale order Size"+products.size());
+                    ArrayList<SaleOrder> solist = currentCustomer.getSaleOrdersOfCustomer();
+                    for(int i=0;i< solist.size();i++)
+                    {
+                        if(solist.get(i).getRefCode().equals(billIDValue))
+                        {
+                            currentSaleOrder = solist.get(i);
+                            products.clear();
+                            products.addAll(currentSaleOrder.getProducts());
+                            adapter.notifyDataSetChanged();
+                            System.out.println("Sale order Size"+products.size());
+
+                            generateBill(0);
+                        }
+
+                    }
+
+
+
                 }
                 else
                 if(currentSaleType.toLowerCase().contains("return")) {
 
-                    currentSaleReturn = finalSaleReturn.get(0);
-                    products.clear();
-                    products.addAll(currentSaleReturn.getProducts());
-                    adapter.notifyDataSetChanged();
-                    generateBill(currentPrintPosition);
-                    System.out.println("Sale  Return Size"+products.size());
+                    ArrayList<SaleReturn> srlist = currentCustomer.getSaleReturnOfCustomer();
+                    for(int i=0;i< srlist.size();i++) {
+                        if (srlist.get(i).getRefCode().equals(billIDValue)) {
+                            currentSaleReturn =srlist.get(i);
+                            products.clear();
+                            products.addAll(currentSaleReturn.getProducts());
+                            adapter.notifyDataSetChanged();
+                            generateBill(0);
+                            System.out.println("Sale  Return Size" + products.size());
+                        }
+
+                    }
                 }
                 else
                 {
-                    currentSales = finalSale.get(0);
-                    products.clear();
-                    products.addAll(currentSales.getProducts());
-                    adapter.notifyDataSetChanged();
-                    generateBill(currentPrintPosition);
-                    System.out.println("Sale  Size"+products.size()+"=========");
+                    ArrayList<Sale> salist = currentCustomer.getSalesOfCustomer();
+                    for(int i=0;i< salist.size();i++) {
+                        if (salist.get(i).getRefCode().equals(billIDValue)) {
+                            currentSales = salist.get(i);
+                            products.clear();
+                            products.addAll(currentSales.getProducts());
+                            adapter.notifyDataSetChanged();
+                            generateBill(0);
+                            System.out.println("Sale  Size" + products.size());
+                        }
+                    }
 
                 }
 
@@ -464,6 +490,16 @@ public class ReprintActivity extends AppCompatActivity {
 
 
 
+
+        discountLabel.setVisibility(View.GONE);
+        discountValue.setVisibility(View.GONE);
+        balanceLabel.setVisibility(View.GONE);
+        balance.setVisibility(View.GONE);
+        received.setVisibility(View.GONE);
+        receivedLabel.setVisibility(View.GONE);
+
+
+
         if(currentSaleType.toLowerCase().contains("order"))
         {
 
@@ -473,6 +509,13 @@ public class ReprintActivity extends AppCompatActivity {
             fromCustomerValue = bizRound(currentSaleOrder.getReceivedAmount(),2);
             tenderAmountValue = bizRound(currentSaleOrder.getBalance(),2);
 
+            if(BizUtils.getDiscountType(currentSaleOrder.getDiscountType())==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL)
+            {
+
+                discountLabel.setVisibility(View.VISIBLE);
+                discountValue.setVisibility(View.VISIBLE);
+
+            }
 
 
 
@@ -484,10 +527,24 @@ public class ReprintActivity extends AppCompatActivity {
 
             balance.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getBalance())));
 
+            if(currentSaleOrder.equals(Store.getInstance().discountTypePercentage)) {
+                discountLabel.setText(String.valueOf("Discount ( " + currentSaleOrder.getDiscountPercentage() + " " + currentSaleOrder.getGrandTotalDiscountType() + ")= "));
+            }else
+            {
+                discountLabel.setText(String.valueOf("Discount ( " + currentSaleOrder.getGrandTotalDiscountType() + " )= "));
+            }
         }
         else
         if(currentSaleType.toLowerCase().contains("return"))
         {
+            if(BizUtils.getDiscountType(currentSaleReturn.getDiscountType())==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL)
+            {
+
+                discountLabel.setVisibility(View.VISIBLE);
+                discountValue.setVisibility(View.VISIBLE);
+
+            }
+
             received.setText(String.valueOf(String.format("%.2f",currentSaleReturn.getReceivedAmount())));
 
             balance.setText(String.valueOf(String.format("%.2f",currentSaleReturn.getBalance())));
@@ -495,22 +552,59 @@ public class ReprintActivity extends AppCompatActivity {
             gstT.setText(String.valueOf(String.format("%.2f",currentSaleReturn.getGst())));
             grandTotalT.setText(String.valueOf(String.format("%.2f",currentSaleReturn.getGrandTotal())));
             discountValue.setText(String.valueOf(String.format("%.2f",currentSaleReturn.getDiscountValue())));
+            if(currentSaleReturn.equals(Store.getInstance().discountTypePercentage)) {
+                discountLabel.setText(String.valueOf("Discount ( " + currentSaleReturn.getDiscountPercentage() + " " + currentSaleReturn.getGrandTotalDiscountType() + ")= "));
+            }else
+            {
+                discountLabel.setText(String.valueOf("Discount ( " + currentSaleReturn.getGrandTotalDiscountType() + " )= "));
+            }
         }
         else
         {
 
-            received.setText(String.valueOf(String.format("%.2f",currentSales.getReceivedAmount())));
+            if(BizUtils.getDiscountType(currentSales.getDiscountType())==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL)
+            {
 
-            balance.setText(String.valueOf(String.format("%.2f",currentSales.getBalance())));
+                discountLabel.setVisibility(View.VISIBLE);
+                discountValue.setVisibility(View.VISIBLE);
+
+
+            }
+            if(BizUtils.getTransactionType(DashboardActivity.currentSaleType)==Store.getInstance().SALE) {
+                if (currentSales.getPaymentMode().toLowerCase().contains("cash")) {
+                    balanceLabel.setVisibility(View.VISIBLE);
+                    balance.setVisibility(View.VISIBLE);
+                    received.setVisibility(View.VISIBLE);
+                    receivedLabel.setVisibility(View.VISIBLE);
+                    received.setText(String.valueOf(String.format("%.2f",currentSales.getReceivedAmount())));
+
+                    if(currentSales.equals(Store.getInstance().discountTypePercentage)) {
+                        discountLabel.setText(String.valueOf("Discount ( " + currentSales.getDiscountPercentage() + " " + currentSales.getGrandTotalDiscountType() + ")= "));
+                    }else
+                    {
+                        discountLabel.setText(String.valueOf("Discount ( " + currentSales.getGrandTotalDiscountType() + " )= "));
+                    }
+                    balance.setText(String.valueOf(String.format("%.2f",currentSales.getBalance())));
+                }
+            }
+
+
             subTotalT.setText(String.valueOf(String.format("%.2f",currentSales.getSubTotal())));
             gstT.setText(String.valueOf(String.format("%.2f",currentSales.getGst())));
             grandTotalT.setText(String.valueOf(String.format("%.2f",currentSales.getGrandTotal())));
             discountValue.setText(String.valueOf(String.format("%.2f",currentSales.getDiscountValue())));
+
+            if(currentSales.equals(Store.getInstance().discountTypePercentage)) {
+                discountLabel.setText(String.valueOf("Discount ( " + currentSales.getDiscountPercentage() + " " + currentSales.getGrandTotalDiscountType() + ")= "));
+            }else
+            {
+                discountLabel.setText(String.valueOf("Discount ( " + currentSales.getGrandTotalDiscountType() + " )= "));
+            }
         }
 
 
     }
-    public void print2(Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
+    public void print2(Context context,Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
         SharedPreferences prefs = getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyName), "Aboorvass"));
@@ -783,23 +877,54 @@ public class ReprintActivity extends AppCompatActivity {
 
 
 
-            BTPrint.PrintTextLine( " "+iq + q + ip + dis + id +pr + ir);
 
+            if(!TextUtils.isEmpty(id.trim())) {
+                id = String.valueOf(String.format("%.2f", Double.parseDouble(id)));
+            }
+            ir = String.valueOf(String.format("%.2f", Double.parseDouble(ir)));
+
+            String print_line =   " "+iq + q + ip + dis + id +pr + ir;
+            System.out.println("Print Line = "+print_line);
+
+            Formatter fmt = new Formatter();
+            fmt.format("|%6.2f|", Double.parseDouble(ir));
+
+            String oldPrintStmt  =  " "+iq + q + ip + dis + id +pr + ir;
+
+            String qStr = String.format("%4d",  Integer.parseInt(iq));
+            qStr = qStr+" ";
+            String pStr = String.format("%6.2f",Double.parseDouble(ip));
+            pStr = pStr+" ";
+            String dStr = "";
+            if(TextUtils.isEmpty(id.trim())) {
+                dStr = String.format("%7s", id);
+            }else
+            {
+                dStr = "-"+String.format("%6s", id);
+            }
+            dStr = dStr+" ";
+            String rStr = "="+String.format("%8.2f",Double.parseDouble(ir));
+
+            String newPrintStmnt = qStr+"X"+pStr+dStr+rStr;
+
+            BTPrint.PrintTextLine( newPrintStmnt);
         }
-
 
 
         String mgt = "0.00";
 
         String ra="0.00",ba="0.00";
         Double disV = 0.00;
+        double roundOffValue = 0.00;
         if(sale!=null) {
+
 
             ra = String.valueOf(String.format("%.2f", sale.getReceivedAmount()));
             ba = String.valueOf(String.format("%.2f", sale.getBalance()));
             mgt = String.valueOf(String.format("%.2f", sale.getGrandTotal()));
             mainGst = sale.getGst();
             disV = sale.getDiscountValue();
+            roundOffValue =  sale.getRoundOffValue();
 
         }
         if(saleOrder !=null)
@@ -810,6 +935,7 @@ public class ReprintActivity extends AppCompatActivity {
             disV = saleOrder.getDiscountValue();
             mgt = String.valueOf(String.format("%.2f", saleOrder.getGrandTotal()));
             mainGst = saleOrder.getGst();
+            roundOffValue =  saleOrder.getRoundOffValue();
         }
         if(saleReturn !=null)
         {
@@ -818,9 +944,83 @@ public class ReprintActivity extends AppCompatActivity {
             disV = saleReturn.getDiscountValue();
             mgt = String.valueOf(String.format("%.2f", saleReturn.getGrandTotal()));
             mainGst = saleReturn.getGst();
+            roundOffValue =  saleReturn.getRoundOffValue();
         }
 
-        int mgtL = mgt.length();
+
+        gstSpace = "";
+        String discountSpace="";
+        String roundOffSpace="";
+        System.out.println("on test");
+        String subTotal = String.valueOf(String.format("%.2f",mainSubTotal));
+        int subTotalLength = subTotal.length();
+        String gst = String.valueOf(String.format("%.2f",mainGst));
+        int gstLength = gst.length();
+
+        String disString =String.valueOf(String.format("%.2f",disV));
+        int disLength = disString.length();
+
+        String roundOffStr = String.valueOf(String.format("%.2f",roundOffValue));
+        int roundOFFlenght = roundOffStr.length();
+
+
+
+
+
+        int c = subTotalLength - gstLength;
+        int dl = subTotalLength - disLength;
+        int rl = subTotalLength - roundOFFlenght;
+
+        for (int f = 0; f < c; f++) {
+            gstSpace = gstSpace + " ";
+        }
+        for (int f = 0; f < dl; f++) {
+            discountSpace = discountSpace+ " ";
+        }
+        for (int f = 0; f < rl; f++) {
+            roundOffSpace = roundOffSpace+ " ";
+        }
+
+        BTPrint.PrintTextLine("------------------------------");
+        BTPrint.SetAlign(Paint.Align.RIGHT);
+        BTPrint.PrintTextLine("Sub total RM " + String.format("%.2f",mainSubTotal));
+        BTPrint.PrintTextLine("GST RM " + gstSpace + String.format("%.2f",mainGst));
+
+
+
+
+
+
+        String discountPer = "0.00";
+        String disType ="";
+        if(sale!=null)
+        {
+            mainGrantTotal = sale.getGrandTotal();
+            ba = String.valueOf(sale.getBalance());
+            discountPer = String.format("%.2f",sale.getDiscountPercentage());
+            disType = sale.getDiscountType();
+
+        }
+        if(saleOrder!=null)
+        {
+            mainGrantTotal = saleOrder.getGrandTotal();
+            ba = String.valueOf(saleOrder.getBalance());
+            discountPer = String.format("%.2f",saleOrder.getDiscountPercentage());
+            disType = saleOrder.getDiscountType();
+        }
+        if(saleReturn!=null)
+        {
+            mainGrantTotal = saleReturn.getGrandTotal();
+            ba = String.valueOf(saleReturn.getBalance());
+        }
+        if(BizUtils.getDiscountType(disType)==Store.getInstance().DISCOUNT_FOR_GRABD_TOTAL)
+        {
+
+            BTPrint.PrintTextLine("Discount("+discountPer+"%) RM " + discountSpace + String.format("%.2f",disV));
+        }
+        ba = String.format("%.2f",Double.parseDouble(ba));
+        BTPrint.PrintTextLine("Round Off RM " + roundOffSpace + String.format("%.2f",roundOffValue));
+        int mgtL =  String.valueOf(String.format("%.2f",mainGrantTotal)).length();
         int raL = ra.length();
         int baL = ba.length();
 
@@ -850,40 +1050,31 @@ public class ReprintActivity extends AppCompatActivity {
                 baSpace = baSpace + " ";
 
             }
-        }
 
+        }
+        else
+        {
+            x = mgtL - raL;
+            y = mgtL - baL;
+            for (int i = 0; i < x; i++) {
+                raSpace = raSpace + " ";
+
+            }
+            for (int i = 0; i < y; i++) {
+                baSpace = baSpace + " ";
+
+            }
+        }
 
         BTPrint.PrintTextLine("------------------------------");
-        BTPrint.SetAlign(Paint.Align.RIGHT);
-        BTPrint.PrintTextLine("Sub total RM " + String.format("%.2f",mainSubTotal));
-        BTPrint.PrintTextLine("GST RM " + gstSpace + String.format("%.2f",mainGst));
+        BTPrint.PrintTextLine("Grand total" + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
 
-
-
-        BTPrint.PrintTextLine("Discount RM " + gstSpace + String.format("%.2f",disV));
-
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("------------------------------");
-
-        if(sale!=null)
-        {
-            mainGrantTotal = sale.getGrandTotal();
-            ba = String.valueOf(sale.getBalance());
-
+        if(getTransactionType(type)==Store.getInstance().SALE) {
+            if(sale.getPaymentMode().toLowerCase().contains("cash")) {
+                BTPrint.PrintTextLine("Received amount RM " + String.format("%.2f", Double.parseDouble(ra)));
+                BTPrint.PrintTextLine("Balance amount RM " + baSpace +String.format("%.2f", Double.parseDouble(ba)));
+            }
         }
-        if(saleOrder!=null)
-        {
-            mainGrantTotal = saleOrder.getGrandTotal();
-            ba = String.valueOf(saleOrder.getBalance());
-        }
-        if(saleReturn!=null)
-        {
-            mainGrantTotal = saleReturn.getGrandTotal();
-            ba = String.valueOf(saleReturn.getBalance());
-        }
-        BTPrint.PrintTextLine("Grand total " + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
-        BTPrint.PrintTextLine("Received amount " + raSpace + " RM " + String.format("%.2f",Double.parseDouble(ra)));
-        BTPrint.PrintTextLine("Balance amount " + baSpace + " RM " + String.format("%.2f",Double.parseDouble(ba)));
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("*****THANK YOU*****");
@@ -893,291 +1084,14 @@ public class ReprintActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
-        BTPrint.PrintTextLine("***Customer Copy***");
-        BTPrint.printLineFeed();
-        //savedCurrentTransaction = false;
-
-
-       /* if(currentSaleType.toLowerCase().contains("order"))
-        {
-
-            customer.getSaleOrder().removeAll(products);
-        }
-        else
-        if(currentSaleType.toLowerCase().contains("return"))
-        {
-            customer.getSaleReturn().removeAll(products);
-        }
-        else
-        {
-            customer.getSale().removeAll(products);
-
-        }
-        System.out.println("Product Size = "+products.size());
-
-*/
-    }
-
-    public void print(Customer customer, String type, ArrayList<Product> products, String paymentMode)
-    {
-        SharedPreferences prefs = getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
         BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyName), "Aboorvass"));
-        BTPrint.SetAlign(Paint.Align.CENTER);
-
-
-        System.out.println("company address line 1 =============================="+prefs.getString(getString(R.string.companyAddressLine1), "0"));
-        System.out.println("company address line 2 =============================="+prefs.getString(getString(R.string.companyAddressLine2), "0"));
-        System.out.println("company gst =============================="+prefs.getString(getString(R.string.gstNo), "0"));
-        System.out.println("company mail =============================="+prefs.getString(getString(R.string.email), "0"));
-        System.out.println("company postalcode =============================="+prefs.getString(getString(R.string.postal_code), "0"));
-
-        BTPrint.SetAlign(Paint.Align.LEFT);
-        BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyAddressLine1), "0")+","+prefs.getString(getString(R.string.companyAddressLine2), "0")+","+prefs.getString(getString(R.string.postal_code),"+1234556789"));
-
-        BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("E-Mail: "+prefs.getString(getString(R.string.email),"+1234556789"));
-        BTPrint.PrintTextLine("GST No: "+prefs.getString(getString(R.string.gstNo),"+1234556789"));
-        BTPrint.PrintTextLine("Ph No: "+prefs.getString(getString(R.string.phoneNumber),"+1234556789"));
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("***Bill Details***");
-        BizUtils bizUtils = new BizUtils();
-        BTPrint.PrintTextLine("Bill ID :"+String.valueOf(Store.getInstance().companyID+"-"+ Store.getInstance().dealerId+"-"+customer.getId()));
-        BTPrint.PrintTextLine("Bill Date :"+bizUtils.getCurrentTime());
-        BTPrint.PrintTextLine("------------------------------");
-        Customer customer1 = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
-
-        BTPrint.PrintTextLine("Customer ID :"+customer1.getId());
-        BTPrint.PrintTextLine("Customer Name :"+customer1.getLedgerName());
-        BTPrint.PrintTextLine("Person In Charge :"+customer1.getPersonIncharge());
-        BTPrint.PrintTextLine("GST No :"+customer1.getGSTNo());
-
-
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("Sale/Sale Order:"+type);
-        BTPrint.PrintTextLine("Payment Mode :"+paymentMode);
-        BTPrint.PrintTextLine("------------------------------");
-
-        BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("***ITEM DETAILS***");
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.SetAlign(Paint.Align.LEFT);
-        BTPrint.PrintTextLine("NAME     QTY    PRICE   AMOUNT ");
-
-        customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
-
-
-        String gstSpace = "";
-
-        System.out.println("Sale list"+customer.getSale().size());
-        double mainSubTotal =0;
-        double mainGst = 0;
-        double mainGrantTotal = 0;
-
-        for(int i=0;i<products.size();i++) {
-            Product item = products.get(i);
-            String in;
-            String iq = "";
-            String ip = "";
-            String ir = "";
-
-            String itemnameSpace = "";
-            String itemquantitySpace = "";
-            String itempriceSpace = "";
-            String itemrateSpace = "";
-            int spaceLength = 0;
-            int itemQspaceL = 0;
-            int itemPspaceL = 0;
-            int itemRspaceL = 0;
-
-
-            if(item.getProductName().length()>=10)
-            {
-                in = item.getProductName().substring(0,9);
-                itemnameSpace = " ";
-            }
-            else
-            {
-                int total = item.getProductName().length();
-                spaceLength = 10 - total;
-
-                for(int x=0;x<spaceLength;x++)
-                {
-                    itemnameSpace = itemnameSpace + " ";
-                }
-
-
-
-                in = item.getProductName();
-
-            }
-
-            if(String.valueOf(item.getQty()).length()>=6)
-            {
-                iq = String.valueOf(item.getQty()).substring(0,4);
-                iq = iq + "..";
-            }
-            else
-            {
-                int total = String.valueOf(item.getQty()).length();
-                itemQspaceL = 6 - total;
-
-                for(int x=0;x<itemQspaceL;x++)
-                {
-                    itemquantitySpace = itemquantitySpace+ " ";
-                }
-
-                iq = String.valueOf(item.getQty());
-            }
-            String itemP = String.valueOf(item.getMRP());
-
-
-            if(itemP.length()>=8)
-            {
-                in = itemP.substring(0,7);
-                itemrateSpace = " ";
-
-            }
-            else
-            {
-                int total =itemP.length();
-                itemPspaceL = 8 - total;
-
-                for(int x=0;x<itemPspaceL;x++)
-                {
-                    itempriceSpace = itempriceSpace + " ";
-                }
-
-
-
-                ip = itemP;
-
-            }
-            double subTotalx =0;
-            double gstx = 0;
-            if(String.valueOf(item.getQty()*item.getMRP()).length()>=6)
-            {
-                ir = String.valueOf(item.getQty()*item.getMRP()).substring(0,4);
-                ir = ir + "..";
-
-                subTotalx = item.getQty()*item.getMRP();
-            }
-            else
-            {
-                int total = String.valueOf(item.getQty()*item.getMRP()).length();
-                itemRspaceL = 6 - total;
-
-                for(int x=0;x<itemRspaceL;x++)
-                {
-                    itemrateSpace = itemrateSpace+ " ";
-                }
-
-                ir = String.valueOf(item.getQty()*item.getMRP());
-                subTotalx = subTotalx  + item.getQty()*item.getMRP();
-            }
-
-
-
-
-
-            mainSubTotal = mainSubTotal +  subTotalx;
-
-
-            gstx = subTotalx * (0.06);
-
-            mainGst = mainGst + gstx;
-
-            mainGrantTotal = mainSubTotal + mainGst;
-
-
-
-            System.out.println("on test");
-            String subTotal = String.valueOf(subTotalx);
-            int subTotalLength = subTotal.length();
-
-            String gst = String.valueOf(gstx);
-            int gstLength = gst.length();
-
-
-            gstSpace = "";
-
-            int c = subTotalLength - gstLength;
-
-            for(int f=0;f<c;f++)
-            {
-                gstSpace = gstSpace + " ";
-            }
-
-
-            double tt = subTotalx;
-
-            mainGst = bizRound( mainGst,2);
-
-            BTPrint.PrintTextLine(in+itemnameSpace+iq+itemquantitySpace+ip+itempriceSpace+ir);
-        }
-
-
-        String mgt = String.valueOf(String.format("%.2f", mainGrantTotal));
-        String ra = String.valueOf(String.format("%.2f",fromCustomerValue));
-        String ba = String.valueOf(String.format("%.2f",tenderAmountValue));
-
-        int mgtL = mgt.length();
-        int raL = ra.length();
-        int baL = ba.length();
-
-        String mgSpace = "";
-        String raSpace = "";
-        String baSpace = "";
-        int x = 0;
-        int y = 0;
-        if (mgtL > raL) {
-            x = mgtL - raL;
-            y = mgtL - baL;
-            for (int i = 0; i < x; i++) {
-                raSpace = raSpace + " ";
-
-            }
-            for (int i = 0; i < y; i++) {
-                baSpace = baSpace + " ";
-
-            }
-        } else if (raL > mgtL) {
-            x = raL - mgtL;
-            y = raL - baL;
-            for (int i = 0; i < x; i++) {
-                mgSpace = mgSpace + " ";
-            }
-            for (int i = 0; i < y; i++) {
-                baSpace = baSpace + " ";
-
-            }
-        }
-
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.SetAlign(Paint.Align.RIGHT);
-        BTPrint.PrintTextLine("Sub total = RM "+String.format("%.2f",subTotal));
-        BTPrint.PrintTextLine("GST = RM "+gstSpace+String.format("%.2f",gst));
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("Grand total = RM "+String.format("%.2f",grandTotal));
-        BTPrint.PrintTextLine("Received amount =" + raSpace + " RM " + String.format("%.2f",fromCustomerValue));
-        BTPrint.PrintTextLine("Balance amount =" + baSpace + " RM " + String.format("%.2f",tenderAmountValue));
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("*****THANK YOU*****");
-        BTPrint.SetAlign(Paint.Align.LEFT);
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("Dealer Name:"+ Store.getInstance().dealerName);
-        BTPrint.PrintTextLine("------------------------------");
-        BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
-        BTPrint.PrintTextLine("***Customer Copy***");
-
+        BTPrint.PrintTextLine("***"+"Customer Copy"+"***");
         BTPrint.printLineFeed();
 
 
-
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

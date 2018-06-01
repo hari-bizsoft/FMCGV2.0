@@ -16,6 +16,7 @@ import com.bizsoft.fmcgv2.adapter.SalesAdapter;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
 
@@ -26,19 +27,19 @@ public class SalesActivity extends AppCompatActivity  {
     ArrayList<Product> SalesList;
     ArrayList<Product> AllSalesList = new ArrayList<Product>();
     private SalesAdapter salesAdapter;
-    FloatingActionButton menu;
+
     BizUtils bizUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
-        getSupportActionBar().setTitle("Sales List");
+        UIUtil.setActionBarMenu(SalesActivity.this,getSupportActionBar(),"Sales Products List");
         bizUtils = new BizUtils();
         listView = (ListView) findViewById(R.id.listview);
         searchBar = (EditText) findViewById(R.id.search_bar);
 
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
+
 
         searchBar.addTextChangedListener(new TextWatcher() {
 
@@ -88,13 +89,7 @@ public class SalesActivity extends AppCompatActivity  {
         AllSalesList.addAll(Store.getInstance().addedProductForSales);
         salesAdapter = new SalesAdapter(SalesActivity.this,AllSalesList);
         listView.setAdapter(salesAdapter);
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                bizUtils.bizMenu(SalesActivity.this);
-            }
-        });
 
 
     }

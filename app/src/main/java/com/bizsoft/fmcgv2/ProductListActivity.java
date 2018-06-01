@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -19,12 +21,13 @@ import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
 
 public class ProductListActivity extends AppCompatActivity {
     ListView productListView;
-    FloatingActionButton add,menu;
+    FloatingActionButton add;
 
     EditText searchBar;
     ArrayList<Product> productList;
@@ -35,17 +38,20 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
-        getSupportActionBar().setTitle("Product List");
+        UIUtil.setActionBarMenu(ProductListActivity.this,getSupportActionBar(),"Product List");
+
 
         allProductList.addAll(Store.getInstance().productList);
         productListView = (ListView) findViewById(R.id.product_listview);
-        add = (FloatingActionButton) findViewById(R.id.add);
-        menu = (FloatingActionButton) findViewById(R.id.menu);
+
+
         searchBar = (EditText) findViewById(R.id.search_bar);
         bizUtils = new BizUtils();
 
-        add.bringToFront();
-        menu.bringToFront();
+
+
+
+
 
         productAdapter  = new ProductListAdapter(ProductListActivity.this, allProductList);
         productListView.setAdapter(productAdapter);
@@ -109,5 +115,6 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

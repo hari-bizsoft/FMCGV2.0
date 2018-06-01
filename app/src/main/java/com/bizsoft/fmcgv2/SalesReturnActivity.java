@@ -16,6 +16,7 @@ import com.bizsoft.fmcgv2.adapter.SalesAdapter;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
 
@@ -26,16 +27,17 @@ public class SalesReturnActivity extends AppCompatActivity {
     ArrayList<Product> SalesReturnList;
     ArrayList<Product> AllSalesReturnList = new ArrayList<Product>();
     private SalesAdapter salesReturnAdapter;
-    FloatingActionButton menu;
+
     BizUtils bizUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_return);
-        getSupportActionBar().setTitle("Sales Return List");
 
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
+        UIUtil.setActionBarMenu(SalesReturnActivity.this,getSupportActionBar(),"Sales Return Products List");
+
+
         bizUtils = new BizUtils();
 
         listView = (ListView) findViewById(R.id.listview);
@@ -90,14 +92,6 @@ public class SalesReturnActivity extends AppCompatActivity {
         salesReturnAdapter = new SalesAdapter(SalesReturnActivity.this,AllSalesReturnList);
         listView.setAdapter(salesReturnAdapter);
 
-
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                bizUtils.bizMenu(SalesReturnActivity.this);
-            }
-        });
 
     }
 

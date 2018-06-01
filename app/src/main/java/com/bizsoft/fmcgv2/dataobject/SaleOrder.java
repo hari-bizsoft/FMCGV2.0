@@ -21,6 +21,15 @@ public class SaleOrder {
     boolean synced;
     double discountPercentage;
     double roundOffValue;
+    String grandTotalDiscountType;
+
+    public String getGrandTotalDiscountType() {
+        return grandTotalDiscountType;
+    }
+
+    public void setGrandTotalDiscountType(String grandTotalDiscountType) {
+        this.grandTotalDiscountType = grandTotalDiscountType;
+    }
 
     public double getRoundOffValue() {
         return roundOffValue;

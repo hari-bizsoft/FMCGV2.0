@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -18,37 +19,42 @@ import com.bizsoft.fmcgv2.adapter.CustomerAdapter;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CustomerActivity extends AppCompatActivity {
 
-    ListView customerListView;
-    FloatingActionButton add,menu;
+    static ListView customerListView;
+    FloatingActionButton add;
 
     EditText searchBar;
-    ArrayList<Customer> CustomerList;
-    ArrayList<Customer> AllCustomerList = new ArrayList<Customer>();
+    static ArrayList<Customer> CustomerList;
+    static ArrayList<Customer> AllCustomerList = new ArrayList<Customer>();
     public static CustomerAdapter customerAdapter;
     BizUtils bizUtils;
+    private TextWatcher namesearchlistener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
+        UIUtil.setActionBarMenu(CustomerActivity.this,getSupportActionBar(),"Customer List");
 
         AllCustomerList.addAll(Store.getInstance().customerList);
 
 
-        getSupportActionBar().setTitle("Customer List");
+        //getSupportActionBar().setTitle("Customer List");
         customerListView = (ListView) findViewById(R.id.customer_listview);
         add = (FloatingActionButton) findViewById(R.id.add);
-        menu = (FloatingActionButton) findViewById(R.id.menu);
+
         searchBar = (EditText) findViewById(R.id.search_bar);
         bizUtils = new BizUtils();
 
         add.bringToFront();
-        menu.bringToFront();
+
+
 
         customerAdapter = new CustomerAdapter(CustomerActivity.this, AllCustomerList);
         customerListView.setAdapter(customerAdapter);
@@ -65,13 +71,12 @@ public class CustomerActivity extends AppCompatActivity {
 
             }
         });
-        searchBar.addTextChangedListener(new TextWatcher() {
+         namesearchlistener = new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                 CustomerList = new ArrayList<Customer>();
-
+                CustomerList = new ArrayList<Customer>();
 
             }
 
@@ -90,7 +95,10 @@ public class CustomerActivity extends AppCompatActivity {
 
                     for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
 
-                        if (Store.getInstance().customerList.get(i).getLedgerName().toLowerCase().contains(s.toString().toLowerCase())) {
+                        Log.d("Search term",s.toString().toLowerCase());
+                        Log.d("Actual name term",Store.getInstance().customerList.get(i).getLedgerName().toLowerCase());
+                        if (Store.getInstance().customerList.get(i).getLedger().getLedgerName().toLowerCase().contains(s.toString().toLowerCase())) {
+                            Log.d("Matched term",Store.getInstance().customerList.get(i).getLedgerName().toLowerCase());
                             CustomerList.add(Store.getInstance().customerList.get(i));
                         }
                     }
@@ -109,7 +117,8 @@ public class CustomerActivity extends AppCompatActivity {
 
                 customerAdapter.notifyDataSetChanged();
             }
-        });
+        };
+        searchBar.addTextChangedListener(namesearchlistener);
 
 
 
@@ -124,13 +133,14 @@ public class CustomerActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                bizUtils.bizMenu(CustomerActivity.this);
-            }
-        });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d("ACTIVITY","resume");
+        searchBar.addTextChangedListener(namesearchlistener);
+    }
 }

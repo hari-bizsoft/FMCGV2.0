@@ -49,6 +49,7 @@ public class BTPrint extends AppCompatActivity {
         }
     }
     public  static  void PrintTextLine(String Text){
+        boolean stat = false;
         try{
             byte[] printformat = { 0x1B, 0x21, FONT_TYPE };
             btoutputstream.write(printformat);
@@ -81,10 +82,16 @@ public class BTPrint extends AppCompatActivity {
             btoutputstream.flush();
         }catch (Exception e){
 
+
             System.out.println("Print Exception == "+e);
-            if(Store.getInstance().printerContext!=null) {
-                Toast.makeText(Store.getInstance().printerContext, "", Toast.LENGTH_SHORT).show();
+            if(!stat)
+            {
+                stat = true;
+                if(Store.getInstance().printerContext!=null) {
+                 //   Toast.makeText(Store.getInstance().printerContext, "Printer offline", Toast.LENGTH_SHORT).show();
+                }
             }
+
         }
     }
 

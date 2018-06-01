@@ -17,13 +17,14 @@ import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.BankAdapter;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
 
 public class BankActivity extends AppCompatActivity {
 
     ListView listView;
-    FloatingActionButton add,menu;
+    FloatingActionButton add;
     BizUtils bizUtils;
     private EditText searchBar;
     private ArrayList<Bank> bankList;
@@ -34,16 +35,17 @@ public class BankActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank);
+        UIUtil.setActionBarMenu(BankActivity.this,getSupportActionBar(),"Banks");
         getSupportActionBar().setTitle("Banks");
         searchBar = (EditText) findViewById(R.id.search_bar);
         listView = (ListView) findViewById(R.id.listview);
         add = (FloatingActionButton) findViewById(R.id.add);
-        menu = (FloatingActionButton) findViewById(R.id.menu);
+
 
         bizUtils = new BizUtils();
 
         add.bringToFront();
-        menu.bringToFront();
+
 
         filterList.addAll(Store.getInstance().bankList);
         adapter = new BankAdapter(BankActivity.this, filterList);
@@ -76,14 +78,7 @@ public class BankActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                //bizUtils.showMenu(BankActivity.this);
-                bizUtils.bizMenu(BankActivity.this);
-            }
-        });
         enableSearch();
 
     }

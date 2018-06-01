@@ -22,6 +22,7 @@ import com.bizsoft.fmcgv2.adapter.FileMangerAdpater;
 import com.bizsoft.fmcgv2.dataobject.BizFile;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class InvoiceListActivity extends AppCompatActivity {
     ArrayList<BizFile> fileList = new ArrayList<BizFile>();
     ArrayList<BizFile> allFileList = new ArrayList<BizFile>();
     BizUtils bizUtils;
-    FloatingActionButton menu;
+
     EditText searchBar;
     ArrayList<BizFile> filterFileList;
     FileMangerAdpater fa;
@@ -42,17 +43,12 @@ public class InvoiceListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoice_list);
+        UIUtil.setActionBarMenu(InvoiceListActivity.this,getSupportActionBar(),"Invoice List");
         listView = (ListView) findViewById(R.id.listview);
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
-        bizUtils = new BizUtils();
-        searchBar = (EditText) findViewById(R.id.search_bar);
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                bizUtils.bizMenu(InvoiceListActivity.this);
-            }
-        });
+        bizUtils = new BizUtils();
+
+        searchBar = (EditText) findViewById(R.id.search_bar);
 
 
         getSupportActionBar().setTitle("Invoice list");

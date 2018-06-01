@@ -32,6 +32,14 @@ public class Ledger {
     String GSTNo;
     @JsonProperty("EMailId")
     String EMailId;
+    @JsonProperty("CreditAmount")
+    double CreditAmount;
+
+    @JsonProperty("CreditLimit")
+    double CreditLimit;
+    @JsonProperty("CreditLimitType")
+    public
+    CreditLimitType CreditLimitType;
 
     public String getEMailId() {
         return EMailId;
@@ -48,6 +56,30 @@ public class Ledger {
             PersonIncharge = "";
         }
         return PersonIncharge;
+    }
+
+    public double getCreditAmount() {
+        return CreditAmount;
+    }
+
+    public void setCreditAmount(double creditAmount) {
+        CreditAmount = creditAmount;
+    }
+
+    public double getCreditLimit() {
+        return CreditLimit;
+    }
+
+    public void setCreditLimit(double creditLimit) {
+        CreditLimit = creditLimit;
+    }
+
+    public com.bizsoft.fmcgv2.dataobject.CreditLimitType getCreditLimitType() {
+        return CreditLimitType;
+    }
+
+    public void setCreditLimitType(com.bizsoft.fmcgv2.dataobject.CreditLimitType creditLimitType) {
+        CreditLimitType = creditLimitType;
     }
 
     public void setPersonIncharge(String personIncharge) {

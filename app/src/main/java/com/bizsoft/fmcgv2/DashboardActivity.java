@@ -7,11 +7,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -64,7 +66,9 @@ import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.StockGroup;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.ConnectivityChangeReceiver;
 import com.bizsoft.fmcgv2.service.HttpHandler;
+import com.bizsoft.fmcgv2.service.PrinterService;
 import com.bizsoft.fmcgv2.service.SignalRService;
 import com.bizsoft.fmcgv2.service.UIUtil;
 import com.bizsoft.fmcgv2.service.Waiter;
@@ -83,10 +87,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.bizsoft.fmcgv2.service.BizUtils.decimalFormatter;
 import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -100,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity {
     ArrayList<String> saleTypeList = new ArrayList<String>();
     public static String currentSaleType;
     ListView customerListView;
-    AutoCompleteTextView customerNameKey;
+    public static AutoCompleteTextView customerNameKey;
     TextView customerName;
     AutoCompleteTextView stockGroupKey;
     TextView stockGroupName;
@@ -161,6 +167,7 @@ public class DashboardActivity extends AppCompatActivity {
     TextView note;
     Spinner discount;
     TextView discountSpinnerLabel;
+    public static Spinner grandDiscountTypeSpinner;
 
     public static TextView appDiscount;
 
@@ -174,13 +181,16 @@ public class DashboardActivity extends AppCompatActivity {
     private ProductAdapter Padapter;
     private TextWatcher fromCustomerWatcher;
     public static View customActionBar;
-    private String lastSavedBillType = "none";
+    public static String lastSavedBillType = "none";
     private ArrayList<String> gstTypeList;
     private ArrayList<String> discountTypeList;
     private Button printCC;
     public  static  TextView roundOffText;
-    public  static   EditText roundOffValue;
+   // public  static   EditText roundOffValue;
     public  static   TextView roundOffLabel;
+    public static ArrayAdapter<String> customerNameListAdapter;
+    private ArrayList<String> grandDiscountTypeList;
+    private String grandDiscountType;
 
 
     @Override
@@ -209,6 +219,9 @@ public class DashboardActivity extends AppCompatActivity {
         touch();
         Log.d(TAG, "User interaction to "+this.toString());
     }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -235,7 +248,7 @@ public class DashboardActivity extends AppCompatActivity {
         paymentLabel = (TextView) findViewById(R.id.paymode_label);
         roundOffLabel = (TextView) findViewById(R.id.round_of_label);
         roundOffText = (TextView) findViewById(R.id.round_off_text);
-        roundOffValue = (EditText) findViewById(R.id.round_off_value);
+       // roundOffValue = (EditText) findViewById(R.id.round_off_value);
 
 
         cdl = (TextView) findViewById(R.id.cdl);
@@ -259,6 +272,7 @@ public class DashboardActivity extends AppCompatActivity {
         note = (TextView) findViewById(R.id.note);
         discount = (Spinner) findViewById(R.id.discount);
         printCC = (Button) findViewById(R.id.print_cc);
+        grandDiscountTypeSpinner = (Spinner) findViewById(R.id.discount_type);
 
         discountValue = (EditText) findViewById(R.id.discount_value);
         cn.setVisibility(View.GONE);
@@ -272,13 +286,20 @@ public class DashboardActivity extends AppCompatActivity {
         BizUtils.getCurrentDatAndTimeInDF();
 
 
+
         UIUtil.setActionBarDesign(DashboardActivity.this,getSupportActionBar());
+
         ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, Bank.getNames());
         prettyJson("bank names",Bank.getNames());
 
         bankName.setThreshold(1);
         bankName.setAdapter(bankAdapter);
+        registerReceiver(
+                new ConnectivityChangeReceiver(),
+                new IntentFilter(
+                        ConnectivityManager.CONNECTIVITY_ACTION));
+
 
         chequeDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -342,11 +363,13 @@ public class DashboardActivity extends AppCompatActivity {
         if (paymentModeValue==null)
             {
 
-
                 fromCustomerWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    String before;
+                    boolean status;
 
+                    @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        before = s.toString();
 
                 if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
                     if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque"))) {
@@ -371,10 +394,28 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                        double fc = 0;
+                        if(!TextUtils.isEmpty(s))
+                        {
+                            fc = Double.parseDouble(s.toString());
+                        }
+
+                status = decimalFormatter(fc);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
+                if(!status)
+                {
+                    fromCustomer.setText(before);
+                    fromCustomer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fromCustomer.setSelection(fromCustomer.getText().toString().trim().length());
+                        }
+                    });
+                }
 
                 if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
@@ -455,7 +496,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
 
-       roundOffValue.addTextChangedListener(new TextWatcher() {
+/*       roundOffValue.addTextChangedListener(new TextWatcher() {
            double gt =0;
            double rov=0;
            String regex = "^(\\d*\\.)?\\d+$";
@@ -510,16 +551,22 @@ public class DashboardActivity extends AppCompatActivity {
 
 
            }
-       });
+       });*/
 
         discountValue.addTextChangedListener(new TextWatcher() {
+
 
             double gt =0;
             double dc  =0;
             double da =0;
+            public String before;
+            boolean status;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 tempGt = Store.getInstance().addedProductAdapter.grandTotal;
+
+                before = s.toString();
+                Log.d("decimal before",s.toString());
                 }
 
             @Override
@@ -535,7 +582,8 @@ public class DashboardActivity extends AppCompatActivity {
                         dc = Double.parseDouble(discountValue.getText().toString());
                     }
 
-
+                    Log.d("decimalvalidator",String.valueOf(decimalFormatter(dc))+" "+ String.valueOf(dc));
+                    status = decimalFormatter(dc);
 
 
                 }
@@ -543,42 +591,72 @@ public class DashboardActivity extends AppCompatActivity {
                 {
                     System.out.print("Ex =>>>>> "+e);
                 }
+
+
+
                 System.out.println("tgt = <><><>"+tempGt);
                 System.out.println("dc = <><><>"+dc);
-                if(dc>=100)
-                {
-                    if(tempGt!=0) {
-                        Toast.makeText(DashboardActivity.this, "Discount not applicable..", Toast.LENGTH_SHORT).show();
+
+
+                if(Store.getInstance().discountTypePercentage.equals(grandDiscountType)) {
+                    if (dc >= 100) {
+                        if (tempGt != 0) {
+                            Toast.makeText(DashboardActivity.this, "Discount % not applicable..", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        da = tempGt * (dc / 100);
+                        gt = tempGt - (tempGt * (dc / 100));
+
                     }
                 }
-                else
+                else if(Store.getInstance().discountTypeRM.equals(grandDiscountType))
                 {
-                    da = tempGt * (dc/100);
-                    gt = tempGt - (tempGt * (dc/100));
+                  if(dc<=tempGt)
+                  {
+                      gt =  tempGt-dc;
+                      da = dc;
+                  }
+                  else
+                  {
+                      Toast.makeText(DashboardActivity.this, "Discount RM not applicable..", Toast.LENGTH_SHORT).show();
+                  }
+
 
                 }
-                System.out.println("Added Prod Adap GT <?>= "+Store.getInstance().addedProductAdapter.grandTotal);
-                System.out.println("GT <?>= "+gt);
-                System.out.println("DP <?>= "+dc);
+                    System.out.println("Added Prod Adap GT <?>= " + Store.getInstance().addedProductAdapter.grandTotal);
+                    System.out.println("GT <?>= " + gt);
+                    System.out.println("DP <?>= " + dc);
 
-                if(Store.getInstance().addedProductAdapter.grandTotal==0)
-                {
-                    grandTotal.setText(String.valueOf("0"));
-                    appDiscount.setText(String.valueOf("0"));
-                }
-                else
-                {
+                    if (Store.getInstance().addedProductAdapter.grandTotal == 0) {
+                        grandTotal.setText(String.valueOf("0"));
+                        appDiscount.setText(String.valueOf("0"));
+                    } else {
 
-                    grandTotal.setText(String.valueOf(String.format("%.2f",roundOff(gt))));
-                    appDiscount.setText(String.valueOf(String.format("%.2f",da)));
+                        grandTotal.setText(String.valueOf(String.format("%.2f", roundOff(gt))));
+                        appDiscount.setText(String.valueOf(String.format("%.2f", da)));
 
-                }
+                    }
+
+
 
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
+                Log.d("decimal after",s.toString());
+
+                if(!status)
+                {
+                    discountValue.setText(before);
+                    discountValue.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            discountValue.setSelection(discountValue.getText().toString().trim().length());
+                        }
+                    });
+                }
 
                 grandTotal.setText(String.valueOf(roundOff(gt)));
             }
@@ -587,6 +665,9 @@ public class DashboardActivity extends AppCompatActivity {
         setIsGst();
 
         setDiscountType();
+        setGrandDiscountType();
+        grandDiscountTypeSpinner.setSelection(0);
+
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -649,9 +730,12 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, Customer.getCustomerList());
-        customerNameKey.setAdapter(adapter);
+
+         customerNameListAdapter= new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Customer.getCustomerNameList());
+
+
+        customerNameKey.setAdapter(customerNameListAdapter);
         customerNameKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -975,6 +1059,7 @@ public class DashboardActivity extends AppCompatActivity {
     public static double roundOff(double finalAmount) {
         Log.d("Input", String.valueOf(finalAmount));
         double x = finalAmount - (long) finalAmount;
+        x =  Double.parseDouble(String.format("%.2f",x));
 
         int bd = (int) finalAmount;
 
@@ -982,6 +1067,8 @@ public class DashboardActivity extends AppCompatActivity {
         int y = (int) x;
         int r  = y%10;
         int fd = 0;
+        String action = "";
+        double roundOffVal = 0.00;
         if(r>5)
         {
             if(r<8)
@@ -989,14 +1076,20 @@ public class DashboardActivity extends AppCompatActivity {
                 if(r==8)
                 {
                     fd = y + (10 - r);
+                    action = "+";
+                    roundOffVal = 10 -r;
                 }
                 else {
                     fd = y - (r -5);
+                    action = "-";
+                    roundOffVal = r -5;
                 }
 
             }
             else {
                 fd = y + (10 - r);
+                action = "+";
+                roundOffVal = 10 -r;
             }
         }
         else
@@ -1004,15 +1097,29 @@ public class DashboardActivity extends AppCompatActivity {
             if(r<3)
             {
                 fd = y - r;
+                action = "-";
+                roundOffVal = r;
             }
             else
             {
                 fd = y + (5-r);
+                action = "+";
+                roundOffVal = 5-r;
             }
 
         }
 
+
+
         double result = bd + (fd*0.01);
+
+        double rem =  roundOffVal/100;
+        if(rem==0)
+        {
+        action = "";
+        }
+
+        roundOffText.setText(action+String.valueOf(String.format("%.2f",rem)));
         Log.d("Round off ", String.valueOf(result));
         return result;
     }
@@ -1055,6 +1162,7 @@ public class DashboardActivity extends AppCompatActivity {
                 });
 
                 alertDialog.create();
+
                 alertDialog.show();
 
 
@@ -1069,19 +1177,19 @@ public class DashboardActivity extends AppCompatActivity {
                 if(lastSavedBillType.toLowerCase().contains("return"))
                 {
                     temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),dc);
+                    PrinterService.print(DashboardActivity.this,customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),dc);
 
                 }
                 if(lastSavedBillType.toLowerCase().contains("order"))
                 {
                     temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,dc);
+                    PrinterService.print(DashboardActivity.this,customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,dc);
 
                 }
                 if(! (lastSavedBillType.toLowerCase().contains("return") || lastSavedBillType.toLowerCase().contains("order")) )
                 {
                     temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,dc);
+                    PrinterService.print(DashboardActivity.this,customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,dc);
 
                 }
                 if(lastSavedBillType.toLowerCase().contains("none"))
@@ -1191,6 +1299,11 @@ public class DashboardActivity extends AppCompatActivity {
             saleOrder.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             saleOrder.setPaymentMode(paymentModeValue);
            saleOrder.setRoundOffValue(Double.parseDouble(roundOffText.getText().toString()));
+           saleOrder.setGrandTotalDiscountType(grandDiscountType);
+
+
+
+
 
 
 
@@ -1262,6 +1375,7 @@ public class DashboardActivity extends AppCompatActivity {
             saleReturn.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             saleReturn.setPaymentMode(paymentModeValue);
             saleReturn.setRoundOffValue(Double.parseDouble(roundOffText.getText().toString()));
+            saleReturn.setGrandTotalDiscountType(grandDiscountType);
 
             int invce = 0;
             for(int i=0;i<Store.getInstance().customerList.size();i++)
@@ -1325,7 +1439,7 @@ public class DashboardActivity extends AppCompatActivity {
             sale.setReceivedAmount(Double.parseDouble(fromCustomerValue));
             sale.setPaymentMode(paymentModeValue);
             sale.setRoundOffValue(Double.parseDouble(roundOffText.getText().toString()));
-
+            sale.setGrandTotalDiscountType(grandDiscountType);
             System.out.println("===============PAYMODE=========="+paymentModeValue);
             int invce = 0;
             for(int i=0;i<Store.getInstance().customerList.size();i++)
@@ -1564,21 +1678,23 @@ public class DashboardActivity extends AppCompatActivity {
                 {
 
                     temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),"Customer Copy");
+                    PrinterService.print(DashboardActivity.this,customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),"Customer Copy");
                     lastSavedBillType = cSaleType;
+
+
 
                 }
                 if(cSaleType.toLowerCase().contains("order"))
                 {
                     temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,"Customer Copy");
+                    PrinterService.print(DashboardActivity.this,customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,"Customer Copy");
                     lastSavedBillType = cSaleType;
 
                 }
                 if(! (cSaleType.toLowerCase().contains("return") || cSaleType.toLowerCase().contains("order")) )
                 {
                     temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
-                    print(customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,"Customer Copy");
+                    PrinterService.print(DashboardActivity.this,customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,"Customer Copy");
                     lastSavedBillType = cSaleType;
 
                 }
@@ -1682,6 +1798,7 @@ public class DashboardActivity extends AppCompatActivity {
             product.setParticulars(currentProduct.getParticulars());
             product.setResale(currentProduct.isResale());
             product.setDiscountAmount(currentProduct.getDiscountAmount());
+            product.setDiscountPercentage(currentProduct.getDiscountPercentage());
 
             newList.add(product);
         }
@@ -1691,13 +1808,28 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void clearList() {
         System.out.println("Size of prod list" + Store.getInstance().addedProductList.size());
+       // roundOffValue.setText(String.valueOf("0"));
+        roundOffText.setText(String.valueOf("0.00"));
         for (int i = 0; i < Store.getInstance().addedProductList.size(); i++) {
             Store.getInstance().addedProductList.get(i).setQty(null);
             Store.getInstance().addedProductList.get(i).setDiscountAmount(0.0);
             Store.getInstance().addedProductList.get(i).setDiscountPercentage(0.0);
             Store.getInstance().addedProductList.get(i).setFinalPrice(0);
             Store.getInstance().addedProductList.get(i).setResale(false);
+            Store.getInstance().addedProductList.get(i).setParticulars("");
             Store.getInstance().addedProductList.get(i).setSellingRate(Store.getInstance().addedProductList.get(i).getSellingRateRef());
+        }
+
+        for(int i=0;i<Store.getInstance().productList.size();i++)
+        {
+            Store.getInstance().productList.get(i).setQty(null);
+            Store.getInstance().productList.get(i).setDiscountAmount(0.0);
+            Store.getInstance().productList.get(i).setDiscountPercentage(0.0);
+            Store.getInstance().productList.get(i).setFinalPrice(0);
+            Store.getInstance().productList.get(i).setResale(false);
+            Store.getInstance().productList.get(i).setParticulars("");
+            Store.getInstance().productList.get(i).setSellingRate(Store.getInstance().productList.get(i).getSellingRateRef());
+
         }
 
         Store.getInstance().addedProductList.clear();
@@ -1710,6 +1842,7 @@ public class DashboardActivity extends AppCompatActivity {
         customerNameKey.setText("");
         savedCurrentTransaction = true;
 
+        Log.d("clear","list");
     }
 
     @Override
@@ -1859,7 +1992,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-
         dialog.show();
 
     }
@@ -1917,13 +2049,23 @@ public class DashboardActivity extends AppCompatActivity {
                 if (currentStockGroupId != null) {
                     if (tempProduct.get(i).getStockGroupId().compareTo(currentStockGroupId) == 0) {
 
-                        System.out.println("Stock Group ID ---from Item--- A" + tempProduct.get(i).getStockGroupId());
+                        boolean stat = true;
+                        for(int a=0;a<Store.getInstance().addedProductList.size();a++)
+                        {
+                            if(tempProduct.get(i).getId()== Store.getInstance().addedProductList.get(a).getId())
+                            {
+                                stat = false;
+                            }
+                        }
+                        if(stat) {
+                            System.out.println("Stock Group ID ---from Item--- A" + tempProduct.get(i).getStockGroupId());
 
-                        Product prod = new Product();
+                            Product prod = new Product();
 
-                        prod = tempProduct.get(i);
+                            prod = tempProduct.get(i);
 
-                        tempProduct1.add(prod);
+                            tempProduct1.add(prod);
+                        }
                     }
                 } else {
                     System.out.println("Stock Group ID ---from Item--- NA" + tempProduct.get(i).getStockGroupId());
@@ -1951,12 +2093,13 @@ public class DashboardActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    int newitems =0;
 
                     if (Store.getInstance().addedProductList.size() == 0) {
                         for (int i = 0; i < tempProduct1.size(); i++) {
                             System.out.println("Product Quantity  ===== " + tempProduct1.get(i).getQty());
-                            if (tempProduct1.get(i).getQty() != null) {
-
+                            if (tempProduct1.get(i).getQty() != null && tempProduct1.get(i).getQty() != 0) {
+                                newitems++;
                                 Product product = new Product();
                                 product = tempProduct1.get(i);
                                 System.out.println("Id === " + product.getId());
@@ -1986,6 +2129,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                             }
+
                         }
 
 
@@ -1995,12 +2139,11 @@ public class DashboardActivity extends AppCompatActivity {
                             System.out.println("ID====================" + tempProduct1.get(i).getId());
                             System.out.println("QTY====================" + tempProduct1.get(i).getQty());
                             System.out.println("Selling rate === " + tempProduct1.get(i).getSellingRate());
-                            if (tempProduct1.get(i).getQty() != null) {
+                            if (tempProduct1.get(i).getQty() != null && tempProduct1.get(i).getQty()!= 0) {
 
+                                newitems++;
 
                                 System.out.println("Size === " + Store.getInstance().addedProductList.size());
-
-
                                 boolean status = true;
                                 for (int j = 0; j < Store.getInstance().addedProductList.size(); j++) {
 
@@ -2048,11 +2191,16 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                             }
+
                         }
 
                     }
 
 
+                    if(newitems==0)
+                    {
+                        Toast.makeText(DashboardActivity.this, "Choose atleast one product or press back", Toast.LENGTH_SHORT).show();
+                    }
 
 
                 }
@@ -2085,7 +2233,7 @@ public class DashboardActivity extends AppCompatActivity {
                     int pageOffSetCount =0;
                     if(i==pageNum)
                     {
-                        pageOffSetCount = pageLast;
+                        pageOffSetCount = (i-1)*offSetValue+pageLast;
 
                     }
                     else
@@ -2119,6 +2267,10 @@ public class DashboardActivity extends AppCompatActivity {
 
                 final int[] pageIndex = {1};
                 final int finalPageNum = pageNum;
+
+                final int prevPageIndex = productPageList.get(pageIndex[0]).size();
+
+
                 loadMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -2126,28 +2278,30 @@ public class DashboardActivity extends AppCompatActivity {
 
                         if(pageIndex[0]< finalPageNum) {
 
+                            ArrayList<Product> currentPageProducts = productPageList.get(pageIndex[0]);
                             tempProduct1.addAll(productPageList.get(pageIndex[0]));
                             pageIndex[0]++;
                             Padapter.notifyDataSetChanged();
                             loadMore.setVisibility(View.GONE);
                             add.setVisibility(View.GONE);
 
-
-                            loadMore.setText(String.valueOf("Load ("+pageIndex[0]+") of "+finalPageNum));
+                            loadMore.setText(String.valueOf("Load ("+pageIndex[0]+") of "+(finalPageNum)));
 
                             Toast.makeText(DashboardActivity.this, "Loaded..", Toast.LENGTH_SHORT).show();
 
                             loadMore.setVisibility(View.VISIBLE);
                             add.setVisibility(View.VISIBLE);
 
-                            productListView.setSelection(Padapter.getCount() - 1);
 
 
+                            productListView.setSelection(tempProduct1.size()-currentPageProducts.size());
                         }
                         else
                         {
                             Toast.makeText(DashboardActivity.this, "End of page..", Toast.LENGTH_SHORT).show();
+
                         }
+
 
                     }
                 });
@@ -2419,6 +2573,52 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         });
+
+
+    }
+    public void setGrandDiscountType() {
+
+        grandDiscountTypeList = new ArrayList<String>();
+        grandDiscountTypeList .add(Store.getInstance().discountTypePercentage);
+        grandDiscountTypeList .add(Store.getInstance().discountTypeRM);
+
+
+
+        // Drop down layout style - list view with radio button
+
+
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DashboardActivity.this, grandDiscountTypeList );
+        grandDiscountTypeSpinner.setAdapter(customSpinnerAdapter);
+
+
+        grandDiscountTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //  Toast.makeText(getApplicationContext(), genderList.get(position), Toast.LENGTH_SHORT).show();
+                grandDiscountType = grandDiscountTypeList.get(position);
+                discountValue.setText("0");
+                discountValue.requestFocus();
+                fromCustomer.setText("0");
+
+
+
+
+            }
+
+
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                grandDiscountType = grandDiscountTypeList.get(0);
+            }
+
+
+        });
+
+
+
 
 
     }
@@ -3224,29 +3424,29 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    public void print(Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn,String copyName) {
+    public void print(Context context,Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn, String copyName) {
 
-        Store.getInstance().printerContext = DashboardActivity.this;
+        Store.getInstance().printerContext = context;
 
-        SharedPreferences prefs = getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
         BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyName), "Aboorvass"));
+        BTPrint.PrintTextLine(prefs.getString(context.getString(R.string.companyName), "Aboorvass"));
         BTPrint.SetAlign(Paint.Align.CENTER);
 
 
-        System.out.println("company address line 1 ==============================" + prefs.getString(getString(R.string.companyAddressLine1), "0"));
-        System.out.println("company address line 2 ==============================" + prefs.getString(getString(R.string.companyAddressLine2), "0"));
-        System.out.println("company gst ==============================" + prefs.getString(getString(R.string.gstNo), "0"));
-        System.out.println("company mail ==============================" + prefs.getString(getString(R.string.email), "0"));
-        System.out.println("company postalcode ==============================" + prefs.getString(getString(R.string.postal_code), "0"));
+        System.out.println("company address line 1 ==============================" + prefs.getString(context.getString(R.string.companyAddressLine1), "0"));
+        System.out.println("company address line 2 ==============================" + prefs.getString(context.getString(R.string.companyAddressLine2), "0"));
+        System.out.println("company gst ==============================" + prefs.getString(context.getString(R.string.gstNo), "0"));
+        System.out.println("company mail ==============================" + prefs.getString(context.getString(R.string.email), "0"));
+        System.out.println("company postalcode ==============================" + prefs.getString(context.getString(R.string.postal_code), "0"));
 
         BTPrint.SetAlign(Paint.Align.LEFT);
-        BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyAddressLine1), "0") + "," + prefs.getString(getString(R.string.companyAddressLine2), "0") + "," + prefs.getString(getString(R.string.postal_code), "+1234556789"));
+        BTPrint.PrintTextLine(prefs.getString(context.getString(R.string.companyAddressLine1), "0") + "," + prefs.getString(context.getString(R.string.companyAddressLine2), "0") + "," + prefs.getString(context.getString(R.string.postal_code), "+1234556789"));
 
         BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("E-Mail: " + prefs.getString(getString(R.string.email), "+1234556789"));
-        BTPrint.PrintTextLine("GST No: " + prefs.getString(getString(R.string.gstNo), "+1234556789"));
-        BTPrint.PrintTextLine("Ph No: " + prefs.getString(getString(R.string.phoneNumber), "+1234556789"));
+        BTPrint.PrintTextLine("E-Mail: " + prefs.getString(context.getString(R.string.email), "+1234556789"));
+        BTPrint.PrintTextLine("GST No: " + prefs.getString(context.getString(R.string.gstNo), "+1234556789"));
+        BTPrint.PrintTextLine("Ph No: " + prefs.getString(context.getString(R.string.phoneNumber), "+1234556789"));
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.PrintTextLine("***Bill Details***");
         BizUtils bizUtils = new BizUtils();
@@ -3341,7 +3541,6 @@ public class DashboardActivity extends AppCompatActivity {
             if (item.getProductName().length() >= 10) {
                 in = item.getProductName().substring(0, 9);
                 itemnameSpace = " ";
-
             } else {
                 int total = item.getProductName().length();
                 spaceLength = 10 - total;
@@ -3349,7 +3548,6 @@ public class DashboardActivity extends AppCompatActivity {
                 for (int x = 0; x < spaceLength; x++) {
                     itemnameSpace = itemnameSpace + " ";
                 }
-
 
                 in = item.getProductName();
 
@@ -3369,7 +3567,6 @@ public class DashboardActivity extends AppCompatActivity {
                 iq = String.valueOf(item.getQty());
             }
             String itemP = String.valueOf(String.format("%.2f",item.getMRP()));
-
 
             if (itemP.length() >= 8) {
                 in = itemP.substring(0, 7);
@@ -3444,7 +3641,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-            double tt = subTotalx;
+
 
             mainGst = bizRound(mainGst, 2);
 
@@ -3489,7 +3686,29 @@ public class DashboardActivity extends AppCompatActivity {
 
             String print_line =   " "+iq + q + ip + dis + id +pr + ir;
             System.out.println("Print Line = "+print_line);
-            BTPrint.PrintTextLine( " "+iq + q + ip + dis + id +pr + ir);
+
+            Formatter fmt = new Formatter();
+            fmt.format("|%6.2f|", Double.parseDouble(ir));
+
+            String oldPrintStmt  =  " "+iq + q + ip + dis + id +pr + ir;
+
+            String qStr = String.format("%4d",  Integer.parseInt(iq));
+            qStr = qStr+" ";
+            String pStr = String.format("%6.2f",Double.parseDouble(ip));
+            pStr = pStr+" ";
+            String dStr = "";
+            if(TextUtils.isEmpty(id.trim())) {
+                 dStr = String.format("%7s", id);
+            }else
+            {
+                 dStr = "-"+String.format("%6s", id);
+            }
+            dStr = dStr+" ";
+            String rStr = "="+String.format("%8.2f",Double.parseDouble(ir));
+
+            String newPrintStmnt = qStr+"X"+pStr+dStr+rStr;
+
+            BTPrint.PrintTextLine( newPrintStmnt);
 
         }
 
@@ -3501,6 +3720,7 @@ public class DashboardActivity extends AppCompatActivity {
         Double disV = 0.00;
         double roundOffValue = 0.00;
         if(sale!=null) {
+
 
              ra = String.valueOf(String.format("%.2f", sale.getReceivedAmount()));
              ba = String.valueOf(String.format("%.2f", sale.getBalance()));
@@ -3651,12 +3871,12 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         BTPrint.PrintTextLine("------------------------------");
-        BTPrint.PrintTextLine("Grand total" + mgSpace + " RM " + String.format("%.2f",mainGrantTotal));
+        BTPrint.PrintTextLine("Grand total" + " RM " + String.format("%7.2f",mainGrantTotal));
 
         if(getTransactionType(type)==Store.getInstance().SALE) {
             if(sale.getPaymentMode().toLowerCase().contains("cash")) {
-                BTPrint.PrintTextLine("Received amount RM " + String.format("%.2f", Double.parseDouble(ra)));
-                BTPrint.PrintTextLine("Balance amount RM " + baSpace +String.format("%.2f", Double.parseDouble(ba)));
+                BTPrint.PrintTextLine("Received amount RM " + String.format("%7.2f", Double.parseDouble(ra)));
+                BTPrint.PrintTextLine("Balance amount RM " + String.format("%7.2f", Double.parseDouble(ba)));
             }
         }
         BTPrint.PrintTextLine("------------------------------");
@@ -3704,7 +3924,9 @@ public class DashboardActivity extends AppCompatActivity {
         return (double) tmp / factor;
     }
 
-
+    public static String fixedLengthString(double string, int length, String type) {
+        return String.format("%1$"+length+type, string);
+    }
 
     private void proceedAfterPermission(int v) {
         //We've got the permission, now we can proceed further
@@ -4094,9 +4316,11 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d("Activity:","Start");
 
         fromCustomerWatcher = new TextWatcher() {
+            String before;
+            boolean status;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                before = s.toString();
 
 
                 if (! (currentSaleType.toLowerCase().contains("order") || currentSaleType.toLowerCase().contains("return") )) {
@@ -4125,11 +4349,27 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                double fc = 0;
+                if(!TextUtils.isEmpty(s))
+                {
+                    fc = Double.parseDouble(s.toString());
+                }
+
+                status = decimalFormatter(fc);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(!status)
+                {
+                    fromCustomer.setText(before);
+                    fromCustomer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fromCustomer.setSelection(fromCustomer.getText().toString().trim().length());
+                        }
+                    });
+                }
 
                 if (!(paymentModeValue.contains("PNT") | paymentModeValue.contains("Cheque") )) {
 
@@ -4246,6 +4486,7 @@ public class DashboardActivity extends AppCompatActivity {
         discountValue.setVisibility(View.VISIBLE);
         appDiscount.setVisibility(View.VISIBLE);
         discountLabel.setVisibility(View.VISIBLE);
+        grandDiscountTypeSpinner.setVisibility(View.VISIBLE);
     }
 
     private void grandTotalDiscount() {
@@ -4253,6 +4494,7 @@ public class DashboardActivity extends AppCompatActivity {
         discountValue.setVisibility(View.VISIBLE);
         appDiscount.setVisibility(View.VISIBLE);
         discountLabel.setVisibility(View.VISIBLE);
+        grandDiscountTypeSpinner.setVisibility(View.VISIBLE);
 
     }
 
@@ -4262,6 +4504,7 @@ public class DashboardActivity extends AppCompatActivity {
         discountValue.setVisibility(View.GONE);
         appDiscount.setVisibility(View.GONE);
         discountLabel.setVisibility(View.GONE);
+        grandDiscountTypeSpinner.setVisibility(View.GONE);
     }
     public int getTransactionType(String name)
     {
@@ -4304,7 +4547,6 @@ public class DashboardActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         dialog.cancel();
                     }
                 });
@@ -4354,9 +4596,12 @@ public class DashboardActivity extends AppCompatActivity {
                 discountValue.setText(String.valueOf("0"));
                 appDiscount.setText(String.valueOf("0"));
                 chequeNo.setText(String.valueOf(""));
+               // roundOffValue.setText(String.valueOf("0"));
+                roundOffText.setText(String.valueOf("0.00"));
                 chequeDate.setText(String.valueOf(""));
                 bankName.setText(String.valueOf(""));
                 productNameKey.setText(String.valueOf(""));
+                Log.d("clear","csp");
             }
         });
 
@@ -4401,9 +4646,9 @@ public class DashboardActivity extends AppCompatActivity {
              choosedCustomer = null;
             for(int i=0;i<Store.getInstance().customerList.size();i++)
             {
-                System.out.println(name.toLowerCase()+"===="+Store.getInstance().customerList.get(i).getLedger().getId().toString());
+                System.out.println(name.toLowerCase()+"===="+Store.getInstance().customerList.get(i).getLedger().getLedgerName().toString());
                 System.out.println(name.toLowerCase().toString().contains(Store.getInstance().customerList.get(i).getLedger().getId().toString()));
-                if(name.toLowerCase().toString().contains(Store.getInstance().customerList.get(i).getLedger().getId().toString()))
+                if(name.toLowerCase().toString().equals(Store.getInstance().customerList.get(i).getLedger().getLedgerName().toString().toLowerCase()))
                 {
                     choosedCustomer  = Store.getInstance().customerList.get(i);
                     Store.getInstance().currentCustomer = choosedCustomer.getLedgerName();
@@ -4430,7 +4675,7 @@ public class DashboardActivity extends AppCompatActivity {
             super.onPostExecute(o);
             lockAllUIComponents();
             customerName.setText(String.valueOf(choosedCustomer.getLedger().getLedgerName()).toUpperCase());
-            Toast.makeText(DashboardActivity.this, "Customer Name : " + Store.getInstance().currentCustomer, Toast.LENGTH_SHORT).show();
+            Toast.makeText(DashboardActivity.this, "Customer Name : " + String.valueOf(choosedCustomer.getLedger().getLedgerName()).toUpperCase(), Toast.LENGTH_SHORT).show();
 
         }
     }

@@ -2,11 +2,16 @@ package com.bizsoft.fmcgv2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,6 +19,8 @@ import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
+import com.bizsoft.fmcgv2.adapter.CustomerAdapter;
+import com.bizsoft.fmcgv2.dataobject.CreditLimitType;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Ledger;
 import com.bizsoft.fmcgv2.dataobject.Store;
@@ -21,9 +28,15 @@ import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.Network;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
+import static com.bizsoft.fmcgv2.CustomerActivity.AllCustomerList;
+import static com.bizsoft.fmcgv2.CustomerActivity.customerAdapter;
+import static com.bizsoft.fmcgv2.DashboardActivity.customerNameListAdapter;
 import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpId;
 import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpName;
+import static com.bizsoft.fmcgv2.service.BizUtils.isValidEmail;
 
 public class AddCustomerActivity extends AppCompatActivity {
 
@@ -38,6 +51,15 @@ public class AddCustomerActivity extends AppCompatActivity {
     int position;
     private Customer customer;
     private CustomSpinnerAdapter accTypeListAdapter;
+
+    EditText creditAmount,creditLimit;
+    Spinner creditType;
+    private static ArrayList<String> typeList;
+    private String chooosedCreditType;
+    private CustomSpinnerAdapter CreditTypeListAdapter;
+    private CreditLimitType chooosedCreditTypeObj = null;
+    Handler mainHandler ;
+    private boolean customerNameValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +78,19 @@ public class AddCustomerActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         opBalance = (EditText) findViewById(R.id.op_bal);
         accType = (Spinner) findViewById(R.id.acc_type);
+        creditAmount = (EditText) findViewById(R.id.amount);
+        creditLimit = (EditText) findViewById(R.id.credit_limit);
+        creditType = (Spinner) findViewById(R.id.creditLimitType);
 
-
+         mainHandler = new Handler(Looper.getMainLooper());
 
         save = (Button) findViewById(R.id.save);
         clear = (Button) findViewById(R.id.clear);
 
          setAccTypeList();
+
+         setCreditTypeList();
+
 
         try {
             findAction();
@@ -84,13 +112,69 @@ public class AddCustomerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                customerName.setText("");
-                personIncharge.setText("");
-                addressLine1.setText("");
-                addressLine2.setText("");
-                city.setText("");
-                mobileNumber.setText("");
-                gstNumber.setText("");
+                try {
+                    customerName.setText("");
+                    personIncharge.setText("");
+                    addressLine1.setText("");
+                    addressLine2.setText("");
+                    city.setText("");
+                    mobileNumber.setText("");
+                    gstNumber.setText("");
+                    telephoneNumber.setText("");
+                    email.setText("");
+                    opBalance.setText("");
+                    creditAmount.setText("");
+                    creditLimit.setText("");
+                    accType.setSelection(0);
+                    creditType.setSelection(0);
+
+                }catch (Exception e)
+                {
+                    Log.e("Clear","ex");
+                }
+
+
+
+            }
+        });
+
+
+        customerName.addTextChangedListener(new TextWatcher() {
+            ArrayList<String> oldCustomerNames;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                oldCustomerNames = Customer.getCustomerNameList();
+                customerNameValidator = true;
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, int start, int before, int count) {
+
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+
+                      for(int i=0;i<oldCustomerNames.size();i++)
+                      {
+                          Log.d("test 1",oldCustomerNames.get(i));
+                          Log.d("test 2",s.toString());
+                          if(oldCustomerNames.get(i).equals(s.toString()))
+                          {
+                             customerName.setError("Already Taken..");
+                              customerNameValidator = false;
+                          }
+                      }
+                    }
+                };
+                mainHandler.post(myRunnable);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -98,6 +182,43 @@ public class AddCustomerActivity extends AppCompatActivity {
 
 
     }
+
+    private void setCreditTypeList() {
+
+       try {
+           typeList = new ArrayList<String>();
+
+
+           typeList.add("");
+           for (int i = 0; i < Store.getInstance().customerCreditLimitTypeList.size(); i++) {
+               typeList.add(Store.getInstance().customerCreditLimitTypeList.get(i).getLimitType());
+           }
+           chooosedCreditType = typeList.get(0);
+           CreditTypeListAdapter = new CustomSpinnerAdapter(AddCustomerActivity.this,typeList);
+           creditType.setAdapter(CreditTypeListAdapter);
+           creditType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+               @Override
+               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                   chooosedCreditType = typeList.get(position);
+
+                   chooosedCreditTypeObj =  CreditLimitType.getByName(chooosedCreditType);
+               }
+
+               @Override
+               public void onNothingSelected(AdapterView<?> parent) {
+
+               }
+           });
+
+       }
+       catch (Exception e)
+       {
+
+       }
+
+    }
+
     private void setAccTypeList() {
 
 
@@ -137,7 +258,7 @@ public class AddCustomerActivity extends AppCompatActivity {
             if(myAction.equals("edit"))
             {
 
-                customer  =    CustomerActivity.customerAdapter.customerList.get(position);
+                customer  =    customerAdapter.customerList.get(position);
 
                 setValues(customer);
                     getSupportActionBar().setTitle("Edit Customer");
@@ -161,6 +282,8 @@ public class AddCustomerActivity extends AppCompatActivity {
         telephoneNumber.setText(String.valueOf(customer.getLedger().getTelephoneNo()));
         email.setText(String.valueOf(customer.getLedger().getEMailId()));
         opBalance.setText(String.valueOf(customer.getLedger().getOPBal()));
+        creditAmount.setText(String.valueOf(customer.getLedger().getCreditAmount()));
+        creditLimit.setText(String.valueOf(customer.getLedger().getCreditLimit()));
 
 
         if(customer.getLedger().getACType()!=null) {
@@ -170,6 +293,21 @@ public class AddCustomerActivity extends AppCompatActivity {
                 }
 
             }
+        }
+        if(customer.getLedger().getCreditLimitType()!=null)
+        {
+            for (int i = 0; i < Store.getInstance().customerCreditLimitTypeList.size(); i++) {
+                if (customer.getLedger().getCreditLimitType().getId() == Store.getInstance().customerCreditLimitTypeList.get(i).getId()) {
+
+                    for (int j = 0; j < typeList.size(); j++) {
+                        if (Store.getInstance().customerCreditLimitTypeList.get(i).getLimitType().equals(typeList.get(j))) {
+                            creditType.setSelection(j);
+                        }
+                    }
+                }
+
+            }
+
         }
 
 
@@ -215,8 +353,23 @@ public class AddCustomerActivity extends AppCompatActivity {
             status = false;
             Toast.makeText(this, "Please choose account type as Credit/Debit", Toast.LENGTH_SHORT).show();
         }
+        if(!TextUtils.isEmpty(email.getText()))
+        {
+            if(!isValidEmail(email.getText()))
+            {
+                status = false;
+                email.setError("Not a valid mail id");
+            }
 
-
+        }
+        if(!myAction.equals("edit"))
+        {
+        if(!customerNameValidator)
+        {
+            status = false;
+            Toast.makeText(this, "Customer name already taken", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
         if(status)
@@ -257,7 +410,7 @@ public class AddCustomerActivity extends AppCompatActivity {
 
         if(myAction.equals("edit"))
         {
-           Customer temp = CustomerActivity.customerAdapter.customerList.get(position);
+           Customer temp = customerAdapter.customerList.get(position);
 
             for(int i=0;i<Store.getInstance().customerList.size();i++)
             {
@@ -314,7 +467,39 @@ public class AddCustomerActivity extends AppCompatActivity {
         ledger.setAccountGroupId(currentAccGrpId);
         ledger.setAccountName(currentAccGrpName);
 
+        if(chooosedCreditType!=null)
+        {
+            if(!TextUtils.isEmpty(chooosedCreditType))
+            {
+                ledger.CreditLimitType = new CreditLimitType();
 
+                ledger.getCreditLimitType().setId(chooosedCreditTypeObj.getId());
+                ledger.getCreditLimitType().setLimitType(chooosedCreditTypeObj.getLimitType());
+            }
+        }
+        if(!TextUtils.isEmpty(creditAmount.getText()))
+        {
+            String d =creditAmount.getText().toString();
+
+            try {
+                ledger.setCreditAmount(Double.parseDouble(d));
+            }catch (Exception e)
+            {
+                Log.d("exc","not a double");
+            }
+        }
+
+        if(!TextUtils.isEmpty(creditLimit.getText()))
+        {
+            String d =creditLimit.getText().toString();
+
+            try {
+                ledger.setCreditLimit(Double.parseDouble(d));
+            }catch (Exception e)
+            {
+                Log.d("exc","not a double");
+            }
+        }
         customer.setLedger(ledger);
         customer.setSynced(false);
         if(myAction.equals("edit"))
@@ -332,6 +517,28 @@ public class AddCustomerActivity extends AppCompatActivity {
         try {
             BizUtils.storeAsJSON("customerList",BizUtils.getJSON("customer",Store.getInstance().customerList));
             System.out.println("DB Updated..on local storage");
+
+            Collections.sort(Store.getInstance().customerList, Customer.COMPARE_BY_LEDGER_NAME);
+
+           customerNameListAdapter= new ArrayAdapter<String>(this,
+                    android.R.layout.simple_dropdown_item_1line, Customer.getCustomerNameList());
+            DashboardActivity.customerNameKey.setAdapter(customerNameListAdapter);
+            customerNameListAdapter.notifyDataSetChanged();
+
+
+            CustomerActivity.CustomerList = new ArrayList<Customer>();
+            CustomerActivity.CustomerList.clear();
+            CustomerActivity.CustomerList.addAll(Store.getInstance().customerList);
+
+            AllCustomerList = new ArrayList<Customer>();
+            AllCustomerList.clear();
+            AllCustomerList.addAll(Store.getInstance().customerList);
+
+            CustomerActivity.customerAdapter.notifyDataSetChanged();
+
+
+
+
         } catch (ClassNotFoundException e) {
 
             System.err.println("Unable to write to DB");

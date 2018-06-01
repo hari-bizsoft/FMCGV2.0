@@ -3,8 +3,10 @@ package com.bizsoft.fmcgv2;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.dataobject.User;
+import com.bizsoft.fmcgv2.service.ConnectivityChangeReceiver;
 import com.bizsoft.fmcgv2.service.HttpHandler;
 import com.bizsoft.fmcgv2.service.SignalRService;
 import com.google.gson.Gson;
@@ -50,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences ;
     private String MyPREFERENCES= "loginDetails";
     SharedPreferences.Editor editor;
-    TextView serverStatus;
+    public static TextView serverStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,11 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.login);
         connect = (Button) findViewById(R.id.connect);
         serverStatus = (TextView) findViewById(R.id.status);
+
+        registerReceiver(
+                new ConnectivityChangeReceiver(),
+                new IntentFilter(
+                        ConnectivityManager.CONNECTIVITY_ACTION));
 
 
 

@@ -18,6 +18,7 @@ import com.bizsoft.fmcgv2.adapter.SalesAdapter;
 import com.bizsoft.fmcgv2.dataobject.Product;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class SalesOrderActivity extends AppCompatActivity {
     ArrayList<Product> SalesOrderList;
     ArrayList<Product> AllSalesOrderList = new ArrayList<Product>();
     private SalesAdapter salesOrderAdapter;
-    FloatingActionButton menu;
+
     BizUtils bizUtils;
 
     @Override
@@ -36,11 +37,13 @@ public class SalesOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_order);
         getSupportActionBar().setTitle("Sales Order List");
+        UIUtil.setActionBarMenu(SalesOrderActivity.this,getSupportActionBar(),"Sales Order Products List");
 
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
         bizUtils = new BizUtils();
         listView = (ListView) findViewById(R.id.listview);
         searchBar = (EditText) findViewById(R.id.search_bar);
+
+
 
         AllSalesOrderList.addAll(Store.getInstance().addedProductForSalesOrder);
         salesOrderAdapter = new SalesAdapter(SalesOrderActivity.this,AllSalesOrderList);
@@ -93,13 +96,6 @@ public class SalesOrderActivity extends AppCompatActivity {
                 System.out.println("Adding customer list size"+salesOrderAdapter.products.size());
 
                 salesOrderAdapter.notifyDataSetChanged();
-            }
-        });
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                bizUtils.bizMenu(SalesOrderActivity.this);
             }
         });
 

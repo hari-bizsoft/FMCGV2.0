@@ -8,9 +8,9 @@ package com.creativityapps.gmailbackgroundlibrary;
 
 public final class R {
     public static final class string {
-        public static final int app_name = 0x7f0d0021;
-        public static final int msg_email_sent_successfully = 0x7f0d0031;
-        public static final int msg_error_sending_email = 0x7f0d0032;
-        public static final int msg_sending_email = 0x7f0d0033;
+        public static final int app_name = 0x7f0e0021;
+        public static final int msg_email_sent_successfully = 0x7f0e0031;
+        public static final int msg_error_sending_email = 0x7f0e0032;
+        public static final int msg_sending_email = 0x7f0e0033;
     }
 }

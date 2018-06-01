@@ -26,6 +26,7 @@ import com.bizsoft.fmcgv2.dataobject.ProductSpecProcess;
 import com.bizsoft.fmcgv2.dataobject.ProductSpecProcessDetails;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 import com.bizsoft.fmcgv2.signalr.pojo.PDetailsItem;
 import com.bizsoft.fmcgv2.signalr.pojo.ProductSpec;
 
@@ -52,7 +53,7 @@ public class ProductSpecActivity extends AppCompatActivity {
     private ProductSpec choosedProduct;
     ProductSpecAdapter productAdapter;
     private ArrayList<PDetailsItem> choosedOutputProd = new ArrayList<PDetailsItem>();
-    private FloatingActionButton menu;
+
     RadioButton packaging,dispatching;
     RadioGroup group;
     private String currentStockProcessType;
@@ -63,8 +64,8 @@ public class ProductSpecActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_spec);
+        UIUtil.setActionBarMenu(ProductSpecActivity.this,getSupportActionBar(),"Product Specification");
 
-        getSupportActionBar().setTitle("Product Specification");
 
         date_chooser = (EditText) findViewById(R.id.from_date_chooser_text_box);
         productName = (EditText) findViewById(R.id.product_name);
@@ -77,7 +78,7 @@ public class ProductSpecActivity extends AppCompatActivity {
         productList = (ListView) findViewById(R.id.listView);
         clear = (Button) findViewById(R.id.clear);
         save= (Button) findViewById(R.id.save);
-        menu= (FloatingActionButton) findViewById(R.id.menu);
+
         packaging = (RadioButton) findViewById(R.id.packaging);
         dispatching = (RadioButton) findViewById(R.id.dispatching);
         group = (RadioGroup) findViewById(R.id.radiogroup);
@@ -88,14 +89,7 @@ public class ProductSpecActivity extends AppCompatActivity {
         init();
 
         final BizUtils bizUtils = new BizUtils();
-        menu.bringToFront();
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                bizUtils.bizMenu(ProductSpecActivity.this);
-            }
-        });
        productAdapter = new ProductSpecAdapter(ProductSpecActivity.this,choosedOutputProd);
         productList.setAdapter(productAdapter);
 
@@ -202,8 +196,8 @@ public class ProductSpecActivity extends AppCompatActivity {
 
     private void validate() throws ParseException {
 
-        boolean status = true;
 
+        boolean status = true;
         if(TextUtils.isEmpty(date_chooser.getText().toString()))
         {
             date_chooser.setError("Field cannot be empty");

@@ -3,11 +3,15 @@ package com.bizsoft.fmcgv2;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,23 +21,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bizsoft.fmcgv2.dataobject.Company;
+
 import com.bizsoft.fmcgv2.dataobject.ReceiverResponse;
 import com.bizsoft.fmcgv2.dataobject.Store;
-import com.bizsoft.fmcgv2.dataobject.User;
-import com.bizsoft.fmcgv2.service.ApplicationSheild;
+
 import com.bizsoft.fmcgv2.service.BlockPage;
-import com.bizsoft.fmcgv2.service.HttpHandler;
+
 import com.bizsoft.fmcgv2.service.Network;
 import com.bizsoft.fmcgv2.service.SignalRService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -84,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
     static TextView message;
     Activity activity;
     static Context context;
+    private TextView mainUrl;
+    private Dialog dialog;
 
 
     @Override
@@ -91,30 +102,125 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-
-
-
         message = (TextView) findViewById(R.id.message);
+        mainUrl = (TextView) findViewById(R.id.url);
         Store.getInstance().mainActvity = MainActivity.this;
-        new Handler().postDelayed(new Runnable(){
+
+        mainUrl.setText("Trying...");
+
+
+
+         if(Network.getInstance(MainActivity.this).isOnline())
+         {
+             new Handler().postDelayed(new Runnable(){
+                 @Override
+                 public void run() {
+                     /* Create an Intent that will start the Menu-Activity. */
+                     Activity activity = MainActivity.this;
+                     if(Store.getInstance().mHubConnectionCaller !=null && Store.getInstance().mHubConnectionReceiver !=null  ) {
+                         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                         startActivity(intent);
+                     }
+                     else
+                     {
+                         setURL(MainActivity.this);
+
+                         // init(MainActivity.this, activity);
+                     }
+                 }
+             }, SPLASH_DISPLAY_LENGTH);
+         }
+         else
+         {
+
+             mainUrl.setText("No Network Connection");
+
+
+
+
+
+         }
+
+
+
+
+
+        mainUrl.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Activity activity = MainActivity.this;
-                if(Store.getInstance().mHubConnectionCaller !=null && Store.getInstance().mHubConnectionReceiver !=null  ) {
-                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+            public void onClick(View v) {
+                if(Network.getInstance(MainActivity.this).isOnline())
+                {
+                    setURL(MainActivity.this);
                 }
                 else
                 {
+                    mainUrl.setText("No Network Connection");
+                }
+
+            }
+        });
+
+
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d("Touch","listened");
+        if(Network.getInstance(MainActivity.this).isOnline())
+        {
+            if(!dialog.isShowing()) {
+                setURL(MainActivity.this);
+            }
+        }
+        else
+        {
+            mainUrl.setText("No Network Connection");
+        }
+        return super.onTouchEvent(event);
+
+    }
+    @Override
+    public void onBackPressed() {
+
+        // check if modal is open #&ui-state=dialog
+
+        if(dialog!=null)
+        {
+        if(!dialog.isShowing()) {
+            dialog.show();
+
+        }        }
+    }
+    private void setURL(final Context context) {
+       dialog = new Dialog(context);
+        dialog.setContentView(R.layout.set_url_dialog);
+
+        final EditText url = (EditText) dialog.findViewById(R.id.url);
+        Button submit = (Button) dialog.findViewById(R.id.submit);
+        url.setText(Store.getInstance().domain);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean s = Patterns.WEB_URL.matcher(url.getText()).matches();
+                if(s)
+                {
+
+                    Store.getInstance().domain = url.getText().toString();
+                    dialog.dismiss();
                     init(MainActivity.this, activity);
+                    mainUrl.setText(Store.getInstance().domain);
+
+
+                }
+                else
+                {
+                    Toast.makeText(context, "Invalid URL", Toast.LENGTH_SHORT).show();
                 }
             }
-        }, SPLASH_DISPLAY_LENGTH);
+        });
 
-
+        dialog.show();
     }
 
 
@@ -187,6 +293,8 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("Exception e :" + e);
                         }
 
+
+
                         finish();
                         Intent intent = new Intent(context, DownloadDataActivity.class);
                         startActivity(intent);
@@ -239,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
             this.host = Store.getInstance().baseUrl;
             this.context = context;
             this.progressDialog    = new ProgressDialog(this.context);
-            this.progressDialog.setTitle("Connecting.....");
+            this.progressDialog.setTitle("Connecting...");
         }
 
         @Override
@@ -295,10 +403,28 @@ public class MainActivity extends AppCompatActivity {
                 } catch (TimeoutException e) {
                     e.printStackTrace();
                     Log.d("Connection:","not ok");
+                    ( (Activity) context ).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mainUrl.setText("Server unreachable...");
+                        }
+                    });
                 }
 
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
+
+                ( (Activity) context ).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mainUrl.setText("Server unreachable...");
+                    }
+                });
+
+
+
 
             }
 
@@ -461,12 +587,26 @@ public class MainActivity extends AppCompatActivity {
                 } catch (TimeoutException e) {
                     e.printStackTrace();
                     Log.d("Connection:","not ok");
+                    ( (Activity) context ).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mainUrl.setText("Server time out...");
+                        }
+                    });
                 }
 
 
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
                 Log.d("Connection:","server unreachable");
+                ( (Activity) context ).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mainUrl.setText("Server unreachable...");
+                    }
+                });
 
             }
 
@@ -484,11 +624,32 @@ public class MainActivity extends AppCompatActivity {
                     result = mHubProxyCaller.invoke(String.class, "SetReceiverConnectionIdToCaller",RConnectionId).get(60*3, TimeUnit.SECONDS);
                 } catch (TimeoutException e) {
                     e.printStackTrace();
+                    ( (Activity) context ).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mainUrl.setText("Server time out...");
+                        }
+                    });
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                ( (Activity) context ).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mainUrl.setText("Server unreachable...");
+                    }
+                });
             } catch (ExecutionException e) {
                 e.printStackTrace();
+                ( (Activity) context ).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mainUrl.setText("Server unreachable...");
+                    }
+                });
             }
 
             try {

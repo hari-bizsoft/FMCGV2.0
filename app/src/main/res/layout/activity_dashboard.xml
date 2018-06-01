@@ -18,30 +18,11 @@
             android:id="@+id/round_of_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="Round Off (RM)"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/round_off_value"
-            app:layout_constraintEnd_toStartOf="@+id/round_off_value"
-            app:layout_constraintTop_toTopOf="@+id/round_off_value"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <EditText
-            android:id="@+id/round_off_value"
-            android:layout_width="64dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edittext"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:padding="5dp"
-            android:text=""
-            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
             app:layout_constraintEnd_toEndOf="@+id/discount_value"
             app:layout_constraintTop_toBottomOf="@+id/discount_value" />
 
@@ -49,7 +30,7 @@
             android:id="@+id/discount"
             android:layout_width="0dp"
 
-            android:layout_height="30dp"
+            android:layout_height="28dp"
             android:layout_marginRight="8dp"
 
             android:background="@drawable/onclick_press_color"
@@ -91,12 +72,12 @@
             android:layout_height="3dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:background="#aaa9a9"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/round_off_value" />
+            app:layout_constraintTop_toBottomOf="@+id/round_of_label" />
 
         <View
             android:id="@+id/view9"
@@ -131,6 +112,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
+
             android:hint="Enter customer name "
             android:inputType="textPersonName"
             android:padding="5dp"
@@ -480,7 +462,6 @@
             android:text=""
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cfc" />
-
         <TextView
             android:id="@+id/ta"
             android:layout_width="wrap_content"
@@ -519,6 +500,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
             android:gravity="right"
             android:inputType="numberDecimal"
@@ -760,6 +742,7 @@
             android:inputType="numberDecimal"
             android:padding="5dp"
             android:text=""
+
             android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
             app:layout_constraintEnd_toEndOf="@+id/textView50"
             app:layout_constraintTop_toBottomOf="@+id/textView50" />
@@ -768,16 +751,15 @@
             android:id="@+id/discount_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="Discount(%)"
+            android:text="Discount"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/discount_value"
-            app:layout_constraintEnd_toStartOf="@+id/discount_value"
-            app:layout_constraintTop_toTopOf="@+id/discount_value"
+            app:layout_constraintBottom_toBottomOf="@+id/discount_type"
+            app:layout_constraintEnd_toStartOf="@+id/discount_type"
+            app:layout_constraintTop_toTopOf="@+id/discount_type"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -824,16 +806,29 @@
             android:id="@+id/round_off_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+
+            android:text="0.00"
+            android:textColor="#2ac63c"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/discount_value" />
+
+        <Spinner
+            android:id="@+id/discount_type"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="0.00"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
 
-            android:textColor="#2ac63c"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/round_off_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/round_off_value" />
+            android:background="@drawable/onclick_press_color"
+            app:layout_constraintBottom_toBottomOf="@+id/discount_value"
+            app:layout_constraintEnd_toStartOf="@+id/discount_value"
+            app:layout_constraintTop_toTopOf="@+id/discount_value" />
 
 
     </android.support.constraint.ConstraintLayout>

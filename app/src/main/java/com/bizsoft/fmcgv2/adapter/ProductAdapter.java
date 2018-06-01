@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import static com.bizsoft.fmcgv2.DashboardActivity.discountType;
 import static com.bizsoft.fmcgv2.DashboardActivity.discountValue;
+import static com.bizsoft.fmcgv2.service.BizUtils.decimalFormatter;
 
 /**
  * Created by shri on 10/8/17.
@@ -148,9 +149,12 @@ public class ProductAdapter extends BaseAdapter   {
 
             System.out.println("Product Code ====="+product.getItemCode());
 
-            holder.quantity.setText(String.valueOf("0"));
+            if(product.getQty()==null)
+            {
+                product.setQty(Long.valueOf(0));
+            }
+            holder.quantity.setText(String.valueOf(product.getQty()));
             holder.add.setVisibility(View.GONE);
-
             currentSP = product.getSellingRate();
 
             //Intitializing at product page reoprn/open to set deafult selling rate
@@ -216,19 +220,51 @@ public class ProductAdapter extends BaseAdapter   {
                     }
                 }
             });
+            updateRowValues(product,holder);
+            Log.d("position", String.valueOf(position));
+            if(product.getDiscountPercentage()==0) {
+                    disableDiscountFields(holder);
+                Log.d("discount", "disabled");
+            }
+            else
+            {
+                try
+                {
+                    double d = product.getDiscountPercentage();
+                    if(d==0)
+                    {
+                        disableDiscountFields(holder);
+                        Log.d("discount", "disabled");
+                    }
+                    else
+                    {
 
-            disableDiscountFields(holder);
+                        enableDiscountField(holder);
+
+                        Log.d("discount", "Enabled");
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+
+
             holder.discount.addTextChangedListener(new TextWatcher() {
                 double gt = 0;
                 double dc = 0;
                 double tempGt = 0;
                 double da = 0;
                 double dp = 0;
+                String before;
+                boolean status;
 
 
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                    before = s.toString();
                     tempGt = Double.parseDouble(holder.calculatedAmount.getText().toString());
                 }
 
@@ -243,6 +279,7 @@ public class ProductAdapter extends BaseAdapter   {
                             dc = Double.parseDouble(holder.discount.getText().toString());
                         }
 
+                        status = decimalFormatter(dc);
 
                     } catch (Exception e) {
                         System.out.print("Ex =>>>>> " + e);
@@ -270,6 +307,7 @@ public class ProductAdapter extends BaseAdapter   {
                     product.setFinalPrice(gt);
 
                     System.out.println("GT ====<ON>" + gt);
+                    System.out.println("DP ====<ON>" + dp);
                     System.out.println("GT ====<ON>" + product.getFinalPrice());
 
 
@@ -282,11 +320,28 @@ public class ProductAdapter extends BaseAdapter   {
                     //   System.out.println("GT ====<AFR>"+gt);
                     //  System.out.println("GT ====<ON>"+product.getFinalPrice());
                     //holder.discount.clearFocus();
-
+                    if(!status)
+                    {
+                        holder.discount.setText(before);
+                        holder.discount.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.discount.setSelection(holder.discount.getText().toString().trim().length());
+                            }
+                        });
+                    }
 
                 }
             });
-            holder.isResale.setEnabled(false);
+            if(!product.isResale()) {
+                holder.isResale.setEnabled(false);
+
+            }
+            else
+            {
+                holder.isResale.setEnabled(true);
+                holder.isResale.setChecked(true);
+            }
             holder.reason.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -574,13 +629,33 @@ public class ProductAdapter extends BaseAdapter   {
 
             @Override
             public void onClick(View v) {
-                try
-                {
+                try {
                     value = Double.valueOf(sp.getText().toString());
 
-                    if(value<=product.getAvailableStock() )
+                    if (BizUtils.getTransactionType(DashboardActivity.currentSaleType) == Store.getInstance().SALE)
                     {
 
+                        if (value <= product.getAvailableStock()) {
+
+
+                            product.setQty(Long.valueOf((long) value));
+                            holder.quantity.setText(String.valueOf(product.getQty()));
+
+                            holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", value * product.getMRP())));
+                            holder.finalPrice.setText(String.valueOf(String.format("%.2f", value * product.getMRP())));
+
+
+                            dialog.dismiss();
+
+                            enableDiscountField(holder);
+                        } else {
+
+                            sp.setError("Entered value greater than available stock");
+
+                        }
+                }
+                else
+                    {
 
                         product.setQty(Long.valueOf((long) value));
                         holder.quantity.setText(String.valueOf(product.getQty()));
@@ -589,13 +664,9 @@ public class ProductAdapter extends BaseAdapter   {
                         holder.finalPrice.setText(String.valueOf(String.format("%.2f", value * product.getMRP())));
 
 
-                        dialog .dismiss();
-                    }
-                    else
-                    {
+                        dialog.dismiss();
 
-                            sp.setError("Entered value greater than available stock");
-
+                        enableDiscountField(holder);
                     }
                 }
                 catch (Exception e)
@@ -627,6 +698,8 @@ public class ProductAdapter extends BaseAdapter   {
         }
     }
     private void disableDiscountFields(Holder holder) {
+
+        Log.d("Discount Field","Disabled");
         if (discountType.toLowerCase().contains("no")) {
             holder.finalPrice.setVisibility(View.GONE);
             holder.discountLabel.setVisibility(View.GONE);
@@ -666,115 +739,23 @@ public class ProductAdapter extends BaseAdapter   {
         }
     }
 
-    public void showNumberPicker(final Product prod, final Holder holder)
-    {
-        final Dialog dialog = new Dialog(context);
-        dialog.setTitle("Choose Quantity");
-        dialog.setContentView(R.layout.number_picker);
-        NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.np);
-        final TextView q = (TextView) dialog.findViewById(R.id.tv);
-        q.setText(String.valueOf("Choose quantity"));
-        String s = "0";
-
-        numberPicker.setMinValue(0);
-        //Specify the maximum value/number of NumberPicker
-
-        if(BizUtils.getTransactionType(DashboardActivity.currentSaleType)==Store.getInstance().SALE){
-            s = String.valueOf(prod.getAvailableStock());
-            if(prod.getAvailableStock()<=0)
-            {
-                s = "0";
-            }
-
-        }
-        else
-        {
-             s = String.valueOf("1000");
-        }
-
-        numberPicker.setMaxValue(Integer.parseInt(s));
-
-        //Gets whether the selector wheel wraps when reaching the min/max value.
-        numberPicker.setWrapSelectorWheel(true);
-
-        //Set a value change listener for NumberPicker
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                //Display the newly selected number from picker
-                x = 0;
-
-                try {
-                    x = newVal;
-                    if (x >= 1) {
-
-
-                        prod.setQty(Long.valueOf(x));
-                        holder.quantity.setText(String.valueOf(x));
-
-                        holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * prod.getMRP())));
-                        holder.finalPrice.setText(String.valueOf(String.format("%.2f", x * prod.getMRP())));
-                    } else {
-                        Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    System.out.println("Exception = "+e);
-                    Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        dialog.show();
-    }
-    public void chooeseSellingRatePicker(final Product prod, final Holder holder)
-    {
-        final Dialog dialog = new Dialog(context);
-        dialog.setTitle("Choose Selling Rate");
-        dialog.setContentView(R.layout.number_picker);
-        NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.np);
-        final TextView q = (TextView) dialog.findViewById(R.id.tv);
-        q.setText("Choose Selling Rate");
-        String m = String.valueOf(prod.getMinSellingRate());
-        numberPicker.setMinValue(Integer.parseInt("1"));
-        //Specify the maximum value/number of NumberPicker
-        String s = String.valueOf(prod.getMaxSellingRate());
-        numberPicker.setMaxValue(Integer.parseInt(s));
-        //Gets whether the selector wheel wraps when reaching the min/max value.
-        numberPicker.setWrapSelectorWheel(true);
-        //Set a value change listener for NumberPicker
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                //Display the newly selected number from picker
-                double x = 0;
-                int q = 0;
-                try {
-                      q = Integer.parseInt(holder.quantity.getText().toString());
-                    x = newVal;
-                    if (x >= 1) {
-
-                        x = newVal;
-                        prod.setSellingRate((x));
-                        holder.price.setText(String.valueOf(x));
-
-                        holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", q* prod.getMRP())));
-                        holder.finalPrice.setText(String.valueOf(String.format("%.2f", q * prod.getMRP())));
-                    } else {
-                        Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        dialog.show();
-    }
-
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
         Log.d(this.getClass().getSimpleName(),"Data set changed");
 
     }
+
+    public void updateRowValues(Product product,Holder holder)
+    {
+        int x = product.getQty().intValue();
+        double p = product.getSellingRate();
+
+        holder.calculatedAmount.setText(String.valueOf(String.format("%.2f", x * p)));
+        holder.discount.setText(String.valueOf(product.getDiscountPercentage()));
+        holder.finalPrice.setText(String.valueOf(String.format("%.2f", product.getFinalPrice())));
+    }
+
+
 
 }

@@ -33,12 +33,15 @@ import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
+import com.bizsoft.fmcgv2.service.UIUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static com.bizsoft.fmcgv2.service.BizUtils.isValidEmail;
 
 public class DealerActivity extends AppCompatActivity {
     private static int SELECT_FILE = 1;
@@ -52,7 +55,7 @@ public class DealerActivity extends AppCompatActivity {
     private int REQUEST_CAMERA;
     private boolean customImage;
     private String imageBase64;
-    FloatingActionButton menu;
+
     private Bank currentBank;
     private Bank choosedBank;
 
@@ -61,7 +64,8 @@ public class DealerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dealer);
 
-        getSupportActionBar().setTitle("Dealer Profile");
+        UIUtil.setActionBarMenu(DealerActivity.this,getSupportActionBar(),"Dealer Profile");
+
 
         logo = (ImageView) findViewById(R.id.logo);
         dealerName = (EditText) findViewById(R.id.dealer_name);
@@ -76,7 +80,7 @@ public class DealerActivity extends AppCompatActivity {
         telephone = (EditText) findViewById(R.id.telephone);
         email = (EditText) findViewById(R.id.email);
         bankName = (AutoCompleteTextView) findViewById(R.id.bank_name);
-        menu = (FloatingActionButton) findViewById(R.id.menu);
+
 
         save = (Button) findViewById(R.id.save);
         clear = (Button) findViewById(R.id.clear);
@@ -108,14 +112,6 @@ public class DealerActivity extends AppCompatActivity {
             }
         });
         final BizUtils bizUtils = new BizUtils();
-        menu.bringToFront();
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                bizUtils.bizMenu(DealerActivity.this);
-            }
-        });
 
 
         dealerName.setText(String.valueOf(Store.getInstance().dealer.getCompanyName()));
@@ -322,6 +318,15 @@ public class DealerActivity extends AppCompatActivity {
         {
             status = false;
             email.setError("Field cannot be empty");
+        }
+        else
+        {
+            if(!isValidEmail(email.getText()))
+            {
+                status = false;
+                email.setError("Not a valid mail id");
+            }
+
         }
         if(TextUtils.isEmpty(postalCode.getText().toString()))
         {

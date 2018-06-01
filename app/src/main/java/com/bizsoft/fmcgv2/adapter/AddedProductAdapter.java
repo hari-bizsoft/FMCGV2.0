@@ -3,6 +3,7 @@ package com.bizsoft.fmcgv2.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,6 +193,11 @@ public class AddedProductAdapter extends BaseAdapter {
                         productList.get(i).setFinalPrice(0);
                         productList.get(i).setDiscountPercentage(0.0);
                         productList.get(i).setQty(null);
+                        productList.get(i).setResale(false);
+                        productList.get(i).setParticulars("");
+                        productList.get(i).setSellingRate(productList.get(i).getSellingRateRef());
+
+
                         productList.remove(i);
                         notifyDataSetChanged();
                     }
@@ -289,69 +295,75 @@ public class AddedProductAdapter extends BaseAdapter {
                 try {
                      x =  product.getQty().intValue();
 
-                    if(DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return"))
-                    {
-                        if (x >= 1) {
-                            x--;
-                            double Price =  x * product.getMRP();
-                            double disAmt = Price * (product.getDiscountPercentage()/100);
-                            double fPrice = Price - disAmt;
+                     int c = 0;
 
-                            product.setDiscountAmount(disAmt);
-                            product.setFinalPrice(fPrice);
-                            product.setQty(Long.valueOf(x));
+                     if(x-1>0) {
+                         if (DashboardActivity.currentSaleType.toLowerCase().contains("order") | DashboardActivity.currentSaleType.toLowerCase().contains("return")) {
+                             if (x >= 1) {
+                                 x--;
+                                 double Price = x * product.getMRP();
+                                 double disAmt = Price * (product.getDiscountPercentage() / 100);
+                                 double fPrice = Price - disAmt;
 
-                            holder.quantity.setText(String.valueOf(x));
-                            holder.finalPrice.setText(String.valueOf(String.format("%.2f",fPrice)));
-                            holder.discountAmount.setText(String.valueOf(String.format("%.2f",disAmt)));
+                                 product.setDiscountAmount(disAmt);
+                                 product.setFinalPrice(fPrice);
+                                 product.setQty(Long.valueOf(x));
 
-                            ((Activity) context).runOnUiThread(new Runnable() {
-                                public void run() {
-                                    notifyDataSetChanged();
-                                    DashboardActivity.addedProductListView.requestFocus();
-                                }
-                            });
+                                 holder.quantity.setText(String.valueOf(x));
+                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", fPrice)));
+                                 holder.discountAmount.setText(String.valueOf(String.format("%.2f", disAmt)));
 
-                            //enableDiscountField(holder);
-                        } else {
-                            Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
-                           // disableDiscountFields(holder);
+                                 ((Activity) context).runOnUiThread(new Runnable() {
+                                     public void run() {
+                                         notifyDataSetChanged();
+                                         DashboardActivity.addedProductListView.requestFocus();
+                                     }
+                                 });
 
-                        }
+                                 //enableDiscountField(holder);
+                             } else {
+                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                                 // disableDiscountFields(holder);
+
+                             }
 
 
-                    }
-                    else {
-                        if (x >= 1) {
-                            x--;
-                            holder.quantity.setText(String.valueOf(x));
-                            double Price =  x * product.getMRP();
-                            double disAmt = Price * (product.getDiscountPercentage()/100);
-                            double fPrice = Price - disAmt;
+                         } else {
+                             if (x >= 1) {
+                                 x--;
+                                 holder.quantity.setText(String.valueOf(x));
+                                 double Price = x * product.getMRP();
+                                 double disAmt = Price * (product.getDiscountPercentage() / 100);
+                                 double fPrice = Price - disAmt;
 
-                            product.setDiscountAmount(disAmt);
-                            product.setFinalPrice(fPrice);
-                            product.setQty(Long.valueOf(x));
+                                 product.setDiscountAmount(disAmt);
+                                 product.setFinalPrice(fPrice);
+                                 product.setQty(Long.valueOf(x));
 
-                            holder.quantity.setText(String.valueOf(x));
-                            holder.finalPrice.setText(String.valueOf(String.format("%.2f",fPrice)));
-                            holder.discountAmount.setText(String.valueOf(String.format("%.2f",disAmt)));
+                                 holder.quantity.setText(String.valueOf(x));
+                                 holder.finalPrice.setText(String.valueOf(String.format("%.2f", fPrice)));
+                                 holder.discountAmount.setText(String.valueOf(String.format("%.2f", disAmt)));
 
-                            ((Activity) context).runOnUiThread(new Runnable() {
-                                public void run() {
-                                    notifyDataSetChanged();
-                                    DashboardActivity.addedProductListView.requestFocus();
-                                }
-                            });
+                                 ((Activity) context).runOnUiThread(new Runnable() {
+                                     public void run() {
+                                         notifyDataSetChanged();
+                                         DashboardActivity.addedProductListView.requestFocus();
+                                     }
+                                 });
 
-                            // enableDiscountField(holder);
-                        } else {
-                            Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
-                            //disableDiscountFields(holder);
-                        }
+                                 // enableDiscountField(holder);
+                             } else {
+                                 Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                                 //disableDiscountFields(holder);
+                             }
 
-                    }
+                         }
 
+                     }
+                     else
+                     {
+                         Toast.makeText(context, "Product quantity cannot be 0", Toast.LENGTH_SHORT).show();
+                     }
 
                 } catch (Exception e) {
                     Toast.makeText(context, "Invalid Quantity", Toast.LENGTH_SHORT).show();
@@ -365,6 +377,8 @@ public class AddedProductAdapter extends BaseAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+        Log.d("added product","notifydatasetchanged");
+
          tender=0;
          subTotal=0;
          gst=0;
@@ -416,7 +430,10 @@ public class AddedProductAdapter extends BaseAdapter {
             gst = subTotal*(0.06);
         }
 
+        gst = Double.parseDouble(String.format("%.2f",gst));
+        subTotal = Double.parseDouble(String.format("%.2f",subTotal));
         grandTotal = gst +subTotal;
+
 
         if(fromCustomer==0) {
             tender = 0;
@@ -426,7 +443,7 @@ public class AddedProductAdapter extends BaseAdapter {
             tender =  fromCustomer  - grandTotal;
         }
         try {
-            roundOff = Double.parseDouble(DashboardActivity.roundOffValue.getText().toString());
+            //roundOff = Double.parseDouble(DashboardActivity.roundOffValue.getText().toString());
 
         }
         catch (Exception e)
@@ -439,8 +456,9 @@ public class AddedProductAdapter extends BaseAdapter {
         Store.getInstance().subTotal.setText(String.valueOf(String.format("%.2f",subTotal)));
         Store.getInstance().GST.setText(String.valueOf( String.format("%.2f", gst)));
         Store.getInstance().grandTotal.setText(String.valueOf( String.format("%.2f", DashboardActivity.roundOff(grandTotal))));
-       // Store.getInstance().tenderAmount.setText(String.valueOf(String.format("%.2f", tender)));
-       // DashboardActivity.fromCustomer.setText("0");
+        Store.getInstance().tenderAmount.setText(String.valueOf(String.format("%.2f", 0.00)));
+        DashboardActivity.fromCustomer.setText("0");
+        DashboardActivity.discountValue.setText("0.00");
         //DashboardActivity.roundOffValue.setText("0");
 
         Store.getInstance().grandTotalRef = grandTotal;

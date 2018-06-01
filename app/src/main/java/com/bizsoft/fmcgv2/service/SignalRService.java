@@ -30,6 +30,7 @@ import com.bizsoft.fmcgv2.Tables.TransactionType;
 import com.bizsoft.fmcgv2.dataobject.AccountGroup;
 import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.CompanyDetails;
+import com.bizsoft.fmcgv2.dataobject.CreditLimitType;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Ledger;
 import com.bizsoft.fmcgv2.dataobject.Product;
@@ -215,7 +216,6 @@ public class SignalRService {
         return Store.getInstance().companyList;
 
 
-
     }
     public static boolean login(Context context,String dlrName,String usrName,String passWord)
     {
@@ -237,8 +237,6 @@ public class SignalRService {
         System.out.println("company gst =============================="+prefs.getString(context.getString(R.string.gstNo), "0"));
         System.out.println("company mail =============================="+prefs.getString(context.getString(R.string.email), "0"));
         System.out.println("company postalcode =============================="+prefs.getString(context.getString(R.string.postal_code), "0"));
-
-
 
 
         Store.getInstance().companyPosition = Integer.parseInt(prefs.getString(context.getString(R.string.companyPosition), "0"));
@@ -441,7 +439,7 @@ public class SignalRService {
             e.printStackTrace();
         }
 
-        System.out.println("customer_list----"+customreCollection.size());
+            System.out.println("customer_list----"+customreCollection.size());
     }
 
     public static Customer getCustomer(Long id)
@@ -476,14 +474,6 @@ public class SignalRService {
                 }
 
                 //BizUtils.prettyJson("Customer ",customer);
-
-
-
-
-
-
-
-
             }
 
             return customer1;
@@ -520,10 +510,11 @@ public class SignalRService {
 
 
                 BizUtils.prettyJson("product ind item",product);
-
+                product.setQty(Long.valueOf(0));
                 Store.getInstance().allProductList.add(product);
                 if(product.getStockGroup().isSale() && product.isDealer()) {
                     product.setSynced(true);
+                    product.setQty(Long.valueOf(0));
                     product.sellingRateRef = product.getSellingRate();
                     Store.getInstance().productList.add(product);
                 }
@@ -817,47 +808,51 @@ public class SignalRService {
     public static void   accountGroupList()
     {
 
-        ArrayList<LinkedTreeMap> collections = new ArrayList<LinkedTreeMap>();
         try {
-            collections = Store.getInstance().mHubProxyCaller.invoke(collections.getClass(),"AccountGroup_List").get();
+            ArrayList<LinkedTreeMap> collections = new ArrayList<LinkedTreeMap>();
+            try {
+                collections = Store.getInstance().mHubProxyCaller.invoke(collections.getClass(), "AccountGroup_List").get();
 
-           // BizUtils.prettyJson("Accounts Group",collections);
+                // BizUtils.prettyJson("Accounts Group",collections);
 
-            Store.getInstance().accountsGroupList.clear();
-            for(int i=0;i<collections.size();i++)
-            {
-                AccountGroup  accountGroup = new AccountGroup();
-                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-                accountGroup  = mapper.convertValue(collections.get(i),AccountGroup.class);
-                System.out.println("accountGroup Id-"+accountGroup.getId());
-                System.out.println("accountGroup Name-"+accountGroup.getGroupName());
-                System.out.println("accountGroup company Id-" + accountGroup.getCompany().getId());
+                Store.getInstance().accountsGroupList.clear();
+                for (int i = 0; i < collections.size(); i++) {
+                    AccountGroup accountGroup = new AccountGroup();
+                    final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+                    accountGroup = mapper.convertValue(collections.get(i), AccountGroup.class);
+                    System.out.println("accountGroup Id-" + accountGroup.getId());
+                    System.out.println("accountGroup Name-" + accountGroup.getGroupName());
+                    System.out.println("accountGroup company Id-" + accountGroup.getCompany().getId());
 
-                if(accountGroup.getGroupName()!=null) {
+                    if (accountGroup.getGroupName() != null) {
 
-                    if (accountGroup.getGroupName().equals("Sundry Debtors")) {
-                        Store.getInstance().currentAccGrpId = accountGroup.getId();
-                        Store.getInstance().currentAccGrpName = accountGroup.getGroupName();
-                        System.out.println("Current - accountGroup Name-" + accountGroup.getGroupName());
+                        if (accountGroup.getGroupName().equals("Sundry Debtors")) {
+                            Store.getInstance().currentAccGrpId = accountGroup.getId();
+                            Store.getInstance().currentAccGrpName = accountGroup.getGroupName();
+                            System.out.println("Current - accountGroup Name-" + accountGroup.getGroupName());
 
+                        }
+                        if (accountGroup.getGroupName().equals("Bank Accounts") && accountGroup.getCompany().getId().compareTo(Store.getInstance().dealer.getId()) == 0) {
+                            Store.getInstance().bankAccountGroupId = accountGroup.getId();
+                            System.out.println("Bank Accounts - Group Id" + accountGroup.getGroupName());
+                        }
                     }
-                    if(accountGroup.getGroupName().equals("Bank Accounts") && accountGroup.getCompany().getId().compareTo(Store.getInstance().dealer.getId())==0)
-                    {
-                        Store.getInstance().bankAccountGroupId =  accountGroup.getId();
-                        System.out.println("Bank Accounts - Group Id" + accountGroup.getGroupName());
-                    }
+                    Store.getInstance().accountsGroupList.add(accountGroup);
+
                 }
-                Store.getInstance().accountsGroupList.add(accountGroup);
 
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            System.out.println("accountGroup----" + Store.getInstance().accountsGroupList.size());
         }
-        System.out.println("accountGroup----"+Store.getInstance().accountsGroupList.size());
+        catch (Exception e)
+        {
+            System.err.println("Accounts group error");
+        }
     }
     public static void   taxMasterList()
     {
@@ -875,7 +870,10 @@ public class SignalRService {
                 System.out.println("taxmaster Id-"+taxMaster.getId());
                // System.out.println("accountGroup Name-"+taxMaster.getGroupName());
 
+                Store.getInstance().taxMasterList.add(taxMaster);
+
             }
+
 
 
         } catch (InterruptedException e) {
@@ -883,6 +881,7 @@ public class SignalRService {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         System.out.println("taxmaster----"+Store.getInstance().taxMasterList.size());
     }
     public static void   UOMList()
@@ -1470,6 +1469,7 @@ public class SignalRService {
                 }
                 , String.class);
 
+        Class<String> params = null;
         Store.getInstance().mHubProxyReceiver.on("AppApproved_Changed",
                 new SubscriptionHandler1<String>() {
                     @Override
@@ -1520,7 +1520,7 @@ public class SignalRService {
                                         public void run() {
                                             // Toast.makeText(getApplicationContext(), finalMsg, Toast.LENGTH_SHORT).show();
 
-                                         //   Toast.makeText(context, "Event --- "+response, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Event --- "+response, Toast.LENGTH_SHORT).show();
 
                                         }
                                     });
@@ -1851,6 +1851,31 @@ public class SignalRService {
         }
     }
 
+    public static void creditLimitTypeList() {
+        ArrayList<LinkedTreeMap> list = new ArrayList<LinkedTreeMap>();
+        try {
+            list = Store.getInstance().mHubProxyCaller.invoke(list.getClass(),"CreditLimitType_List").get();
+
+            Store.getInstance().customerCreditLimitTypeList.clear();
+            for(int i=0;i<list.size();i++)
+            {
+                final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+
+                CreditLimitType creditLimitType = new CreditLimitType();
+                creditLimitType  = mapper.convertValue(list.get(i),CreditLimitType.class);
+                prettyJson("creditLimitType  ",creditLimitType);
+                Store.getInstance().customerCreditLimitTypeList.add(creditLimitType);
+
+            }
+            Log.d("cctypeList size", String.valueOf(Store.getInstance().customerCreditLimitTypeList.size()));
+
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     static class Activate extends AsyncTask
     {
         String appIdValue;
@@ -2071,7 +2096,7 @@ public class SignalRService {
             SignalRService.accountGroupList();
 
 
-            //  SignalRService.taxMasterList();
+              SignalRService.taxMasterList();
             //   progressBar.setProgress(100);
 
             return null;

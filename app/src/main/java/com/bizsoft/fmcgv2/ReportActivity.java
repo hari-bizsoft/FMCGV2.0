@@ -28,6 +28,7 @@ import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.HttpHandler;
 import com.bizsoft.fmcgv2.service.SignalRService;
+import com.bizsoft.fmcgv2.service.UIUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -66,9 +67,10 @@ public class ReportActivity extends AppCompatActivity {
     EditText moneyFromCustomer;
     DecimalFormat df ;
     Spinner saleType;
-    FloatingActionButton menu;
+
     private String reportBaseUrl = "sale";
     TextView label;
+    TextView customInputLabel;
 
 
 
@@ -77,7 +79,7 @@ public class ReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
-        menu  = (FloatingActionButton) findViewById(R.id.menu);
+        UIUtil.setActionBarMenu(ReportActivity.this,getSupportActionBar(),"Reports");
         bizUtils = new BizUtils();
 
 
@@ -99,14 +101,9 @@ public class ReportActivity extends AppCompatActivity {
         customSearch = (Button) findViewById(R.id.custom_search);
         saleType = (Spinner) findViewById(R.id.sale_type);
         label = (TextView) findViewById(R.id.name);
+        customInputLabel = (TextView) findViewById(R.id.textView33);
 
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                bizUtils.bizMenu(ReportActivity.this);
-            }
-        });
 
 
 
@@ -143,6 +140,20 @@ public class ReportActivity extends AppCompatActivity {
                 FLAG_DATE = "todate";
                 showDialog(999);
 
+            }
+        });
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FLAG_DATE = "fromdate";
+                showDialog(999);
+            }
+        });
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FLAG_DATE = "todate";
+                showDialog(999);
             }
         });
 
@@ -283,6 +294,7 @@ public class ReportActivity extends AppCompatActivity {
         genderList.add("Daily");
         genderList.add("Weekly");
         genderList.add("Monthly");
+        genderList.add("Custom Date");
 
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter <String>(ReportActivity.this, android.R.layout.simple_spinner_item, genderList);
@@ -298,21 +310,51 @@ public class ReportActivity extends AppCompatActivity {
                 if(position==0)
                 {
                     map = bizUtils.setTodayDate();
+                    fromDate.setVisibility(View.GONE);
+                    fromDateButton.setVisibility(View.GONE);
+                    toDate.setVisibility(View.GONE);
+                    toDateButton.setVisibility(View.GONE);
+                    customSearch.setVisibility(View.GONE);
+                    customInputLabel.setVisibility(View.GONE);
+
                 }
                 else
                     if(position==1)
                     {
                       map =   bizUtils.setCurrentWeek();
+                        fromDate.setVisibility(View.GONE);
+                        fromDateButton.setVisibility(View.GONE);
+                        toDate.setVisibility(View.GONE);
+                        toDateButton.setVisibility(View.GONE);
+                        customSearch.setVisibility(View.GONE);
+                        customInputLabel.setVisibility(View.GONE);
+
                     }
                     else if(position==2)
                     {
                         map = bizUtils.setCurrentMonth();
+                        fromDate.setVisibility(View.GONE);
+                        fromDateButton.setVisibility(View.GONE);
+                        toDate.setVisibility(View.GONE);
+                        toDateButton.setVisibility(View.GONE);
+                        customSearch.setVisibility(View.GONE);
+                        customInputLabel.setVisibility(View.GONE);
+
+                    }
+                    else if(position ==3)
+                    {
+                        fromDate.setVisibility(View.VISIBLE);
+                        fromDateButton.setVisibility(View.VISIBLE);
+                        toDate.setVisibility(View.VISIBLE);
+                        toDateButton.setVisibility(View.VISIBLE);
+                        customSearch.setVisibility(View.VISIBLE);
+                        customInputLabel.setVisibility(View.VISIBLE);
+
+
                     }
                 productReportList.clear();
                 fromDate.setText("");
                 toDate.setText("");
-
-
                new GetReport(ReportActivity.this,reportUrl, Store.getInstance().fromDate, Store.getInstance().toDate).execute();
 
 
@@ -479,7 +521,6 @@ public class ReportActivity extends AppCompatActivity {
 
                                }
 
-
                            }
                             System.out.println("Customer Size ===="+customerReport.size());
                         }
@@ -493,7 +534,7 @@ public class ReportActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Toast.makeText(context, "No Data found...", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, "No Data found...", Toast.LENGTH_SHORT).show();
 
                         reportAdapter.notifyDataSetChanged();
                     }

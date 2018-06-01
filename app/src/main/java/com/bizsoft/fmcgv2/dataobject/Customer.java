@@ -1,5 +1,7 @@
 package com.bizsoft.fmcgv2.dataobject;
 
+import android.util.Log;
+
 import com.bizsoft.fmcgv2.Tables.SOPending;
 import com.bizsoft.fmcgv2.Tables.SalesOrder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -42,7 +44,6 @@ public class Customer {
         String MobileNo;
         String GSTNo;
         String EMailId;
-        String CreditAmount;
 
         ArrayList<SalesOrder> sOPendingList = new ArrayList<SalesOrder>();
 
@@ -75,9 +76,9 @@ public class Customer {
         this.synced = synced;
     }
 
-    Double CreditLimit;
-        String CreditLimitType;
-        boolean synced;
+
+
+    boolean synced;
 
     public ArrayList<Payment> getPayments() {
         return payments;
@@ -399,29 +400,6 @@ public class Customer {
         this.EMailId = EMailId;
     }
 
-    public String getCreditAmount() {
-        return CreditAmount;
-    }
-
-    public void setCreditAmount(String creditAmount) {
-        CreditAmount = creditAmount;
-    }
-
-    public Double getCreditLimit() {
-        return CreditLimit;
-    }
-
-    public void setCreditLimit(Double creditLimit) {
-        CreditLimit = creditLimit;
-    }
-
-    public String getCreditLimitType() {
-        return CreditLimitType;
-    }
-
-    public void setCreditLimitType(String creditLimitType) {
-        CreditLimitType = creditLimitType;
-    }
 
     public Long getCreditLimitTypeId() {
         return CreditLimitTypeId;
@@ -484,6 +462,8 @@ public class Customer {
 
     public static Comparator<Customer> COMPARE_BY_LEDGER_NAME = new Comparator<Customer>() {
         public int compare(Customer one, Customer other) {
+            Log.d("comparator 1",one.getLedger().getLedgerName());
+            Log.d("comparator 2",other.getLedger().getLedgerName());
             return one.getLedgerName().toLowerCase().compareTo(other.getLedgerName().toLowerCase());
         }
     };
@@ -492,12 +472,31 @@ public class Customer {
         ArrayList<String> names = new ArrayList<>();
         for(int i=0;i<Store.getInstance().customerList.size();i++)
         {
+            Long id = Store.getInstance().customerList.get(i).getLedger().getId();
+
+            if(id==0)
+            {
+
+            }
             names.add(Store.getInstance().customerList.get(i).getLedger().getLedgerName()+" - "+Store.getInstance().customerList.get(i).getLedger().getId());
 
         }
 
         return names;
     }
+    public static ArrayList<String> getCustomerNameList()
+    {
+        ArrayList<String> names = new ArrayList<>();
+        for(int i=0;i<Store.getInstance().customerList.size();i++)
+        {
+
+            names.add(Store.getInstance().customerList.get(i).getLedger().getLedgerName());
+
+        }
+
+        return names;
+    }
+
 
     public ArrayList<SOPending> SOPListDelete = new ArrayList<SOPending>();
 

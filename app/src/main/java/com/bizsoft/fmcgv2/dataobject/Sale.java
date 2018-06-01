@@ -23,6 +23,16 @@ public class Sale {
     String discountType;
     double roundOffValue;
 
+    String grandTotalDiscountType;
+
+    public String getGrandTotalDiscountType() {
+        return grandTotalDiscountType;
+    }
+
+    public void setGrandTotalDiscountType(String grandTotalDiscountType) {
+        this.grandTotalDiscountType = grandTotalDiscountType;
+    }
+
     public double getRoundOffValue() {
         return roundOffValue;
     }
