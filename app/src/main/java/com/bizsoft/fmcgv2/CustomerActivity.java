@@ -29,7 +29,7 @@ public class CustomerActivity extends AppCompatActivity {
     static ListView customerListView;
     FloatingActionButton add;
 
-    EditText searchBar;
+    static EditText searchBar;
     static ArrayList<Customer> CustomerList;
     static ArrayList<Customer> AllCustomerList = new ArrayList<Customer>();
     public static CustomerAdapter customerAdapter;
@@ -42,6 +42,7 @@ public class CustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer);
         UIUtil.setActionBarMenu(CustomerActivity.this,getSupportActionBar(),"Customer List");
 
+        AllCustomerList = new ArrayList<>();
         AllCustomerList.addAll(Store.getInstance().customerList);
 
 

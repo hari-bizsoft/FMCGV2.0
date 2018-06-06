@@ -565,6 +565,14 @@ public class DashboardActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 tempGt = Store.getInstance().addedProductAdapter.grandTotal;
 
+                try {
+                    fromCustomer.setText("0");
+                    fromCustomerValue = "0";
+                }
+                catch (Exception e)
+                {
+                    Log.e("from customer","error");
+                }
                 before = s.toString();
                 Log.d("decimal before",s.toString());
                 }

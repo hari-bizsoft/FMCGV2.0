@@ -58,6 +58,7 @@
         android:layout_marginTop="16dp"
         android:text="Denariusoft SDN BHD"
         android:textSize="18sp"
+        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

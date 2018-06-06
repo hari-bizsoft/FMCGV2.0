@@ -25,6 +25,7 @@ import com.bizsoft.fmcgv2.service.SignalRService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class DownloadDataActivity extends AppCompatActivity {
 
@@ -57,11 +58,12 @@ public class DownloadDataActivity extends AppCompatActivity {
         percentage = (TextView) findViewById(R.id.percentage);
         companyLogo = (ImageView) findViewById(R.id.company_logo);
 
+        getSupportActionBar().setTitle(getString(R.string.app_name).toUpperCase());
 
 
 
-        new DownloaddData().execute();
-
+        new DownloaddData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new CompanyDetails().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
 
@@ -169,10 +171,11 @@ public class DownloadDataActivity extends AppCompatActivity {
             });
 
             SignalRService.accountGroupList();
-            SignalRService.getCompanyDetails(DownloadDataActivity.this);
+            SignalRService.taxMasterList();
+
             progressBar.setProgress(100);
 
-            SignalRService.taxMasterList();
+
          //   progressBar.setProgress(100);
 
             return null;
@@ -219,6 +222,28 @@ public class DownloadDataActivity extends AppCompatActivity {
         textView.setText("Running..."+ values[0]);
         progressBar.setProgress(values[0]);
     }
+    }
+    class CompanyDetails extends AsyncTask
+    {
+
+        @Override
+        protected void onProgressUpdate(Object[] values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            SignalRService.getCompanyDetails(DownloadDataActivity.this);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+        }
+
     }
 
 }

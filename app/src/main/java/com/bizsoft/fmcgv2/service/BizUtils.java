@@ -73,6 +73,9 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -3253,4 +3256,55 @@ public class BizUtils {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
+    public static JSONObject validateChequeDate(int day, int month, int year) throws JSONException {
+
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE,day);
+        cal.set(Calendar.MONTH,month-1);
+        cal.set(Calendar.YEAR,year);
+
+        Log.d("chequedate", String.valueOf(cal.getTime()));
+
+        Calendar afterDate = Calendar.getInstance();
+        afterDate.add(Calendar.YEAR,3);
+        Log.d("chequedate-after", String.valueOf(afterDate.getTime()));
+
+
+
+        Calendar beforeDate = Calendar.getInstance();
+        beforeDate.add(Calendar.MONTH,-6);
+        Log.d("chequedate-before", String.valueOf(beforeDate.getTime()));
+
+
+        boolean status;
+        String errMsg = "";
+        if(cal.before(afterDate) && cal.after(beforeDate))
+        {
+
+            status = true;
+        }
+        else
+        {
+            if(!cal.before(afterDate))
+            {
+                errMsg = "The cheque date should not be dated after 3 Years from current date";
+            }
+
+            if(!cal.after(beforeDate))
+            {
+                errMsg = "The cheque date should not be dated before 6 Months from current date";
+            }
+
+            status = false;
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status",status);
+        jsonObject.put("errMsg",errMsg);
+
+        return jsonObject;
+
+
+    }
+
 }

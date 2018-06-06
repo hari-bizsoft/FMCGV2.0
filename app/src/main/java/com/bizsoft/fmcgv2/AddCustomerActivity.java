@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import static com.bizsoft.fmcgv2.CustomerActivity.AllCustomerList;
+import static com.bizsoft.fmcgv2.CustomerActivity.CustomerList;
 import static com.bizsoft.fmcgv2.CustomerActivity.customerAdapter;
 import static com.bizsoft.fmcgv2.DashboardActivity.customerNameListAdapter;
 import static com.bizsoft.fmcgv2.dataobject.Store.currentAccGrpId;
@@ -526,15 +527,10 @@ public class AddCustomerActivity extends AppCompatActivity {
             customerNameListAdapter.notifyDataSetChanged();
 
 
-            CustomerActivity.CustomerList = new ArrayList<Customer>();
-            CustomerActivity.CustomerList.clear();
-            CustomerActivity.CustomerList.addAll(Store.getInstance().customerList);
-
-            AllCustomerList = new ArrayList<Customer>();
-            AllCustomerList.clear();
-            AllCustomerList.addAll(Store.getInstance().customerList);
 
             CustomerActivity.customerAdapter.notifyDataSetChanged();
+            CustomerActivity.searchBar.setText("test");
+            CustomerActivity.searchBar.setText("");
 
 
 
@@ -543,7 +539,6 @@ public class AddCustomerActivity extends AppCompatActivity {
 
             System.err.println("Unable to write to DB");
         }
-
         Intent intent = new Intent(AddCustomerActivity.this,CustomerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

@@ -98,7 +98,7 @@ public class SalesAdapter extends BaseAdapter {
             if(product.getDiscountAmount()>0 && product.getDiscountPercentage()==0)
             {
                 double a =  (product.getDiscountAmount() * 100);
-                double b =  product.getDiscountAmount() + product.getSellingRate();
+                double b = amount;
                 double dp = a/b;
                 holder.discountPercent.setText("Discount("+String.valueOf(String.format("%.2f",dp))+"%)");
             }

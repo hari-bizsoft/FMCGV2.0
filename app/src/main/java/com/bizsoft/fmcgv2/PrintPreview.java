@@ -331,7 +331,7 @@ public class PrintPreview extends AppCompatActivity {
 
             subTotal.setText(String.valueOf(String.format("%.2f",subTotal1)));
             gst.setText(String.valueOf(String.format("%.2f",gst1)));
-            grantTotal.setText(String.valueOf(String.format("%.2f",grandTotal1)));
+            grantTotal.setText(String.valueOf(String.format("%.2f",DashboardActivity.roundOff(grandTotal1))));
 
         discountLabel.setVisibility(View.GONE);
         discountValue.setVisibility(View.GONE);

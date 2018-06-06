@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
+import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Receipt;
@@ -34,6 +36,8 @@ import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.BizUtils;
 import com.bizsoft.fmcgv2.service.UIUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -65,7 +69,8 @@ public class ReceiptActivity extends AppCompatActivity {
     private BizUtils bizUtils;
     private TextView cn;
     private TextView chequeNo,cdl,bnl;
-    EditText chequeDate,bankName;
+    EditText chequeDate;
+    AutoCompleteTextView bankName;
     ImageButton dateChooser;
     private int year,month,day;
     final static int BLUETOOTH_FLAG = 619;
@@ -95,9 +100,14 @@ public class ReceiptActivity extends AppCompatActivity {
         cdl= (TextView) findViewById(R.id.cdl);
         bnl = (TextView) findViewById(R.id.bnl);
         chequeDate = (EditText) findViewById(R.id.cheque_date);
-        bankName = (EditText) findViewById(R.id.bank_name);
+        bankName = (AutoCompleteTextView) findViewById(R.id.bank_name);
 
 
+        ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Bank.getNames());
+
+        bankName.setThreshold(1);
+        bankName.setAdapter(bankAdapter);
 
 
 
@@ -338,15 +348,15 @@ public class ReceiptActivity extends AppCompatActivity {
     private void clearData() {
 
         //openingBalance.setText("0.00");
-        fromCustomer.setText("0.00");
-        outStandingAmount.setText("0.00");
+        fromCustomer.setText("0");
+        outStandingAmount.setText("0");
 
         chequeNo.setText("");
         chequeDate.setText("");
         bankName.setText("");
 
         openingBalance.setText(currentCustomer.getLedger().getOPBal()+"("+type+")");
-
+        outStandingAmount.setText(currentCustomer.getLedger().getOPBal()+"("+type+")");
         Toast.makeText(this, "Receipt Saved.", Toast.LENGTH_SHORT).show();
 
 
@@ -621,7 +631,11 @@ public class ReceiptActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.LEFT);
         BTPrint.PrintTextLine("Payment Mode :"+receipt.getPaymentMode());
-
+        if(receipt.getPaymentMode().toLowerCase().contains("cheque"))
+        {
+            BTPrint.PrintTextLine("Cheque Number :"+receipt.getChequeNo());
+        }
+        BTPrint.PrintTextLine("------------------------------");
 
 
 
@@ -700,9 +714,27 @@ public class ReceiptActivity extends AppCompatActivity {
             // arg2 = month
             // arg3 = day
             String date = (arg2+1)+"/"+arg3+"/"+arg1;
+            JSONObject result = null;
+            boolean status = false;
 
+            String errMsg = "";
+            try {
+                result = BizUtils.validateChequeDate(arg3, arg2 + 1, arg1);
+                status = (boolean) result.get("status");
+                errMsg = (String) result.get("errMsg");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if(status) {
                 chequeDate.setText(String.valueOf(date));
-            Toast.makeText(ReceiptActivity.this, date, Toast.LENGTH_SHORT).show();
+
+
+                Toast.makeText(ReceiptActivity.this, date, Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(ReceiptActivity.this, errMsg, Toast.LENGTH_LONG).show();
+            }
         }
     };
 

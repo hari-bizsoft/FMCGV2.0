@@ -168,8 +168,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Touch","listened");
         if(Network.getInstance(MainActivity.this).isOnline())
         {
-            if(!dialog.isShowing()) {
-                setURL(MainActivity.this);
+            try {
+                if (!dialog.isShowing()) {
+                    setURL(MainActivity.this);
+                }
+            }catch (Exception e)
+            {
+                Log.e("Errr","dialog");
             }
         }
         else

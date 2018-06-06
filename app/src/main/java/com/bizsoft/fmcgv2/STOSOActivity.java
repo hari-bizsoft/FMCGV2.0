@@ -175,8 +175,7 @@ public class STOSOActivity extends AppCompatActivity {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try
-                {
+
                     if(currentSaleOrder!=null)
                     {
 
@@ -286,12 +285,7 @@ public class STOSOActivity extends AppCompatActivity {
                     }
 
 
-                }
-                catch (Exception e)
-                {
-                    System.out.println("Exception "+e);
 
-                }
             }
         });
 
@@ -300,85 +294,85 @@ public class STOSOActivity extends AppCompatActivity {
 
     private void makeSales(SalesOrder salesOrder, Customer customer) {
 
-        Sale sale = new Sale();
-        sale.setId(salesOrder.getId());
-        sale.setBalance(0.00);
-        sale.setDiscountValue(salesOrder.getDiscountAmount());
-        sale.setGrandTotal(salesOrder.getTotalAmount());
-        sale.setPaymentMode("Cash");
-        sale.setSubTotal(salesOrder.getItemAmount());
-        sale.setGst(salesOrder.getItemAmount()*0.06);
-        sale.setGstType("GST");
-        sale.setReceivedAmount(0.00);
-        sale.setRefCode(salesOrder.getRefNo());
-        sale.setSaleType("sale");
-        sale.setPaymentMode("none");
-        sale.setDiscountType("grand total");
+        try {
+            Sale sale = new Sale();
+            sale.setId(salesOrder.getId());
+            sale.setBalance(0.00);
+            sale.setDiscountValue(salesOrder.getDiscountAmount());
+            sale.setGrandTotal(salesOrder.getTotalAmount());
+            sale.setPaymentMode("Cash");
+            sale.setSubTotal(salesOrder.getItemAmount());
+            sale.setGst(salesOrder.getItemAmount() * 0.06);
+            sale.setGstType("GST");
+            sale.setReceivedAmount(0.00);
+            sale.setRefCode(salesOrder.getRefNo());
+            sale.setSaleType("sale");
+            sale.setPaymentMode("none");
+            sale.setDiscountType("grand total");
+            sale.setGrandTotalDiscountType(Store.getInstance().discountTypePercentage);
 
-        ArrayList<Product> products = new ArrayList<Product>();
-        for(int i=0;i<salesOrder.getSODetails().size();i++)
-        {
-            ArrayList<SalesOrderDetails> salesOrderDetails = (ArrayList<SalesOrderDetails>) salesOrder.getSODetails();
+            ArrayList<Product> products = new ArrayList<Product>();
+            for (int i = 0; i < salesOrder.getSODetails().size(); i++) {
+                ArrayList<SalesOrderDetails> salesOrderDetails = (ArrayList<SalesOrderDetails>) salesOrder.getSODetails();
 
-            Product product = new Product();
-            product.setId(salesOrderDetails.get(i).getId());
-            product.setFinalPrice(salesOrderDetails.get(i).getUnitPrice()*salesOrderDetails.get(i).getQuantity());
-            product.setMRP(salesOrderDetails.get(i).getUnitPrice());
-            product.setSellingRate(salesOrderDetails.get(i).getUnitPrice());
-            product.setDiscountAmount(salesOrderDetails.get(i).getDiscountAmount());
+                Product product = new Product();
+                product.setId(salesOrderDetails.get(i).getId());
+                product.setFinalPrice(salesOrderDetails.get(i).getUnitPrice() * salesOrderDetails.get(i).getQuantity());
+                product.setMRP(salesOrderDetails.get(i).getUnitPrice());
+                product.setSellingRate(salesOrderDetails.get(i).getUnitPrice());
+                product.setDiscountAmount(salesOrderDetails.get(i).getDiscountAmount());
 
-            product.setQty((long) salesOrderDetails.get(i).getQuantity());
-            product.setUOM("");
-            product.setSODId(salesOrder.getId());
-            product.setProductName(salesOrderDetails.get(i).getProductName());
-            double dp = (product.getDiscountAmount() * 100) / product.getDiscountAmount()+product.getFinalPrice();
-            product.setDiscountPercentage(dp);
-
-
-                    products.add(product);
-
-        }
-        double a =  (sale.getDiscountValue() * 100);
-        double b =  sale.getDiscountValue()+sale.getGrandTotal();
-        double dp = a/b;
-        sale.setDiscountPercentage(dp);
-
-        sale.setProducts(products);
+                product.setQty((long) salesOrderDetails.get(i).getQuantity());
+                product.setUOM("");
+                product.setSODId(salesOrder.getId());
+                product.setProductName(salesOrderDetails.get(i).getProductName());
+                double dp = (product.getDiscountAmount() * 100) / product.getDiscountAmount() + product.getFinalPrice();
+                product.setDiscountPercentage(dp);
 
 
-        BizUtils.prettyJson("product json",products);
+                products.add(product);
 
-        for (int k = 0; k < Store.getInstance().productList.size(); k++) {
-            Product actualProduct = Store.getInstance().productList.get(k);
-            ArrayList<SalesOrderDetails> sodetails = (ArrayList<SalesOrderDetails>) salesOrder.getSODetails();
+            }
+            double a = (sale.getDiscountValue() * 100);
+            double b = sale.getGrandTotal();
+            double dp = a / b;
+            sale.setDiscountPercentage(dp);
+
+            sale.setProducts(products);
 
 
+            // BizUtils.prettyJson("product json",products);
 
-            for(int i=0;i<sodetails.size();i++)
-            {
+            for (int k = 0; k < Store.getInstance().productList.size(); k++) {
+                Product actualProduct = Store.getInstance().productList.get(k);
+                ArrayList<SalesOrderDetails> sodetails = (ArrayList<SalesOrderDetails>) salesOrder.getSODetails();
 
-                if(actualProduct.getId() == sodetails.get(i).getProductId())
-                {
-                    actualProduct.setAvailableStock((long) (actualProduct.getAvailableStock() - sodetails.get(i).getQuantity()));
-                    synchronized(actualProduct){
-                        actualProduct.notify();
+
+                for (int i = 0; i < sodetails.size(); i++) {
+
+                    if (actualProduct.getId() == sodetails.get(i).getProductId()) {
+                        actualProduct.setAvailableStock((long) (actualProduct.getAvailableStock() - sodetails.get(i).getQuantity()));
+                        synchronized (actualProduct) {
+                            actualProduct.notify();
+                        }
                     }
                 }
+
             }
+            syncStockProcessProductList();
 
+
+            PrinterService.print(STOSOActivity.this, customer, "Sale", products, sale, null, null, "Customer Copy");
+
+            DashboardActivity dashboardActivity = new DashboardActivity();
+
+
+            //DashboardActivity.lastSavedBillType = "Sale";
         }
-        syncStockProcessProductList();
-
-
-
-        PrinterService.print(STOSOActivity.this,customer, "Sale", products,sale, null, null,"Customer Copy");
-
-        DashboardActivity dashboardActivity = new DashboardActivity();
-
-
-
-        //DashboardActivity.lastSavedBillType = "Sale";
-
+        catch (Exception e)
+        {
+            System.out.println("Exception = "+e);
+        }
 
     }
 
@@ -563,6 +557,7 @@ public class STOSOActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     System.out.println("Sale order Size"+products.size());
 
+
                     generateBill();
 
 
@@ -625,44 +620,43 @@ public class STOSOActivity extends AppCompatActivity {
     }
     public void generateBill()
     {
-        subTotal = 0;
-        gst = 0;
-        grandTotal = 0;
-        fromCustomerValue = 0;
-        tenderAmountValue = 0;
+        try {
+            subTotal = 0;
+            gst = 0;
+            grandTotal = 0;
+            fromCustomerValue = 0;
+            tenderAmountValue = 0;
 
 
-             double st = currentSaleOrder.getItemAmount()+currentSaleOrder.getGSTAmount() - currentSaleOrder.getDiscountAmount();
+            double st = currentSaleOrder.getItemAmount() + currentSaleOrder.getGSTAmount() - currentSaleOrder.getDiscountAmount();
 
-             double rec = currentSaleOrder.getTotalAmount()  - currentSaleOrder.getExtraAmount();
+            double rec = currentSaleOrder.getTotalAmount() - currentSaleOrder.getExtraAmount();
 
-            subTotal = bizRound(currentSaleOrder.getItemAmount(),2);
-            gst = bizRound(currentSaleOrder.getGSTAmount(),2);
-            grandTotal = bizRound(currentSaleOrder.getTotalAmount(),2);
-            fromCustomerValue = bizRound(rec,2);
-            tenderAmountValue = bizRound(currentSaleOrder.getExtraAmount(),2);
+            subTotal = bizRound(currentSaleOrder.getItemAmount(), 2);
+            gst = bizRound(currentSaleOrder.getGSTAmount(), 2);
+            grandTotal = bizRound(currentSaleOrder.getTotalAmount(), 2);
+            fromCustomerValue = bizRound(rec, 2);
+            tenderAmountValue = bizRound(currentSaleOrder.getExtraAmount(), 2);
 
 
             double gst = currentSaleOrder.getItemAmount() * 0.06;
+            subTotalT.setText(String.valueOf(String.format("%.2f", currentSaleOrder.getItemAmount())));
+            gstT.setText(String.valueOf(String.format("%.2f", gst)));
+            grandTotalT.setText(String.valueOf(String.format("%.2f", currentSaleOrder.getTotalAmount())));
+            discountValue.setText(String.valueOf(String.format("%.2f", currentSaleOrder.getDiscountAmount())));
 
+            double a = (currentSaleOrder.getDiscountAmount() * 100);
+            double b = currentSaleOrder.getTotalAmount();
+            double dp = a / b;
 
-            subTotalT.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getItemAmount())));
-            gstT.setText(String.valueOf(String.format("%.2f",gst)));
-            grandTotalT.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getTotalAmount())));
-            discountValue.setText(String.valueOf(String.format("%.2f",currentSaleOrder.getDiscountAmount())));
-
-        double a =  (currentSaleOrder.getDiscountAmount() * 100);
-        double b =  currentSaleOrder.getDiscountAmount() + currentSaleOrder.getTotalAmount();
-        double dp = a/b;
-
-        discountLabel.setText("Discount("+String.valueOf(String.format("%.2f",dp))+"%) =");
-
-
-
-
+            discountLabel.setText("Discount(" + String.valueOf(String.format("%.2f", dp)) + "%) =");
+        }catch (Exception e)
+        {
+            System.out.println("Exception =="+e);
+        }
 
     }
-    public void print(Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
+    /*public void print(Customer customer, String type, ArrayList<Product> products, Sale sale, SaleOrder saleOrder, SaleReturn saleReturn) {
         SharedPreferences prefs = getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine(prefs.getString(getString(R.string.companyName), "Aboorvass"));
@@ -1149,6 +1143,6 @@ public class STOSOActivity extends AppCompatActivity {
 
 
 
-    }
+    }*/
 }
 
