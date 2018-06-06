@@ -1,3 +1,9 @@
+/*
+ * Created By Shri Hari
+ *
+ * Copyright (c) 2018.All Rights Reserved
+ */
+
 package com.bizsoft.fmcgv2.signalr.pojo;
 
 import java.util.List;
