@@ -9,6 +9,7 @@ package com.bizsoft.fmcgv2.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -103,6 +104,16 @@ public class FileMangerAdpater extends BaseAdapter{
 
                 try {
                     openPDF(fileList.get(position).getDetails());
+                } catch (ActivityNotFoundException ex)
+                {
+                    Toast.makeText(context, "No Suitable App found to open this type of file..\nOpening playstore", Toast.LENGTH_LONG).show();
+                    final String appPackageName = "com.adobe.reader"; // getPackageName() from Context or Activity object
+                    try {
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

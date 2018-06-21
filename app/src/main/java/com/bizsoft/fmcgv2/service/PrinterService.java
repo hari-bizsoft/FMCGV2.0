@@ -12,7 +12,6 @@ import android.graphics.Paint;
 import android.text.TextUtils;
 
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
-import com.bizsoft.fmcgv2.DashboardActivity;
 import com.bizsoft.fmcgv2.R;
 import com.bizsoft.fmcgv2.dataobject.Customer;
 import com.bizsoft.fmcgv2.dataobject.Product;
@@ -22,7 +21,6 @@ import com.bizsoft.fmcgv2.dataobject.SaleReturn;
 import com.bizsoft.fmcgv2.dataobject.Store;
 
 import java.util.ArrayList;
-import java.util.Formatter;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -55,6 +53,7 @@ public class PrinterService  {
 
         BTPrint.SetAlign(Paint.Align.LEFT);
         BTPrint.PrintTextLine(prefs.getString(context.getString(R.string.companyAddressLine1), "0") + "," + prefs.getString(context.getString(R.string.companyAddressLine2), "0") + "," + prefs.getString(context.getString(R.string.postal_code), "+1234556789"));
+
 
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("E-Mail: " + prefs.getString(context.getString(R.string.email), "+1234556789"));
@@ -248,6 +247,32 @@ public class PrinterService  {
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("***"+copyName+"***");
         BTPrint.printLineFeed();
+
+
+    }
+    public static String printPreview(Context context)
+    {
+
+        SharedPreferences prefs = context.getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
+
+        System.out.println("company address line 1 ==============================" + Store.getInstance().company.getCompanyName());
+        System.out.println("company address line 1 ==============================" + Store.getInstance().company.getAddressLine1());
+        System.out.println("company address line 2 ==============================" + Store.getInstance().company.getAddressLine2());
+        System.out.println("company gst ==============================" + prefs.getString(context.getString(R.string.gstNo), "0"));
+        System.out.println("company mail ==============================" + prefs.getString(context.getString(R.string.email), "0"));
+        System.out.println("company postalcode ==============================" + prefs.getString(context.getString(R.string.postal_code), "0"));
+
+        String printLine = "";
+        String companyName = prefs.getString(context.getString(R.string.companyName), "Aboorvass");
+        String addressLine = prefs.getString(context.getString(R.string.companyAddressLine1), "0") + "," + prefs.getString(context.getString(R.string.companyAddressLine2), "0") + "," + prefs.getString(context.getString(R.string.postal_code), "+1234556789");
+        printLine = printLine + companyName+  "\n";
+        printLine = printLine + addressLine+  "\n";
+
+        return printLine;
+
+
+
+
 
 
     }

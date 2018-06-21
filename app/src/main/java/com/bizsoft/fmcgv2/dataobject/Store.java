@@ -156,7 +156,7 @@ public class Store {
 
         return instance;
     }
-    public String domain = "app.bizsoftsolution.com";
+    public String domain = "app.denariusoft.com";
     public  String urlType = "full";
     public  String baseUrl = "http://"+domain+"/";
 

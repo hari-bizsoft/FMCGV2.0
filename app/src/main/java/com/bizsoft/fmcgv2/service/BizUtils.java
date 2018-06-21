@@ -2497,15 +2497,15 @@ public class BizUtils {
             document.add(line);
 
 
-            int numberOfCols = 7;
+            int numberOfCols = 6;
             if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
-                numberOfCols = 9;
+                numberOfCols = 8;
             }
             PdfPTable table = new PdfPTable(numberOfCols);
             table.setWidthPercentage(100);
 
             table.addCell(getCell("S.No", PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell("ID", PdfPCell.ALIGN_LEFT));
+            //table.addCell(getCell("ID", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("Name", PdfPCell.ALIGN_LEFT));
             table.addCell(getCell("Qty", PdfPCell.ALIGN_LEFT));
             if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
@@ -2527,7 +2527,7 @@ public class BizUtils {
                 table1.setWidthPercentage(100);
 
                 table1.addCell(getCell(String.valueOf(i + 1), PdfPCell.ALIGN_LEFT));
-                table1.addCell(getCell(String.valueOf(productList.get(i).getId()), PdfPCell.ALIGN_LEFT));
+               // table1.addCell(getCell(String.valueOf(productList.get(i).getId()), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(productList.get(i).getProductName(), PdfPCell.ALIGN_LEFT));
                 table1.addCell(getCell(String.valueOf(productList.get(i).getQty()), PdfPCell.ALIGN_LEFT));
                 if(getTransactionType(currentSaleType)==Store.getInstance().SALE_RETURN) {
@@ -2684,7 +2684,7 @@ public class BizUtils {
 
 
             gt.addCell(getCell("  ", PdfPCell.ALIGN_LEFT));
-            gt.addCell(getCell("Dealer Name = " + Store.getInstance().dealerName, PdfPCell.ALIGN_LEFT));
+            gt.addCell(getCell("Dealer Name = " + Store.getInstance().dealer.getCompanyName(), PdfPCell.ALIGN_LEFT));
 
             document.add(gt);
 

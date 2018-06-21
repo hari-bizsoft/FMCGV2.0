@@ -6,6 +6,7 @@
 
 package com.bizsoft.fmcgv2.dataobject;
 
+import com.bizsoft.fmcgv2.BTLib.BTDeviceListActivity;
 import com.bizsoft.fmcgv2.BankActivity;
 import com.bizsoft.fmcgv2.CustomerActivity;
 import com.bizsoft.fmcgv2.DashboardActivity;
@@ -77,7 +78,8 @@ public class MenuItems {
         MenuItems receipt = new MenuItems("Receipt", R.drawable.receipt);
         MenuItems reports = new MenuItems("Reports", R.drawable.analytics);
         MenuItems invoice = new MenuItems("Invoice", R.drawable.invoice);
-        MenuItems reprint = new MenuItems("Re-Print", R.drawable.printer);
+        MenuItems reprint = new MenuItems("Re-Print", R.drawable.printing);
+        MenuItems printers  = new MenuItems("Printers", R.drawable.printer_new);
         MenuItems sync = new MenuItems("Sync", R.drawable.ic_sync_black_24dp);
         MenuItems storage = new MenuItems("Load Storage", R.drawable.database);
         MenuItems bank = new MenuItems("Bank", R.drawable.bank);
@@ -97,6 +99,7 @@ public class MenuItems {
         reports.setClassToCall(ReportActivity.class);
         invoice.setClassToCall(InvoiceListActivity.class);
         reprint.setClassToCall(ReprintActivity.class);
+        printers.setClassToCall(BTDeviceListActivity.class);
         sync.setClassToCall(DashboardActivity.class);
         storage.setClassToCall(DashboardActivity.class);
         bank.setClassToCall(BankActivity.class);
@@ -127,6 +130,7 @@ public class MenuItems {
         menuItems.add(stockReport);
         menuItems.add(storage);
         menuItems.add(sync);
+        menuItems.add(printers);
         menuItems.add(home);
         menuItems.add(logout);
 

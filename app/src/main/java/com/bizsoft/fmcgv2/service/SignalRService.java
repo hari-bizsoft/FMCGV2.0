@@ -150,7 +150,30 @@ public class SignalRService {
                 SharedPreferences prefs = context.getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
 
                 String dealerId = prefs.getString(context.getString(R.string.dealerID), "0");
+                String companyId = prefs.getString(context.getString(R.string.companyID), "0");
 
+
+                if(Long.valueOf(companyId).compareTo(Store.getInstance().companyList.get(i).getId())==0)
+                {
+
+                    Log.d("Company","found..");
+                    Store.getInstance().company = Store.getInstance().companyList.get(i);
+                    prefs = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                    editor = prefs.edit();
+
+                    editor.putString(context.getString(R.string.companyID), String.valueOf(Store.getInstance().companyID));
+                    editor.putString(context.getString(R.string.companyPosition), String.valueOf(Store.getInstance().companyPosition));
+                    editor.putString(context.getString(R.string.companyName), String.valueOf(Store.getInstance().company.getCompanyName()));
+                    editor.putString(context.getString(R.string.companyAddressLine1), String.valueOf(Store.getInstance().company.getAddressLine1()));
+                    editor.putString(context.getString(R.string.companyAddressLine2), String.valueOf(Store.getInstance().company.getAddressLine2()));
+                    editor.putString(context.getString(R.string.phoneNumber), String.valueOf(Store.getInstance().company.getTelephoneNo()));
+                    editor.putString(context.getString(R.string.gstNo), String.valueOf(Store.getInstance().company.getGSTNo()));
+                    editor.putString(context.getString(R.string.email), String.valueOf(Store.getInstance().company.getEMailId()));
+                    editor.putString(context.getString(R.string.postal_code), String.valueOf(Store.getInstance().company.getPostalCode()));
+                    editor.commit();
+
+
+                }
 
 
                 if(Long.valueOf(dealerId).compareTo(Store.getInstance().companyList.get(i).getId())==0)

@@ -346,7 +346,8 @@
             android:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/stock_group_key"
             app:layout_constraintRight_toRightOf="@+id/stock_group_key"
-            app:srcCompat="@drawable/ic_search_black_24dp" />
+            app:srcCompat="@drawable/ic_search_black_24dp"
+            tools:ignore="VectorDrawableCompat"/>
 
         <ImageButton
             android:id="@+id/product_search"

@@ -29,5 +29,7 @@
     <string name="test">test</string>
     <string name="test2">test</string>
     <string name="cfc_note">Note : Bill can\'t be raised untill correct amount is received</string>
+    <string name="domain">domain</string>
+    <string name="title_activity_btdevice_list">BTDeviceListActivity</string>
 </resources>
  

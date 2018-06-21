@@ -87,8 +87,11 @@ public class MainActivity extends AppCompatActivity {
     public static HubProxy mHubProxyCaller;
     static HubProxy mHubProxyReceiver;
     SharedPreferences sharedpreferences ;
+    SharedPreferences sharedpreferencesDomain ;
     private String MyPREFERENCES = "ACTIVATION_KEY";
+    private String DOMAIN = "DOMAIN";
     SharedPreferences.Editor editor;
+    SharedPreferences.Editor editorDomain;
     private String AppId = "AppId";
     private static String android_id;
     private static String email;
@@ -114,7 +117,13 @@ public class MainActivity extends AppCompatActivity {
 
         mainUrl.setText("Trying...");
 
+        sharedpreferencesDomain = getSharedPreferences(DOMAIN, Context.MODE_PRIVATE);
 
+
+        String domain= sharedpreferencesDomain.getString("domain",Store.getInstance().domain);
+
+        Log.d("Domain ",domain);
+        Store.getInstance().domain = domain;
 
          if(Network.getInstance(MainActivity.this).isOnline())
          {
@@ -218,6 +227,12 @@ public class MainActivity extends AppCompatActivity {
                 {
 
                     Store.getInstance().domain = url.getText().toString();
+
+                    editorDomain = sharedpreferencesDomain.edit();
+                    editorDomain.putString("domain",Store.getInstance().domain);
+                    editorDomain.commit();
+                    Log.d("Domain Stored",sharedpreferencesDomain.getString("domain","not stored"));
+
                     dialog.dismiss();
                     init(MainActivity.this, activity);
                     mainUrl.setText(Store.getInstance().domain);
@@ -401,7 +416,6 @@ public class MainActivity extends AppCompatActivity {
             SignalRFuture<Void> signalRFuture = mHubConnectionCaller.start(clientTransport);
 
             Store.getInstance().signalRFutureCaller = signalRFuture;
-
 
 
 

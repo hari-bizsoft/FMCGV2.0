@@ -645,10 +645,8 @@ public class ReprintActivity extends AppCompatActivity {
         {
             refNo = saleReturn.getRefCode();
         }
-
         BTPrint.PrintTextLine("Bill Ref No :" + String.valueOf(refNo));
         BTPrint.PrintTextLine("Bill Date :" + bizUtils.getCurrentTime());
-
         BTPrint.PrintTextLine("------------------------------");
         Customer customer1 = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
 

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\R&D\\FMCGV22\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v12\\values-v12.xml",
+            "outputFile": "C:\\Users\\Kavya\\AndroidStudioProjects\\Hari - Last Backup\\FMCGV22\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v12\\values-v12.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\GopiKing\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\fe46260b73287402fbe181a3487ebf2c\\res\\values-v12\\values-v12.xml",
+                    "source": "C:\\Users\\Kavya\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\dea08d097dd94c75e7d52d8f7b1f610e\\res\\values-v12\\values-v12.xml",
                     "from": {
                         "startLines": "2,5,8,9",
                         "startColumns": "4,4,4,4",

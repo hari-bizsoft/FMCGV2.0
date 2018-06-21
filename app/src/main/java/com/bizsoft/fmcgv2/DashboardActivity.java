@@ -51,6 +51,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
+import com.bizsoft.fmcgv2.BTLib.BTDeviceListActivity;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.AddedProductAdapter;
@@ -715,7 +716,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if (getCurrentProducts().size() > 0) {
 
-                    Intent intent = new Intent(DashboardActivity.this, PrintPreview.class);
+                    Intent intent = new Intent(DashboardActivity.this, PrintPreviewHC.class);
                     startActivity(intent);
 
                 } else {
@@ -1157,7 +1158,7 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Intent intent = new Intent(DashboardActivity.this, BTDeviceList.class);
+                        Intent intent = new Intent(DashboardActivity.this, BTDeviceListActivity.class);
 
                         startActivityForResult(intent, BLUETOOTH_FLAG);
 
@@ -1227,7 +1228,7 @@ public class DashboardActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    Intent intent = new Intent(DashboardActivity.this, BTDeviceList.class);
+                    Intent intent = new Intent(DashboardActivity.this, BTDeviceListActivity.class);
 
                     startActivityForResult(intent, BLUETOOTH_FLAG);
 
@@ -2096,9 +2097,6 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             dialog.setContentView(R.layout.show_product_list_dialog);
             productListView = (ListView) dialog.findViewById(R.id.listview);
-
-
-
             final Button add = (Button) dialog.findViewById(R.id.button);
             final Button loadMore = (Button) dialog.findViewById(R.id.load_more);
 
@@ -3414,7 +3412,7 @@ public class DashboardActivity extends AppCompatActivity {
             try {
 
 
-                BTPrint.btsocket = BTDeviceList.getSocket();
+                BTPrint.btsocket = BTDeviceListActivity.getSocket();
                 if (BTPrint.btsocket != null) {
                     try {
                         Thread.sleep(1000);
