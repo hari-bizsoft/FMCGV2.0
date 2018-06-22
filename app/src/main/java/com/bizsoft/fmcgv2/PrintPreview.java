@@ -259,7 +259,7 @@ public class PrintPreview extends AppCompatActivity {
         }
 
             dealerName.setText(String.valueOf(Store.getInstance().dealerName));
-            poweredBy.setText(String.valueOf("Denariu Soft SDN BHD"));
+            poweredBy.setText(String.valueOf("Denariusoft SDN BHD"));
             billIdValue = company.getId()+"-"+ Store.getInstance().dealerId+"-"+customer.getId();
 
             billDateValue = bizUtils.getCurrentTime();

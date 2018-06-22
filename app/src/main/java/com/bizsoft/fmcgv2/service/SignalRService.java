@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -138,7 +139,7 @@ public class SignalRService {
                 Store.getInstance().serverStatus = "Offline";
                 Log.d(TAG, "No Company list found");
 
-                Toast.makeText(context, "No company List Found", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "No company List Found", Toast.LENGTH_SHORT).show();
                 //  Intent intent = new Intent(context,LoginActivity.class);
                 //context.startActivity(intent);
             }
@@ -182,6 +183,7 @@ public class SignalRService {
                     Store.getInstance().dealer = Store.getInstance().companyList.get(i);
 
                     try {
+
 
                         Store.getInstance().dealerLogo = companyLogo();
                     }

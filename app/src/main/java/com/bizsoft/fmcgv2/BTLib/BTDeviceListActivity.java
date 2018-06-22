@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -67,7 +68,7 @@ public class BTDeviceListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_btdevice_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
 
@@ -117,6 +118,17 @@ public class BTDeviceListActivity extends AppCompatActivity {
 
         registerReceiver(mBTReceiver, btIntentFilter);
         mBluetoothAdapter.startDiscovery();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                if(bluetoothAdapter.getCount()==0) {
+                    Snackbar.make(toolbar, "No bluetooth device found...", Snackbar.LENGTH_LONG)
+                            .show();
+                }
+            }
+        }, 10000);
 
     }
 

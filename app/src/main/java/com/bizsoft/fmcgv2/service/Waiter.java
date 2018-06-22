@@ -72,10 +72,16 @@ public class Waiter extends Thread
 
                 if(bizUtils.isNetworkConnected(context))
                 {
-                    System.out.println("Ready to sync now...");
-                    idle =0;
-                    bizUtils.sync(context,"auto");
-
+                    try {
+                        System.out.println("Ready to sync now...");
+                        idle = 0;
+                        bizUtils.sync(context, "auto");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("Sync auto","error");
+                        System.err.println(e);
+                    }
 
 
 

@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bizsoft.fmcgv2.dataobject.Company;
 import com.bizsoft.fmcgv2.dataobject.MenuItems;
 import com.bizsoft.fmcgv2.dataobject.Store;
 import com.bizsoft.fmcgv2.service.ApplicationSheild;
@@ -31,6 +32,7 @@ import com.bizsoft.fmcgv2.service.SignalRService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class DownloadDataActivity extends AppCompatActivity {
@@ -69,7 +71,7 @@ public class DownloadDataActivity extends AppCompatActivity {
 
 
         new DownloaddData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        new CompanyDetails().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
 
 
 
@@ -113,7 +115,7 @@ public class DownloadDataActivity extends AppCompatActivity {
                     {
                         Log.e("error","download image failed");
                     }
-                    textView.setText("Downloading customers..");
+                    textView.setText("Downloading customers...");
                 }
             });
 
@@ -143,7 +145,7 @@ public class DownloadDataActivity extends AppCompatActivity {
                     customers.setText(String.valueOf(Store.getInstance().customerList.size()));
 
 //stuff that updates ui
-                    textView.setText("Downloading products..");
+                    textView.setText("Downloading products...");
                 }
             });
 
@@ -156,7 +158,7 @@ public class DownloadDataActivity extends AppCompatActivity {
                     products.setText(String.valueOf(Store.getInstance().productList.size()));
                     percentage.setText("50%");
 
-                    textView.setText("Downloading categories..");
+                    textView.setText("Downloading categories...");
                 }
             });
 
@@ -172,14 +174,25 @@ public class DownloadDataActivity extends AppCompatActivity {
                     percentage.setText("75%");
                     categories.setText(String.valueOf(Store.getInstance().stockGroupList.size()));
 
-                    textView.setText("Downloading accounts group..");
+                    textView.setText("Downloading accounts group...");
                 }
             });
 
             SignalRService.accountGroupList();
             SignalRService.taxMasterList();
 
-            progressBar.setProgress(100);
+            progressBar.setProgress(90);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    percentage.setText("90%");
+                    categories.setText(String.valueOf(Store.getInstance().stockGroupList.size()));
+
+                    textView.setText("Downloading company details...");
+                }
+            });
+
+            new CompanyDetails().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
          //   progressBar.setProgress(100);
@@ -232,22 +245,26 @@ public class DownloadDataActivity extends AppCompatActivity {
     class CompanyDetails extends AsyncTask
     {
 
+        private ArrayList<Company> companyList;
+
         @Override
         protected void onProgressUpdate(Object[] values) {
             super.onProgressUpdate(values);
+
+
 
         }
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            SignalRService.getCompanyDetails(DownloadDataActivity.this);
+           companyList =  SignalRService.getCompanyDetails(DownloadDataActivity.this);
             return null;
         }
 
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-
+            Log.d("Company details ","size = "+companyList.size());
         }
 
     }

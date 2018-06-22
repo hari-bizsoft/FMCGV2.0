@@ -380,7 +380,7 @@ public class PaymentActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Dealer Name:"+ Store.getInstance().dealerName);
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
+        BTPrint.PrintTextLine("Powered By Denariusoft SDN BHD");
 
         BTPrint.printLineFeed();
 

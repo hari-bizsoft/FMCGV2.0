@@ -97,21 +97,23 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.bizsoft.fmcgv2.service.BizUtils.decimalFormatter;
 import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
 
 public class DashboardActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_CONSTANT = 777;
+    private static final int ALL_PERMISSION = 205;
     public static ArrayAdapter productAdapter;
-    String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE","android.permission.ACCESS_COARSE_LOCATION"};
     int permsRequestCode = 200;
 
     Spinner saleType;
     ImageButton productSearch, customerSearch, stockHomeSearch;
     ArrayList<String> saleTypeList = new ArrayList<String>();
-    public static String currentSaleType;
+    public static String currentSaleType="";
     ListView customerListView;
     public static AutoCompleteTextView customerNameKey;
     TextView customerName;
@@ -144,7 +146,7 @@ public class DashboardActivity extends AppCompatActivity {
     public static EditText discountValue;
 
     Spinner isGst;
-    public static String isGstValue;
+    public static String isGstValue="";
     public static EditText fromCustomer;
     public static TextView tenderAmount;
     public static TextView subTotal;
@@ -152,7 +154,7 @@ public class DashboardActivity extends AppCompatActivity {
     public static TextView grandTotal;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
-    private static final int REQUEST_PERMISSION_SETTING1 = 102;
+    private static final int REQUEST_PERMISSION_LOCATION = 102;
     private boolean sentToSettings = false;
     private String fromCustomerValue = String.valueOf(0);
     private String tenderAmountValue = String.valueOf(0);
@@ -160,7 +162,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ImageButton invoiceList;
     Button clearData;
     public static Spinner paymentMode;
-    public static String paymentModeValue;
+    public static String paymentModeValue="";
     boolean savedCurrentTransaction = false;
     private boolean syncStatus;
     private ImageButton receipt;
@@ -180,7 +182,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private Waiter waiter;  //Thread which controls idle time
     private int year,month,day;
-    public static String discountType;
+    public static String discountType="";
     private double tempGt=0;
     private boolean storeGT = false;
     private ArrayList<Product> prodListToShow;
@@ -361,9 +363,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            if (permissionStatus.getBoolean("ACCESS_FINE_LOCATION", false)) {
-                getLocationPermission();
-            }
             getPermission();
 
         }
@@ -716,7 +715,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 if (getCurrentProducts().size() > 0) {
 
-                    Intent intent = new Intent(DashboardActivity.this, PrintPreviewHC.class);
+                    Intent intent = new Intent(DashboardActivity.this, PrintPreview.class);
                     startActivity(intent);
 
                 } else {
@@ -1149,69 +1148,81 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         try {
-            if (BTPrint.btsocket == null) {
 
 
-                android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(DashboardActivity.this);
-                alertDialog.setMessage("Please connect to the bluetooth to initiate printing");
-                alertDialog.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            boolean status = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.checkSelfPermission(DashboardActivity.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d("Location Permission", "NOT Granted");
+                    getLocationPermission();
+                } else {
+                    Log.d("Location Permission", "Granted");
+                    status = true;
 
-                        Intent intent = new Intent(DashboardActivity.this, BTDeviceListActivity.class);
-
-                        startActivityForResult(intent, BLUETOOTH_FLAG);
-
-                        Toast.makeText(DashboardActivity.this, "Initializing bluetooth connection...", Toast.LENGTH_SHORT).show();
-
+                }
+            }
+            if(status) {
+                if (BTPrint.btsocket == null) {
 
 
+                    android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(DashboardActivity.this);
+                    alertDialog.setMessage("Please connect to the bluetooth to initiate printing");
+                    alertDialog.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent(DashboardActivity.this, BTDeviceListActivity.class);
+
+                            startActivityForResult(intent, BLUETOOTH_FLAG);
+
+                            Toast.makeText(DashboardActivity.this, "Initializing bluetooth connection...", Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    });
+                    alertDialog.setNegativeButton(R.string.noReloadMsg, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            System.out.println("Do nothing....");
+                        }
+                    });
+
+                    alertDialog.create();
+
+                    alertDialog.show();
+
+
+                } else {
+
+
+                    Store.getInstance().printerContext = DashboardActivity.this;
+
+                    Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
+
+                    if (lastSavedBillType.toLowerCase().contains("return")) {
+                        temp = customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size() - 1).getProducts();
+                        PrinterService.print(DashboardActivity.this, customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size() - 1), dc);
 
                     }
-                });
-                alertDialog.setNegativeButton(R.string.noReloadMsg, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        System.out.println("Do nothing....");
+                    if (lastSavedBillType.toLowerCase().contains("order")) {
+                        temp = customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size() - 1).getProducts();
+                        PrinterService.print(DashboardActivity.this, customer, "Sale Order", temp, null, customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size() - 1), null, dc);
+
                     }
-                });
+                    if (!(lastSavedBillType.toLowerCase().contains("return") || lastSavedBillType.toLowerCase().contains("order"))) {
+                        temp = customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size() - 1).getProducts();
+                        PrinterService.print(DashboardActivity.this, customer, "Sale", temp, customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size() - 1), null, null, dc);
 
-                alertDialog.create();
-
-                alertDialog.show();
-
-
-
-            } else {
-
-
-                Store.getInstance().printerContext = DashboardActivity.this;
-
-                Customer customer = Store.getInstance().customerList.get(Store.getInstance().currentCustomerPosition);
-
-                if(lastSavedBillType.toLowerCase().contains("return"))
-                {
-                    temp =   customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1).getProducts();
-                    PrinterService.print(DashboardActivity.this,customer, "Sale Return", temp, null, null, customer.getSaleReturnOfCustomer().get(customer.getSaleReturnOfCustomer().size()-1),dc);
+                    }
+                    if (lastSavedBillType.toLowerCase().contains("none")) {
+                        Toast.makeText(DashboardActivity.this, "No last bills found..", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
-                if(lastSavedBillType.toLowerCase().contains("order"))
-                {
-                    temp =   customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1).getProducts();
-                    PrinterService.print(DashboardActivity.this,customer, "Sale Order", temp, null,customer.getSaleOrdersOfCustomer().get(customer.getSaleOrdersOfCustomer().size()-1), null,dc);
-
-                }
-                if(! (lastSavedBillType.toLowerCase().contains("return") || lastSavedBillType.toLowerCase().contains("order")) )
-                {
-                    temp =   customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1).getProducts();
-                    PrinterService.print(DashboardActivity.this,customer, "Sale", temp,customer.getSalesOfCustomer().get(customer.getSalesOfCustomer().size()-1), null, null,dc);
-
-                }
-                if(lastSavedBillType.toLowerCase().contains("none"))
-                {
-                    Toast.makeText(DashboardActivity.this, "No last bills found..", Toast.LENGTH_SHORT).show();
-                }
-
+            }
+            else
+            {
+                Toast.makeText(DashboardActivity.this, "No location Permission granted..", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             System.out.println("Exception " + e);
@@ -1526,17 +1537,17 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void getPermission() {
 
-        if (ActivityCompat.checkSelfPermission(DashboardActivity.this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, WRITE_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.checkSelfPermission(DashboardActivity.this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(DashboardActivity.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, WRITE_EXTERNAL_STORAGE) && ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, ACCESS_COARSE_LOCATION)) {
                 //Show Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                 builder.setTitle("Need Storage Permission");
-                builder.setMessage("This app needs storage permission.");
+                builder.setMessage("This app needs storage and location permission.");
                 builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                        ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{WRITE_EXTERNAL_STORAGE,ACCESS_COARSE_LOCATION}, ALL_PERMISSION);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1551,7 +1562,7 @@ public class DashboardActivity extends AppCompatActivity {
                 // Redirect to Settings after showing Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                 builder.setTitle("Need Storage Permission");
-                builder.setMessage("This app needs storage permission.");
+                builder.setMessage("This app needs storage and location permission.");
                 builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -1725,8 +1736,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void getLocationPermission() {
 
-        if (ActivityCompat.checkSelfPermission(DashboardActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, ACCESS_FINE_LOCATION)) {
+        if (ActivityCompat.checkSelfPermission(DashboardActivity.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, ACCESS_COARSE_LOCATION)) {
                 //Show Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                 builder.setTitle("Need location Permission");
@@ -1735,7 +1747,7 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CONSTANT);
+                        ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CONSTANT);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1745,7 +1757,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-            } else if (permissionStatus.getBoolean(ACCESS_FINE_LOCATION, false)) {
+            } else if (permissionStatus.getBoolean(ACCESS_COARSE_LOCATION, false)) {
                 //Previously Permission Request was cancelled with 'Dont Ask Again',
                 // Redirect to Settings after showing Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
@@ -1759,7 +1771,7 @@ public class DashboardActivity extends AppCompatActivity {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         Uri uri = Uri.fromParts("package", getPackageName(), null);
                         intent.setData(uri);
-                        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                        startActivityForResult(intent, REQUEST_PERMISSION_LOCATION);
                         Toast.makeText(getBaseContext(), "Go to Permissions to Grant Location", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -1779,7 +1791,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
             SharedPreferences.Editor editor = permissionStatus.edit();
-            editor.putBoolean(ACCESS_FINE_LOCATION, true);
+            editor.putBoolean(ACCESS_COARSE_LOCATION, true);
             editor.commit();
 
 
@@ -2497,12 +2509,19 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void IntializeDashboardVariables() {
+
+    try {
         isGst.setSelection(0);
         isGstValue = gstTypeList.get(0);
         paymentMode.setSelection(0);
         paymentModeValue = Store.getInstance().paymentModeTypeList.get(0);
         discount.setSelection(0);
         discountType = discountTypeList.get(0);
+    }
+    catch (Exception e)
+    {
+
+    }
     }
 
     public void setIsGst() {
@@ -3408,7 +3427,14 @@ public class DashboardActivity extends AppCompatActivity {
                 //Got Permission
                 proceedAfterPermission(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
             }
-        } else {
+        }
+        else  if (requestCode == REQUEST_PERMISSION_LOCATION) {
+            if (ActivityCompat.checkSelfPermission(DashboardActivity.this, ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                //Got Permission
+                proceedAfterPermission(LOCATION_PERMISSION_CONSTANT);
+            }
+        }
+            else if (requestCode==619) {
             try {
 
 
@@ -3899,7 +3925,7 @@ public class DashboardActivity extends AppCompatActivity {
         BTPrint.PrintTextLine("Dealer Name:" + Store.getInstance().dealerName);
         BTPrint.PrintTextLine("------------------------------");
         BTPrint.SetAlign(Paint.Align.CENTER);
-        BTPrint.PrintTextLine("Powered By Denariu Soft SDN BHD");
+        BTPrint.PrintTextLine("Powered By Denariusoft SDN BHD");
         BTPrint.SetAlign(Paint.Align.CENTER);
         BTPrint.PrintTextLine("***"+copyName+"***");
         BTPrint.printLineFeed();
@@ -3941,15 +3967,22 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void proceedAfterPermission(int v) {
+        Log.d("V===", String.valueOf(v));
         //We've got the permission, now we can proceed further
         if (v == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
-            Toast.makeText(getBaseContext(), "We got the Storage Permission", Toast.LENGTH_SHORT).show();
-            checkBluetoothConnection();
+            Toast.makeText(getBaseContext(), "We got the Storage and Location Permission", Toast.LENGTH_SHORT).show();
+
+
         } else if (v == LOCATION_PERMISSION_CONSTANT) {
             Toast.makeText(getBaseContext(), "We got the Location Permission", Toast.LENGTH_SHORT).show();
             checkBluetoothConnection();
+        } else if (v == ALL_PERMISSION) {
+            {
+                Toast.makeText(getBaseContext(), "We got the Storage and Location Permission", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -3992,7 +4025,7 @@ public class DashboardActivity extends AppCompatActivity {
                 //The External Storage Write Permission is granted to you... Continue your left job...
                 proceedAfterPermission(LOCATION_PERMISSION_CONSTANT);
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, ACCESS_FINE_LOCATION)) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, ACCESS_COARSE_LOCATION)) {
                     //Show Information about why you need the permission
                     AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                     builder.setTitle("Need Storage Permission");
@@ -4003,7 +4036,7 @@ public class DashboardActivity extends AppCompatActivity {
                             dialog.cancel();
 
 
-                            ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CONSTANT);
+                            ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CONSTANT);
 
 
                         }
@@ -4031,7 +4064,7 @@ public class DashboardActivity extends AppCompatActivity {
                 //Got Permission
                 proceedAfterPermission(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
             }
-            if (ActivityCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //Got Permission
                 proceedAfterPermission(LOCATION_PERMISSION_CONSTANT);
             }
