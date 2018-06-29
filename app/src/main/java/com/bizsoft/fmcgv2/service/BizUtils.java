@@ -848,12 +848,9 @@ public class BizUtils {
 
     public class SaveCustomer extends AsyncTask {
         Context context;
-
-
         Customer customers = new Customer();
         Customer customerResponse;
         int position;
-
         boolean status;
         private String from;
 
@@ -877,13 +874,8 @@ public class BizUtils {
         @Override
         protected Object doInBackground(Object[] params) {
 
-            HttpHandler httpHandler = new HttpHandler();
-            //  jsonStr = httpHandler.makeServiceCall(this.url, this.params);
-
 
             customerResponse = SignalRService.saveCustomer(customers);
-
-
             return true;
         }
 
@@ -894,11 +886,9 @@ public class BizUtils {
 
             System.out.println("JSON :" + customerResponse.getId());
             if (customerResponse != null) {
-
                 if (customerResponse.getId() == 0) {
                    // Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
                     Log.e("Customer save","not saved");
-
 
                 } else {
                     Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
@@ -906,16 +896,26 @@ public class BizUtils {
                     int size = Store.getInstance().customerList.size();
                     System.out.println("Received ID " + customerResponse.getId());
                     Store.getInstance().customerList.get(position).setId(customerResponse.getId());
-                    Customer customer = SignalRService.getCustomer(customerResponse.getId());
+                    final Customer[] customer = {null};
+
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+
+                             customer[0] = SignalRService.getCustomer(customerResponse.getId());
+                        }
+                    });
+
+
 
                     System.out.println("Size " + Store.getInstance().customerList.size());
                     System.out.println("Position " + position);
                     for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
                         System.out.println("cus id : " + Store.getInstance().customerList.get(i).getId());
                         System.out.println("Position " + i);
-                        if (Store.getInstance().customerList.get(i).getId().compareTo(customer.getId()) == 0) {
+                        if (Store.getInstance().customerList.get(i).getId().compareTo(customer[0].getId()) == 0) {
                             System.out.println("setting led if for cus id : " + Store.getInstance().customerList.get(i).getId());
-                            Store.getInstance().customerList.get(i).getLedger().setId(customer.getLedger().getId());
+                            Store.getInstance().customerList.get(i).getLedger().setId(customer[0].getLedger().getId());
                             Store.getInstance().customerList.get(i).setSynced(true);
                             //Saving to local storage as JSON
                             try {
@@ -937,7 +937,7 @@ public class BizUtils {
                         }
                     }
 
-                    BizUtils.prettyJson("customer", customer);
+                    BizUtils.prettyJson("customer", customer[0]);
 
 
 
@@ -1940,343 +1940,354 @@ public class BizUtils {
 
     public void sync(Context context, String from) {
 
-        if (Store.getInstance().mHubConnectionReceiver != null) {
+
+        boolean canSync = false;
+            if (Store.getInstance().mHubConnectionReceiver != null) {
+
+                if (Store.getInstance().mHubConnectionReceiver.getState().toString().toLowerCase().contains("disconnected")) {
+
+                  //  Network.Check_Internet(context, "Check network", "Please Turn on Internet connectivity..");
+
+                }
+                else
+                {
+                    System.out.println("Network State >>>"+Network.isNetworkAvailable(context));
+                    if(Network.isNetworkAvailable(context)) {
+                        System.out.println("----re login attempt");
+
+                        SignalRService.reconnect(context);
+                        canSync = true;
+                    }
+                    else
+                    {
+                        System.out.println("No connection..");
+                    }
+                }
+
+        }
 
 
-            if (Store.getInstance().mHubConnectionReceiver.getState().toString().toLowerCase().contains("disconnected")) {
+        if(canSync) {
+            boolean sync = false;
+            AsyncTask saleStatus = null, saleOrderStatus = null, saleReturnStatus = null, customerStatus = null;
 
-                Network.Check_Internet(context, "Check network", "Please Turn on Internet connectivity..");
 
-                System.out.println("----re login attempt");
+            ArrayList<Customer> customerList = Store.getInstance().customerList;
 
-                SignalRService.reconnect(context);
+            System.out.println("Customer Size = " + customerList.size());
+
+
+            if (customerList.size() == 0) {
+                // Toast.makeText(context, "Nothing to sync...", Toast.LENGTH_SHORT).show();
+            }
+            for (int i = 0; i < customerList.size(); i++) {
+                System.out.println("OBJ =" + customerList.get(i));
+                System.out.println("cus OBJ =" + customerList.get(i).isSynced());
+                if (!customerList.get(i).isSynced()) {
+                    sync = true;
+
+                    newcustomer = true;
+                    Customer customer = createCustomer(customerList.get(i));
+                    //BizUtils.prettyJson("new customer \n",customer);
+                    System.out.println("cus OBJ new =" + customer.isSynced());
+                    customerStatus = new SaveCustomer(context, customer, i, from).execute();
+                }
 
 
             }
 
-        }
 
+            int syncCount = 0;
+            for (int i = 0; i < customerList.size(); i++) {
+                System.out.println("OBJ =" + customerList.get(i).getSale().size());
 
-        boolean sync = false;
-        AsyncTask saleStatus = null, saleOrderStatus = null, saleReturnStatus = null, customerStatus = null;
+                if (customerList.get(i).getId() != null) {
 
+                    // printSyncData(customerList,i);
 
-        ArrayList<Customer> customerList = Store.getInstance().customerList;
+                    if (customerList.get(i).getSale().size() > 0) {
+                        newcustomer = false;
 
-        System.out.println("Customer Size = " + customerList.size());
+                        for (int y = 0; y < customerList.get(i).getSalesOfCustomer().size(); y++) {
 
-
-        if (customerList.size() == 0) {
-            // Toast.makeText(context, "Nothing to sync...", Toast.LENGTH_SHORT).show();
-        }
-        for (int i = 0; i < customerList.size(); i++) {
-            System.out.println("OBJ =" + customerList.get(i));
-            System.out.println("cus OBJ =" + customerList.get(i).isSynced());
-            if (!customerList.get(i).isSynced()) {
-                sync = true;
-
-                newcustomer = true;
-                Customer customer = createCustomer(customerList.get(i));
-                //BizUtils.prettyJson("new customer \n",customer);
-                System.out.println("cus OBJ new =" + customer.isSynced());
-                customerStatus = new SaveCustomer(context, customer, i, from).execute();
-            }
-
-
-        }
-
-
-        int syncCount = 0;
-        for (int i = 0; i < customerList.size(); i++) {
-            System.out.println("OBJ =" + customerList.get(i).getSale().size());
-
-            if (customerList.get(i).getId() != null) {
-
-               // printSyncData(customerList,i);
-
-                if (customerList.get(i).getSale().size() > 0) {
-                    newcustomer = false;
-
-                    for (int y = 0; y < customerList.get(i).getSalesOfCustomer().size(); y++) {
-
-                        if (!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
-                            saleStatus = new Save(context, "sale/save", "SODetails", customerList.get(i).getSalesOfCustomer().get(y).getProducts(), customerList.get(i).getId(), customerList.get(i).getSalesOfCustomer().get(y), null, null, customerList.get(i)).execute();
-                            System.out.println("Status === " + saleStatus.getStatus());
-                            sync = true;
-
-                        }
-
-                    }
-
-
-                }
-                if (customerList.get(i).getSaleOrder().size() > 0) {
-                    newcustomer = false;
-
-
-                    for (int y = 0; y < customerList.get(i).getSaleOrdersOfCustomer().size(); y++) {
-                        if (!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
-                            saleOrderStatus = new Save(context, "SaleOrder/save", "SaleOrderDetails", customerList.get(i).getSaleOrdersOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, customerList.get(i).getSaleOrdersOfCustomer().get(y), null, customerList.get(i)).execute();
-                            sync = true;
-                        }
-                    }
-
-
-                }
-                if (customerList.get(i).getSaleReturn().size() > 0) {
-
-                    for (int y = 0; y < customerList.get(i).getSaleReturnOfCustomer().size(); y++) {
-                        if (!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
-                            newcustomer = false;
-                            saleReturnStatus = new Save(context, "SalesReturn/save", "SaleReturnDetails", customerList.get(i).getSaleReturnOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, null, customerList.get(i).getSaleReturnOfCustomer().get(y), customerList.get(i)).execute();
-                            sync = true;
-                        }
-                    }
-
-                }
-                if (customerList.get(i).getReceipts().size() > 0) {
-                    newcustomer = false;
-                    System.out.println("Called save receipt");
-                    for (int z = 0; z < customerList.get(i).getReceipts().size(); z++) {
-
-                        if (customerList.get(i).getReceipts().get(z).isSynced()) {
-                            System.out.println("Receipt already synced");
-                        } else {
-                            new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(), customerList.get(i)).execute();
-                            sync = true;
-                        }
-
-                    }
-                    System.out.println("Closing save receipt");
-
-                }
-
-               // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
-               // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
-                if (customerList.get(i).getsOPendingList().size() > 0) {
-                    for (int x = 0; x < customerList.get(i).getsOPendingList().size(); x++) {
-                        if (customerList.get(i).getsOPendingList().get(x).isSynced()) {
-                            System.out.println("SO pendling  already synced");
-                        } else {
-                            boolean status = SignalRService.saleOrderMakeSales(customerList.get(i).getsOPendingList().get(x));
-                            if (status) {
-                                System.out.println("SO pending saved");
-                                customerList.get(i).getsOPendingList().get(x).setSynced(true);
+                            if (!customerList.get(i).getSalesOfCustomer().get(y).isSynced()) {
+                                saleStatus = new Save(context, "sale/save", "SODetails", customerList.get(i).getSalesOfCustomer().get(y).getProducts(), customerList.get(i).getId(), customerList.get(i).getSalesOfCustomer().get(y), null, null, customerList.get(i)).execute();
+                                System.out.println("Status === " + saleStatus.getStatus());
                                 sync = true;
-                                try {
-                                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
-                                    System.err.println("DB Updated..on local storage");
-                                } catch (ClassNotFoundException e) {
 
-                                    System.err.println("Unable to write to DB");
-                                }
+                            }
+
+                        }
+
+
+                    }
+                    if (customerList.get(i).getSaleOrder().size() > 0) {
+                        newcustomer = false;
+
+
+                        for (int y = 0; y < customerList.get(i).getSaleOrdersOfCustomer().size(); y++) {
+                            if (!customerList.get(i).getSaleOrdersOfCustomer().get(y).isSynced()) {
+                                saleOrderStatus = new Save(context, "SaleOrder/save", "SaleOrderDetails", customerList.get(i).getSaleOrdersOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, customerList.get(i).getSaleOrdersOfCustomer().get(y), null, customerList.get(i)).execute();
+                                sync = true;
+                            }
+                        }
+
+
+                    }
+                    if (customerList.get(i).getSaleReturn().size() > 0) {
+
+                        for (int y = 0; y < customerList.get(i).getSaleReturnOfCustomer().size(); y++) {
+                            if (!customerList.get(i).getSaleReturnOfCustomer().get(y).isSynced()) {
+                                newcustomer = false;
+                                saleReturnStatus = new Save(context, "SalesReturn/save", "SaleReturnDetails", customerList.get(i).getSaleReturnOfCustomer().get(y).getProducts(), customerList.get(i).getId(), null, null, customerList.get(i).getSaleReturnOfCustomer().get(y), customerList.get(i)).execute();
+                                sync = true;
+                            }
+                        }
+
+                    }
+                    if (customerList.get(i).getReceipts().size() > 0) {
+                        newcustomer = false;
+                        System.out.println("Called save receipt");
+                        for (int z = 0; z < customerList.get(i).getReceipts().size(); z++) {
+
+                            if (customerList.get(i).getReceipts().get(z).isSynced()) {
+                                System.out.println("Receipt already synced");
                             } else {
-                                System.out.println("SO Pending Not  saved ");
+                                new SaveReceipt(context, "Sale/Receipt_Save", customerList.get(i).getReceipts().get(z), customerList.get(i).getId(), customerList.get(i)).execute();
+                                sync = true;
+                            }
+
+                        }
+                        System.out.println("Closing save receipt");
+
+                    }
+
+                    // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+                    // System.out.println("SO P list size " + customerList.get(i).getsOPendingList().size());
+                    if (customerList.get(i).getsOPendingList().size() > 0) {
+                        for (int x = 0; x < customerList.get(i).getsOPendingList().size(); x++) {
+                            if (customerList.get(i).getsOPendingList().get(x).isSynced()) {
+                                System.out.println("SO pendling  already synced");
+                            } else {
+                                boolean status = SignalRService.saleOrderMakeSales(customerList.get(i).getsOPendingList().get(x));
+                                if (status) {
+                                    System.out.println("SO pending saved");
+                                    customerList.get(i).getsOPendingList().get(x).setSynced(true);
+                                    sync = true;
+                                    try {
+                                        BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                                        System.err.println("DB Updated..on local storage");
+                                    } catch (ClassNotFoundException e) {
+
+                                        System.err.println("Unable to write to DB");
+                                    }
+                                } else {
+                                    System.out.println("SO Pending Not  saved ");
+                                }
+                            }
+                        }
+
+                    }
+                    // System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
+
+
+                    if (customerList.get(i).getSOPListDelete().size() > 0) {
+                        for (int x = 0; x < customerList.get(i).getSOPListDelete().size(); x++) {
+                            if (customerList.get(i).getSOPListDelete().get(x).isSynced()) {
+                                System.out.println("SO pendling 'delete' already synced");
+                            } else {
+
+                                boolean status = SignalRService.salesOrderDelete(customerList.get(i).getSOPListDelete().get(x));
+                                if (status) {
+                                    System.out.println("SO pending deleted");
+                                    customerList.get(i).getSOPListDelete().get(x).setSynced(true);
+                                    sync = true;
+                                    try {
+                                        BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                                        System.err.println("DB Updated..on local storage");
+                                    } catch (ClassNotFoundException e) {
+
+                                        System.err.println("Unable to write to DB");
+                                    }
+                                } else {
+                                    System.out.println("SO Pending Not  saved ");
+                                }
                             }
                         }
                     }
 
-                }
-               // System.out.println("SOP Delete List size " + customerList.get(i).getSOPListDelete().size());
+
+                    if (customerList.get(i).getPayments().size() > 0) {
+                        newcustomer = false;
+                        System.out.println("Called save payments");
+                        for (int z = 0; z < customerList.get(i).getPayments().size(); z++) {
 
 
-                if (customerList.get(i).getSOPListDelete().size() > 0) {
-                    for (int x = 0; x < customerList.get(i).getSOPListDelete().size(); x++) {
-                        if (customerList.get(i).getSOPListDelete().get(x).isSynced()) {
-                            System.out.println("SO pendling 'delete' already synced");
-                        } else {
-
-                            boolean status = SignalRService.salesOrderDelete(customerList.get(i).getSOPListDelete().get(x));
-                            if (status) {
-                                System.out.println("SO pending deleted");
-                                customerList.get(i).getSOPListDelete().get(x).setSynced(true);
-                                sync = true;
-                                try {
-                                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
-                                    System.err.println("DB Updated..on local storage");
-                                } catch (ClassNotFoundException e) {
-
-                                    System.err.println("Unable to write to DB");
-                                }
+                            if (customerList.get(i).getPayments().get(z).isSynced()) {
+                                System.out.println("Payment already synced");
                             } else {
-                                System.out.println("SO Pending Not  saved ");
+                                new SaveReceipt(context, "Sale/Payment_Save", customerList.get(i).getPayments().get(z), customerList.get(i).getId()).execute();
+                                sync = true;
                             }
+
                         }
-                    }
-                }
-
-
-                if (customerList.get(i).getPayments().size() > 0) {
-                    newcustomer = false;
-                    System.out.println("Called save payments");
-                    for (int z = 0; z < customerList.get(i).getPayments().size(); z++) {
-
-
-                        if (customerList.get(i).getPayments().get(z).isSynced()) {
-                            System.out.println("Payment already synced");
-                        } else {
-                            new SaveReceipt(context, "Sale/Payment_Save", customerList.get(i).getPayments().get(z), customerList.get(i).getId()).execute();
-                            sync = true;
-                        }
+                        System.out.println("Closing save payments");
 
                     }
-                    System.out.println("Closing save payments");
+
+
+                    //new Save(context,"SaleOrder/save","SaleOrderDetails",Store.getInstance().addedProductForSalesOrder).execute();
+
+                    // new Save(context,"sale/save","SODetails",Store.getInstance().addedProductForSales).execute();
 
                 }
 
-
-                //new Save(context,"SaleOrder/save","SaleOrderDetails",Store.getInstance().addedProductForSalesOrder).execute();
-
-                // new Save(context,"sale/save","SODetails",Store.getInstance().addedProductForSales).execute();
 
             }
 
 
-        }
+            System.out.println("Sync dealer = " + Store.getInstance().dealer.isSynced());
 
 
-        System.out.println("Sync dealer = " + Store.getInstance().dealer.isSynced());
+            if (!Store.getInstance().dealer.isSynced()) {
+                if (SignalRService.saveCompany(Store.getInstance().dealer)) {
 
+                    Toast.makeText(context, "Dealer Updated", Toast.LENGTH_SHORT).show();
+                    Store.getInstance().dealer.setSynced(true);
+                    sync = true;
 
-        if (!Store.getInstance().dealer.isSynced()) {
-            if (SignalRService.saveCompany(Store.getInstance().dealer)) {
-
-                Toast.makeText(context, "Dealer Updated", Toast.LENGTH_SHORT).show();
-                Store.getInstance().dealer.setSynced(true);
-                sync = true;
-
-                try {
-                    BizUtils.storeAsJSON("Dealer", BizUtils.getJSON("dealer", Store.getInstance().dealer));
-                    System.out.println("DB 'Dealer' Updated..on local storage");
-                } catch (ClassNotFoundException e) {
-
-                    System.err.println("Unable to write to DB");
-                }
-
-            } else {
-                Toast.makeText(context, "Dealer not Updated", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            System.out.println("Dealer already synced");
-        }
-
-        for (int i = 0; i < Store.getInstance().prodcutSpecProcess.size(); i++) {
-            System.out.println("Sync prod spec = " + Store.getInstance().prodcutSpecProcess.get(i).isSynced());
-            if (Store.getInstance().prodcutSpecProcess.get(i).isSynced()) {
-                System.out.println("No sync prod spec");
-
-
-            } else {
-                sync = true;
-                if (SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i))) {
-//                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
-                    Store.getInstance().prodcutSpecProcess.get(i).setSynced(true);
                     try {
-                        BizUtils.storeAsJSON("ProductSpecProcessList", BizUtils.getJSON("productspecprocess", Store.getInstance().prodcutSpecProcess));
-                        System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
+                        BizUtils.storeAsJSON("Dealer", BizUtils.getJSON("dealer", Store.getInstance().dealer));
+                        System.out.println("DB 'Dealer' Updated..on local storage");
                     } catch (ClassNotFoundException e) {
 
                         System.err.println("Unable to write to DB");
                     }
 
+                } else {
+                    Toast.makeText(context, "Dealer not Updated", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                System.out.println("Dealer already synced");
+            }
+
+            for (int i = 0; i < Store.getInstance().prodcutSpecProcess.size(); i++) {
+                System.out.println("Sync prod spec = " + Store.getInstance().prodcutSpecProcess.get(i).isSynced());
+                if (Store.getInstance().prodcutSpecProcess.get(i).isSynced()) {
+                    System.out.println("No sync prod spec");
+
 
                 } else {
-                    //  Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
-                    BizUtils.prettyJson("product Spec", Store.getInstance().prodcutSpecProcess.get(i));
-                }
+                    sync = true;
+                    if (SignalRService.saveProductSpec(Store.getInstance().prodcutSpecProcess.get(i))) {
+//                    Toast.makeText(context, "Prod Spec Updated", Toast.LENGTH_SHORT).show();
+                        Store.getInstance().prodcutSpecProcess.get(i).setSynced(true);
+                        try {
+                            BizUtils.storeAsJSON("ProductSpecProcessList", BizUtils.getJSON("productspecprocess", Store.getInstance().prodcutSpecProcess));
+                            System.out.println("DB 'ProductSpecProcessList' Updated..on local storage");
+                        } catch (ClassNotFoundException e) {
 
-            }
-
-
-        }
-        for (int i = 0; i < Store.getInstance().newBankList.size(); i++) {
-            if (Store.getInstance().newBankList.get(i).isSynced()) {
-                System.out.println("Already synced...");
-            } else {
-                sync = true;
-                if (SignalRService.saveBank(Store.getInstance().newBankList.get(i))) {
-                    Store.getInstance().newBankList.get(i).setSynced(true);
-                    try {
-                        BizUtils.storeAsJSON("NewBankList", BizUtils.getJSON("bankList", Store.getInstance().newBankList));
-                        System.out.println("DB 'NewBankList' Updated..on local storage");
-                    } catch (ClassNotFoundException e) {
-
-                        System.err.println("Unable to write to DB 'NewBankList'");
-                    }
-                }
-            }
-        }
-        for(int i=0;i<Store.getInstance().productList.size();i++)
-        {
-            if(Store.getInstance().productList.get(i).isSynced())
-            {
-             //   System.out.println("Product : Already synced...");
-            }
-            else
-            {
-                System.out.println("Product : syncing now...");
-                sync = true;
-                if (SignalRService.productSave(Store.getInstance().productList.get(i))) {
-                    Store.getInstance().productList.get(i).setSynced(true);
+                            System.err.println("Unable to write to DB");
+                        }
 
 
-                    try {
-                        BizUtils.storeAsJSON("ProductList", BizUtils.getJSON("productList", Store.getInstance().productList));
-                        System.out.println("DB 'ProductList' Updated..on local storage");
-                    } catch (ClassNotFoundException e) {
-
-                        System.err.println("Unable to write to DB 'ProductList'");
+                    } else {
+                        //  Toast.makeText(context, "Prod spec not updated", Toast.LENGTH_SHORT).show();
+                        BizUtils.prettyJson("product Spec", Store.getInstance().prodcutSpecProcess.get(i));
                     }
 
                 }
+
+
             }
-        }
+            for (int i = 0; i < Store.getInstance().newBankList.size(); i++) {
+                if (Store.getInstance().newBankList.get(i).isSynced()) {
+                    System.out.println("Already synced...");
+                } else {
+                    sync = true;
+                    if (SignalRService.saveBank(Store.getInstance().newBankList.get(i))) {
+                        Store.getInstance().newBankList.get(i).setSynced(true);
+                        try {
+                            BizUtils.storeAsJSON("NewBankList", BizUtils.getJSON("bankList", Store.getInstance().newBankList));
+                            System.out.println("DB 'NewBankList' Updated..on local storage");
+                        } catch (ClassNotFoundException e) {
+
+                            System.err.println("Unable to write to DB 'NewBankList'");
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < Store.getInstance().productList.size(); i++) {
+                if (Store.getInstance().productList.get(i).isSynced()) {
+                    //   System.out.println("Product : Already synced...");
+                } else {
+                    System.out.println("Product : syncing now...");
+                    sync = true;
+                    if (SignalRService.productSave(Store.getInstance().productList.get(i))) {
+                        Store.getInstance().productList.get(i).setSynced(true);
 
 
-        System.out.println("Sync required = " + sync);
+                        try {
+                            BizUtils.storeAsJSON("ProductList", BizUtils.getJSON("productList", Store.getInstance().productList));
+                            System.out.println("DB 'ProductList' Updated..on local storage");
+                        } catch (ClassNotFoundException e) {
+
+                            System.err.println("Unable to write to DB 'ProductList'");
+                        }
+
+                    }
+                }
+            }
 
 
-        if (!sync) {
-            if (from.toLowerCase().contains("auto")) {
-                // System.out.print("No Data to sync...");
-                Store.getInstance().messageList.add("Auto Sync invoked");
-                Notification notification = new Notification();
-                notification.setTime(getCurrentTime());
-                notification.setMessage("Auto Sync invoked:No data to Sync");
-                //  Store.getInstance().notificationList.add(notification);
+            System.out.println("Sync required = " + sync);
+
+
+            if (!sync) {
+                if (from.toLowerCase().contains("auto")) {
+                    // System.out.print("No Data to sync...");
+                    Store.getInstance().messageList.add("Auto Sync invoked");
+                    Notification notification = new Notification();
+                    notification.setTime(getCurrentTime());
+                    notification.setMessage("Auto Sync invoked:No data to Sync");
+                    //  Store.getInstance().notificationList.add(notification);
+
+                } else {
+                    Notification notification = new Notification();
+                    notification.setMessage("Manual Sync invoked:No data to Sync");
+                    notification.setTime(getCurrentTime());
+                    Store.getInstance().notificationList.add(notification);
+
+
+                    try {
+                        Snackbar snackbar = null;
+
+                        View notifier = DashboardActivity.customActionBar.findViewById(R.id.notify);
+                        snackbar = Snackbar
+                                .make(notifier, "Manual sync: No Data ", Snackbar.LENGTH_LONG);
+
+                        // snackbar.show();
+                        Store.getInstance().messageList.add("Manual Sync invoked");
+
+                        showToast("No Data to sync...", context);
+                    } catch (Exception e) {
+
+                    }
+                }
+
 
             } else {
-                Notification notification = new Notification();
-                notification.setMessage("Manual Sync invoked:No data to Sync");
-                notification.setTime(getCurrentTime());
-                Store.getInstance().notificationList.add(notification);
-
-
                 try {
-                    Snackbar snackbar = null;
-
-                    View notifier = DashboardActivity.customActionBar.findViewById(R.id.notify);
-                    snackbar = Snackbar
-                            .make(notifier, "Manual sync: No Data ", Snackbar.LENGTH_LONG);
-
-                    // snackbar.show();
-                    Store.getInstance().messageList.add("Manual Sync invoked");
-
-                    showToast("No Data to sync...", context);
-                } catch (Exception e) {
-
+                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                    System.err.println("DB Updated..on local storage");
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Unable to write to DB");
                 }
             }
-
-
-        } else {
-            try {
-                BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
-                System.err.println("DB Updated..on local storage");
-            } catch (ClassNotFoundException e) {
-
-                System.err.println("Unable to write to DB");
-            }
+        }
+        else
+        {
+            Toast.makeText(context, "No Network Connection...", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -2420,7 +2431,7 @@ public class BizUtils {
             thank.addCell(getCell(context.getString(R.string.app_name), PdfPCell.ALIGN_CENTER));
             document.add(thank);
             document.add(new Paragraph("_____________________________________________________________________________"));
-            document.add(new Paragraph("                                                                             "));
+
 
             PdfPTable cn = new PdfPTable(1);
             cn.setWidthPercentage(100);
@@ -2439,7 +2450,7 @@ public class BizUtils {
             PdfPTable cn1 = new PdfPTable(1);
             cn1.setWidthPercentage(100);
             cn1.addCell(getCell("_____________________________________________________________________________", PdfPCell.ALIGN_LEFT));
-            cn1.addCell(getCell("                   ", PdfPCell.ALIGN_LEFT));
+            /*cn1.addCell(getCell("                   ", PdfPCell.ALIGN_LEFT));*/
             cn1.addCell(getCell("Customer Details", PdfPCell.ALIGN_CENTER));
 
 
@@ -2460,7 +2471,7 @@ public class BizUtils {
             cn2.addCell(getCell("                   ", PdfPCell.ALIGN_LEFT));
 
 
-            document.add(cn2);
+           /* document.add(cn2);*/
 
             PdfPTable pm = new PdfPTable(1);
             pm.setWidthPercentage(100);
@@ -2694,6 +2705,9 @@ public class BizUtils {
             thank1.addCell(getCell(" ", PdfPCell.ALIGN_CENTER));
             thank1.addCell(getCell("***Thank You***", PdfPCell.ALIGN_CENTER));
             document.add(new Paragraph("_____________________________________________________________________________"));
+            thank1.setWidthPercentage(100);
+            thank1.addCell(getCell(" ", PdfPCell.ALIGN_CENTER));
+            thank1.addCell(getCell("Powered By Denariusoft SDN BHD", PdfPCell.ALIGN_CENTER));
             document.add(thank1);
 
 

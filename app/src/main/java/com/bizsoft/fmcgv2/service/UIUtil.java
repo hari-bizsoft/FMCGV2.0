@@ -51,7 +51,12 @@ public class UIUtil {
             SharedPreferences prefs = context.getSharedPreferences(Store.getInstance().MyPREFERENCES, MODE_PRIVATE);
             String username = prefs.getString(context.getString(R.string.username), "");
 
-            dealerName.setText(String.valueOf(username+"-"+ Store.getInstance().dealer.getCompanyName()));
+            String dealerNameString = Store.getInstance().dealer.getCompanyName();
+            if(Store.getInstance().dealer.getCompanyName()==null)
+            {
+                dealerNameString = Store.getInstance().dealerName;
+            }
+            dealerName.setText(String.valueOf(username+"-"+ dealerNameString));
 
 
 

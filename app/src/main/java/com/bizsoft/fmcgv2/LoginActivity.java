@@ -374,6 +374,7 @@ public class LoginActivity extends AppCompatActivity {
                 Store.getInstance().dealerId = companyTemp.get(position).getId();
                 System.out.println("Dealer ID :"+companyTemp.get(position).getId());
 
+
             }
 
             @Override
@@ -601,9 +602,6 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(context,DownloadDataActivity.class);
                     startActivity(intent);
-
-
-
                 }
 
 

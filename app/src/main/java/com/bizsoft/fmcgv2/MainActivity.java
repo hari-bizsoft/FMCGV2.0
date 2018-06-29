@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intent = null;
                                     if(!Boolean.valueOf(response))
                                     {
-                                        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                        MainActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                                                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                                         intent = new Intent(context,BlockPage.class);

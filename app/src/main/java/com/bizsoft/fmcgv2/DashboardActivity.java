@@ -99,6 +99,7 @@ import java.util.HashMap;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.bizsoft.fmcgv2.service.BizUtils.decimalFormatter;
 import static com.bizsoft.fmcgv2.service.BizUtils.prettyJson;
@@ -1561,7 +1562,7 @@ public class DashboardActivity extends AppCompatActivity {
                 //Previously Permission Request was cancelled with 'Dont Ask Again',
                 // Redirect to Settings after showing Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
-                builder.setTitle("Need Storage Permission");
+                builder.setTitle("Need Storage and location Permission");
                 builder.setMessage("This app needs storage and location permission.");
                 builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                     @Override
@@ -1584,7 +1585,7 @@ public class DashboardActivity extends AppCompatActivity {
                 builder.show();
             } else {
                 //just request the permission
-                ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{WRITE_EXTERNAL_STORAGE,ACCESS_COARSE_LOCATION}, ALL_PERMISSION);
             }
 
             SharedPreferences.Editor editor = permissionStatus.edit();

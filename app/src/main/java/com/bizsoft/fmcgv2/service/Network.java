@@ -79,16 +79,10 @@ public class Network {
 //                    setMobileDataState(getMobileDataState());
 //                    createNetErrorDialog();
                     try {
-                        setMobileDataEnabled(context,true);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
+                        setMobileDataState(context,true);
+                    }
+                    catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
                 }
@@ -130,7 +124,7 @@ public class Network {
             e.printStackTrace();
         }
     }
-    public void setMobileDataState(Context context,boolean mobileDataEnabled)
+    public static void setMobileDataState(Context context, boolean mobileDataEnabled)
     {
         try
         {

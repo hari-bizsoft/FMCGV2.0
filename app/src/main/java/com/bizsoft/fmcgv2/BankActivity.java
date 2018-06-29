@@ -42,7 +42,7 @@ public class BankActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank);
         UIUtil.setActionBarMenu(BankActivity.this,getSupportActionBar(),"Banks");
-        getSupportActionBar().setTitle("Banks");
+        getSupportActionBar().setTitle("Bank List");
         searchBar = (EditText) findViewById(R.id.search_bar);
         listView = (ListView) findViewById(R.id.listview);
         add = (FloatingActionButton) findViewById(R.id.add);

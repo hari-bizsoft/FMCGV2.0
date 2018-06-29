@@ -1,0 +1,11 @@
+#Internal package file, do not edit.
+#Thu Jun 28 14:48:55 IST 2018
+1.base=I\:\\AndroidStudioProjects\\AndroidStudioProjects\\Hari - Last Backup\\FMCGV22\\app\\build\\intermediates\\assets\\debug
+0.baseType=DIRECTORY
+1.baseType=DIRECTORY
+count=2
+1.set=ASSET
+0.path=fmcglogo64.png
+0.set=ASSET
+0.base=I\:\\AndroidStudioProjects\\AndroidStudioProjects\\Hari - Last Backup\\FMCGV22\\app\\build\\intermediates\\assets\\debug
+1.path=denariusoft64.png

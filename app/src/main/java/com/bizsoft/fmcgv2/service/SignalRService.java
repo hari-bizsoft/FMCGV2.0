@@ -94,18 +94,16 @@ public class SignalRService {
     private static String MyPREFERENCES = "ACTIVATION_KEY";
     static SharedPreferences.Editor editor;
     private static String AppId = "AppId";
-
     static final String TAG = "SIGNAL R SERVICE";
     private static Object RConnectionId;
 
     public static ArrayList<Company>  getCompanyDetails(Context context)
     {
+
         ArrayList<LinkedTreeMap> companyCollection = new ArrayList<LinkedTreeMap>();
         try {
             companyCollection = mHubProxyCaller.invoke(companyCollection.getClass(),"CompanyDetail_List").get();
-
             System.out.println("Obj ---------"+companyCollection.size());
-
             ArrayList<Company> companyArrayList = new ArrayList<Company>();
 
             for(int i=0;i<companyCollection.size();i++)
@@ -325,6 +323,8 @@ public class SignalRService {
                             if(Store.getInstance().user.getId()==0.0)
                             {
                                 status = false;
+                                Toast.makeText(context, "User not found...", Toast.LENGTH_SHORT).show();
+
                             }
                             else
                             {
@@ -433,19 +433,16 @@ public class SignalRService {
 
             for(int i=0;i<customreCollection.size();i++)
             {
-
                 Customer customer = new Customer();
                 final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
                 customer = mapper.convertValue(customreCollection.get(i),Customer.class);
                 System.out.println("Customer Id"+customer.getId());
                 System.out.println("Customer ledger"+customer.getLedger());
                 System.out.println("Customer ledger name"+customer.getLedgerName());
-              //  BizUtils.prettyJson("Customer",customreCollection.get(i));
-
+                //  BizUtils.prettyJson("Customer",customreCollection.get(i));
 
                 //BizUtils.prettyJson("Customer ",customer);
                 customer.setSynced(true);
-
 
                 Store.getInstance().customerList.add(customer);
 
@@ -455,11 +452,6 @@ public class SignalRService {
                         DownloadDataActivity.customers.setText(String.valueOf(Store.getInstance().customerList.size()));
                     }
                 });
-
-
-
-
-
             }
 
 

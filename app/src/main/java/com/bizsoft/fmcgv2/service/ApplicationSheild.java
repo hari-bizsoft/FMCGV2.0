@@ -109,7 +109,7 @@ public class ApplicationSheild {
             this.host = Store.getInstance().baseUrl;
             this.context = context;
             this.progressDialog    = new ProgressDialog(this.context);
-            this.progressDialog.setTitle("Connecting.....");
+            this.progressDialog.setTitle("Connecting...");
         }
 
         @Override
@@ -204,7 +204,7 @@ public class ApplicationSheild {
             this.host =Store.getInstance().baseUrl;
             this.context = context;
             this.progressDialog    = new ProgressDialog(this.context);
-            this.progressDialog.setTitle("Connecting.....");
+            this.progressDialog.setTitle("Connecting...");
         }
 
         @Override
