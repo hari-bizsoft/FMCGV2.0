@@ -1,432 +1,432 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\fadcee99f7382cf55330517a0775f89f\AndroidManifest.xml:2:1-11:12
-MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:17:1-31:12
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:2:1-20:12
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\6153c9c4419fabccd336a92debc06b2c\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\ee1b4efa44dbf941a3f8c0a211801f68\AndroidManifest.xml:17:1-26:12
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:17:1-31:12
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dd36b572804a6b1f463316f04ccb24f7\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:17:1-31:12
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:2:1-20:12
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\ae765a34b5beac6ae428b4310912be29\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3353eca865c1d008e95a523b49afbe48\AndroidManifest.xml:17:1-26:12
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:17:1-31:12
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
 	package
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:9:11-39
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:9:11-39
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:8:11-57
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:8:11-57
 	android:versionCode
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-152:12
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:1-153:12
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:11-69
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:7:11-69
 uses-permission#android.permission.BLUETOOTH
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:11:5-67
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:11:5-67
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:11:22-65
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:11:22-65
 uses-permission#android.permission.BLUETOOTH_ADMIN
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:12:5-73
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:12:5-73
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:12:22-71
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:12:22-71
 uses-permission#android.permission.CHANGE_WIFI_STATE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:13:5-75
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:13:5-75
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:13:22-73
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:13:22-73
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:14:5-66
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:12:5-67
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:12:5-67
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:14:5-66
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:12:5-67
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:12:5-67
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:14:22-64
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:14:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:15:5-78
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:11:5-79
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:11:5-79
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:15:5-78
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:11:5-79
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:11:5-79
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:15:22-76
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:15:22-76
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:16:5-80
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:16:5-80
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:16:22-78
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:16:22-78
 uses-permission#android.permission.READ_CONTACTS
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:17:5-71
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:17:5-71
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:17:22-69
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:17:22-69
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:18:5-74
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:18:5-74
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:18:22-72
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:18:22-72
 uses-permission#android.permission.WRITE_CONTACTS
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:19:5-72
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:20:5-72
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:19:22-70
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:20:22-70
 uses-permission#android.permission.GET_ACCOUNTS
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:20:5-70
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:21:5-70
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:20:22-68
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:21:22-68
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:23:5-75
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:24:5-75
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:23:22-73
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:24:22-73
 uses-permission#android.permission.MODIFY_PHONE_STATE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:24:5-26:46
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:25:5-27:46
 	tools:ignore
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:26:9-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:27:9-44
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:25:9-61
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:26:9-61
 supports-screens
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:28:5-53
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:29:5-53
 	android:xlargeScreens
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:28:23-51
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:29:23-51
 permission#android.permission.INTERACT_ACROSS_USERS_FULL
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:30:5-32:46
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:31:5-33:46
 	android:protectionLevel
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:32:9-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:33:9-44
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:31:9-69
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:32:9-69
 uses-permission#android.permission.INTERACT_ACROSS_USERS_FULL
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:34:5-37:46
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:35:5-38:46
 	android:protectionLevel
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:36:9-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:37:9-44
 	tools:ignore
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:37:9-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:38:9-44
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:35:9-69
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:36:9-69
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:38:5-80
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:39:5-80
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:38:22-78
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:39:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:39:5-79
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:40:5-79
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:39:22-77
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:40:22-77
 application
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:41:5-150:19
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\fadcee99f7382cf55330517a0775f89f\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\fadcee99f7382cf55330517a0775f89f\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:29:5-20
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:14:5-18:19
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:14:5-18:19
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:29:5-20
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:42:5-151:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dd36b572804a6b1f463316f04ccb24f7\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dd36b572804a6b1f463316f04ccb24f7\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:29:5-20
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:14:5-18:19
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:14:5-18:19
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:29:5-20
 	android:supportsRtl
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:46:9-35
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:47:9-35
 	android:label
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:44:9-41
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:45:9-41
 	android:roundIcon
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:45:9-49
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:46:9-49
 	android:icon
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:43:9-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:44:9-44
 	android:allowBackup
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:42:9-35
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:43:9-35
 	android:theme
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:47:9-40
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:48:9-40
 activity#com.bizsoft.fmcgv2.MainActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:48:9-57:20
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:49:9-58:20
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:50:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:51:13-59
 	android:theme
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:51:13-69
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:52:13-69
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:49:13-41
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:50:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:52:13-56:29
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:53:13-57:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:53:17-68
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:54:17-68
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:53:25-66
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:54:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:55:17-76
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:56:17-76
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:55:27-74
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:56:27-74
 activity#com.bizsoft.fmcgv2.LoginActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:58:9-60:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:59:9-61:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:60:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:61:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:59:13-42
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:60:13-42
 activity#com.bizsoft.fmcgv2.DashboardActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:61:9-63:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:62:9-64:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:63:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:64:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:62:13-46
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:63:13-46
 activity#com.bizsoft.fmcgv2.CustomerActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:64:9-66:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:65:9-67:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:66:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:67:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:65:13-45
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:66:13-45
 activity#com.bizsoft.fmcgv2.AddCustomerActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:67:9-69:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:68:9-70:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:69:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:70:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:68:13-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:69:13-48
 activity#com.bizsoft.fmcgv2.SalesActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:70:9-74:20
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:71:9-75:20
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:70:19-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:71:19-48
 meta-data#android.app.searchable
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:71:13-73:53
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:72:13-74:53
 	android:resource
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:73:17-51
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:74:17-51
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:72:17-54
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:73:17-54
 activity#com.bizsoft.fmcgv2.SalesOrderActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:75:9-77:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:76:9-78:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:77:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:78:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:76:13-47
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:77:13-47
 activity#com.bizsoft.fmcgv2.BTLib.BTDeviceList
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:78:9-80:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:79:9-81:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:80:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:81:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:79:13-47
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:80:13-47
 activity#com.bizsoft.fmcgv2.BTLib.BTPrint
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:81:9-83:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:82:9-84:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:83:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:84:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:82:13-42
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:83:13-42
 activity#com.bizsoft.fmcgv2.ReportActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:84:9-86:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:85:9-87:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:86:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:87:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:85:13-43
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:86:13-43
 activity#com.bizsoft.fmcgv2.PrintPreview
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:87:9-89:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:88:9-90:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:89:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:90:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:88:13-41
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:89:13-41
 activity#com.bizsoft.fmcgv2.ReprintActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:90:9-92:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:91:9-93:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:92:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:93:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:91:13-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:92:13-44
 activity#com.bizsoft.fmcgv2.InvoiceListActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:93:9-95:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:94:9-96:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:95:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:96:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:94:13-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:95:13-48
 activity#com.bizsoft.fmcgv2.SalesReturnActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:96:9-98:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:97:9-99:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:98:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:99:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:97:13-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:98:13-48
 activity#com.bizsoft.fmcgv2.ReceiptActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:99:9-101:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:100:9-102:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:101:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:102:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:100:13-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:101:13-44
 activity#com.bizsoft.fmcgv2.PaymentActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:102:9-104:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:103:9-105:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:104:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:105:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:103:13-44
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:104:13-44
 activity#com.bizsoft.fmcgv2.service.BlockPage
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:105:9-54
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:106:9-54
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:105:19-52
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:106:19-52
 activity#com.bizsoft.fmcgv2.DownloadDataActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:106:9-108:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:107:9-109:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:108:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:109:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:107:13-49
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:108:13-49
 activity#com.bizsoft.fmcgv2.STOSOActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:109:9-111:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:110:9-112:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:111:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:112:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:110:13-42
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:111:13-42
 activity#com.bizsoft.fmcgv2.AppActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:112:9-114:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:113:9-115:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:114:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:115:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:113:13-40
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:114:13-40
 activity#com.bizsoft.fmcgv2.DealerActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:115:9-117:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:116:9-118:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:117:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:118:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:116:13-43
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:117:13-43
 activity#com.bizsoft.fmcgv2.ProductSpecActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:118:9-120:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:119:9-121:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:120:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:121:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:119:13-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:120:13-48
 activity#com.bizsoft.fmcgv2.BankActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:121:9-123:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:122:9-124:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:123:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:124:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:122:13-41
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:123:13-41
 activity#com.bizsoft.fmcgv2.CreateBankActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:124:9-126:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:125:9-127:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:126:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:127:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:125:13-47
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:126:13-47
 activity#com.bizsoft.fmcgv2.ProductListActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:127:9-129:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:128:9-130:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:129:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:130:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:128:13-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:129:13-48
 activity#com.bizsoft.fmcgv2.AddProductActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:130:9-132:61
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:131:9-133:61
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:132:13-59
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:133:13-59
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:131:13-47
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:132:13-47
 activity#com.bizsoft.fmcgv2.StockReportActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:133:9-135:65
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:134:9-136:65
 	android:configChanges
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:135:13-63
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:136:13-63
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:134:13-48
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:135:13-48
 receiver#com.bizsoft.fmcgv2.NetworkCheckReceiver
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:137:9-141:20
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:138:9-142:20
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:137:19-55
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:138:19-55
 intent-filter#action:name:android.net.conn.CONNECTIVITY_CHANGE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:138:13-140:29
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:139:13-141:29
 action#android.net.conn.CONNECTIVITY_CHANGE
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:139:17-78
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:140:17-78
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:139:25-76
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:140:25-76
 activity#com.bizsoft.fmcgv2.BTLib.BTDeviceListActivity
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:143:9-147:20
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:144:9-148:20
 	android:label
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:145:13-65
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:146:13-65
 	android:theme
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:146:13-56
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:147:13-56
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:144:13-55
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:145:13-55
 activity#com.bizsoft.fmcgv2.PrintPreviewHC
-ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:148:9-149:20
+ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:149:9-150:20
 	android:name
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:148:19-49
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml:149:19-49
 uses-sdk
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\fadcee99f7382cf55330517a0775f89f\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\fadcee99f7382cf55330517a0775f89f\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:21:5-23:78
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\945061b7f1580b03c40625ed8780da30\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\6153c9c4419fabccd336a92debc06b2c\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\6153c9c4419fabccd336a92debc06b2c\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\ee1b4efa44dbf941a3f8c0a211801f68\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\ee1b4efa44dbf941a3f8c0a211801f68\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:21:5-23:58
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dd36b572804a6b1f463316f04ccb24f7\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dd36b572804a6b1f463316f04ccb24f7\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:21:5-23:78
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.yesidlazaro:GmailBackground:1.2.0] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\GmailBackground-1.2.0.aar\11e5c0a087726c46257b22e5dc5359de\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\ae765a34b5beac6ae428b4310912be29\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\ae765a34b5beac6ae428b4310912be29\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3353eca865c1d008e95a523b49afbe48\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3353eca865c1d008e95a523b49afbe48\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:21:5-23:58
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:23:9-59
+		ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Kavya\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		ADDED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
+		INJECTED from I:\AndroidStudioProjects\AndroidStudioProjects\Hari - Last Backup\FMCGV22\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\dea08d097dd94c75e7d52d8f7b1f610e\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\4c213fb7c69e01e0cf570e679a3b8cfc\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\54086335e4c1f24a478ed70ccd0b026f\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\ee1b4efa44dbf941a3f8c0a211801f68\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\ee1b4efa44dbf941a3f8c0a211801f68\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\42b5176a2ac6bb8aca5d3eb11e51ad87\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\90ca9280462520a40ff8dd0ad7f9d5e0\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\6d06c4e708adc14fbe641f03b03e4a80\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\ac516a22e7dfe27d79a8e8139999baf6\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\fcbc6b7066d68a1bcfe5d7eab0b8b15d\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\d60d099700d82f39d7b7b20385a88936\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\326cfad305d33ee85e4392c60a0f125a\AndroidManifest.xml:25:5-27:34
+ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\8fa55b124292d7c15d729e993e5c9e52\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\67aeba2db13f610664d148242efef235\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\302e674eab37e3731dbe878ba0f711c0\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3353eca865c1d008e95a523b49afbe48\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\3353eca865c1d008e95a523b49afbe48\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\401ed42663ecb89bbc8a0a6f63d0beef\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\4d218aa0f572b1b29b7b22ac247b7540\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2da3265186b456e42fb8d7be465fc628\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\af792e0b140e15847e486be53cc6f64d\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\03a572041cd28f660d02591cde7cf5a7\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\24c251af428eff9e03693948c5d48a88\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f42d8530f8fc3d8f10a710a0652b1bbb\AndroidManifest.xml:25:5-27:34
 	android:value
-		ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:27:9-31
+		ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:27:9-31
 	android:name
-		ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\e46e085c1d558cadcd27c8d2a66c3803\AndroidManifest.xml:26:9-47
+		ADDED from [com.android.support:design:25.3.1] C:\Users\Kavya\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5c3d82bd77cc6108f14edc586fc4649f\AndroidManifest.xml:26:9-47

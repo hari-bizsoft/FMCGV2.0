@@ -90,7 +90,7 @@ public class BTDeviceListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Snackbar.make(view, "Connecting....", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Connecting...", Snackbar.LENGTH_LONG)
                        .show();
 
                 connectBTDevice(position);
@@ -183,6 +183,13 @@ public class BTDeviceListActivity extends AppCompatActivity {
 
                         }while (!mbtSocket.isConnected() && i<=10);
 
+
+                        runOnUiThread (new Thread(new Runnable() {
+                            public void run() {
+
+                                Toast.makeText(BTDeviceListActivity.this, "Connected...", Toast.LENGTH_SHORT).show();
+                            }
+                        }));
                         System.out.println("called finish");
                         finish();
 

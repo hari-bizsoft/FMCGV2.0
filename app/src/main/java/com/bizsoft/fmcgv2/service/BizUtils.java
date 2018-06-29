@@ -884,60 +884,61 @@ public class BizUtils {
             super.onPostExecute(o);
 
 
-            System.out.println("JSON :" + customerResponse.getId());
-            if (customerResponse != null) {
-                if (customerResponse.getId() == 0) {
-                   // Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
-                    Log.e("Customer save","not saved");
+            try {
 
-                } else {
-                    Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
-                    this.customers.setId(customerResponse.getId());
-                    int size = Store.getInstance().customerList.size();
-                    System.out.println("Received ID " + customerResponse.getId());
-                    Store.getInstance().customerList.get(position).setId(customerResponse.getId());
-                    final Customer[] customer = {null};
+                System.out.println("JSON :" + customerResponse.getId());
+                if (customerResponse != null) {
+                    if (customerResponse.getId() == 0) {
+                        // Toast.makeText(context, "Customer not Saved", Toast.LENGTH_SHORT).show();
+                        Log.e("Customer save", "not saved");
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
+                    } else {
+                        Toast.makeText(context, "Customer Saved", Toast.LENGTH_SHORT).show();
+                        this.customers.setId(customerResponse.getId());
+                        int size = Store.getInstance().customerList.size();
+                        System.out.println("Received ID " + customerResponse.getId());
+                        Store.getInstance().customerList.get(position).setId(customerResponse.getId());
+                        final Customer[] customer = new Customer[0];
 
-                             customer[0] = SignalRService.getCustomer(customerResponse.getId());
-                        }
-                    });
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
 
-
-
-                    System.out.println("Size " + Store.getInstance().customerList.size());
-                    System.out.println("Position " + position);
-                    for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
-                        System.out.println("cus id : " + Store.getInstance().customerList.get(i).getId());
-                        System.out.println("Position " + i);
-                        if (Store.getInstance().customerList.get(i).getId().compareTo(customer[0].getId()) == 0) {
-                            System.out.println("setting led if for cus id : " + Store.getInstance().customerList.get(i).getId());
-                            Store.getInstance().customerList.get(i).getLedger().setId(customer[0].getLedger().getId());
-                            Store.getInstance().customerList.get(i).setSynced(true);
-                            //Saving to local storage as JSON
-                            try {
-                                BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
-                                System.out.println("DB Updated..on local storage");
-
-                                customerNameListAdapter= new ArrayAdapter<String>(context,
-                                        android.R.layout.simple_dropdown_item_1line, Customer.getCustomerNameList());
-
-
-                                DashboardActivity.customerNameKey.setAdapter(customerNameListAdapter);
-                                customerNameListAdapter.notifyDataSetChanged();
-
-                            } catch (ClassNotFoundException e) {
-
-                                System.err.println("Unable to write to DB");
+                                customer[0] = SignalRService.getCustomer(customerResponse.getId());
                             }
-                            break;
-                        }
-                    }
+                        });
 
-                    BizUtils.prettyJson("customer", customer[0]);
+
+                        System.out.println("Size " + Store.getInstance().customerList.size());
+                        System.out.println("Position " + position);
+                        for (int i = 0; i < Store.getInstance().customerList.size(); i++) {
+                            System.out.println("cus id : " + Store.getInstance().customerList.get(i).getId());
+                            System.out.println("Position " + i);
+                            if (Store.getInstance().customerList.get(i).getId().compareTo(customer[0].getId()) == 0) {
+                                System.out.println("setting led if for cus id : " + Store.getInstance().customerList.get(i).getId());
+                                Store.getInstance().customerList.get(i).getLedger().setId(customer[0].getLedger().getId());
+                                Store.getInstance().customerList.get(i).setSynced(true);
+                                //Saving to local storage as JSON
+                                try {
+                                    BizUtils.storeAsJSON("customerList", BizUtils.getJSON("customer", Store.getInstance().customerList));
+                                    System.out.println("DB Updated..on local storage");
+
+                                    customerNameListAdapter = new ArrayAdapter<String>(context,
+                                            android.R.layout.simple_dropdown_item_1line, Customer.getCustomerNameList());
+
+
+                                    DashboardActivity.customerNameKey.setAdapter(customerNameListAdapter);
+                                    customerNameListAdapter.notifyDataSetChanged();
+
+                                } catch (ClassNotFoundException e) {
+
+                                    System.err.println("Unable to write to DB");
+                                }
+                                break;
+                            }
+                        }
+
+                        BizUtils.prettyJson("customer", customer[0]);
 
 
 
@@ -1026,15 +1027,20 @@ public class BizUtils {
 
                         */
 
-                    saveDetails(context, from);
+                        saveDetails(context, from);
+                    }
+                    syncStatus = true;
+                } else {
+
+                    syncStatus = false;
+                    Toast.makeText(context, "Error in saving customer", Toast.LENGTH_SHORT).show();
                 }
-                syncStatus = true;
-            } else {
 
-                syncStatus = false;
-                Toast.makeText(context, "Error in saving customer", Toast.LENGTH_SHORT).show();
             }
-
+            catch (Exception e)
+            {
+                System.out.println("Exception "+e);
+            }
         }
 
 

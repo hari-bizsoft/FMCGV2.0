@@ -305,8 +305,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         bankName.setThreshold(1);
         bankName.setAdapter(bankAdapter);
-        registerReceiver(
-                new ConnectivityChangeReceiver(),
+        registerReceiver(new ConnectivityChangeReceiver(),
                 new IntentFilter(
                         ConnectivityManager.CONNECTIVITY_ACTION));
 
