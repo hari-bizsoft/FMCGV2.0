@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
+import com.bizsoft.fmcgv2.BTLib.BTDeviceListActivity;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.adapter.SalesAdapter;
@@ -121,7 +122,7 @@ public class ReprintActivity extends AppCompatActivity {
                 {
                     if(BTPrint.btsocket==null)
                     {
-                        Intent intent = new Intent(ReprintActivity.this,BTDeviceList.class);
+                        Intent intent = new Intent(ReprintActivity.this,BTDeviceListActivity.class);
 
                         startActivityForResult(intent,BLUETOOTH_FLAG);
 
@@ -239,7 +240,13 @@ public class ReprintActivity extends AppCompatActivity {
             }
             else
             {
-                genderList.add(customerList.get(i).getId()+" - "+customerList.get(i).getLedger().getLedgerName());
+                if(customerList.get(i).getId()==0)
+                {
+                    genderList.add(customerList.get(i).getLedger().getLedgerName());
+                }
+                else {
+                    genderList.add(customerList.get(i).getId() + " - " + customerList.get(i).getLedger().getLedgerName());
+                }
             }
 
         }
@@ -1108,7 +1115,7 @@ public class ReprintActivity extends AppCompatActivity {
         try {
 
 
-            BTPrint.btsocket = BTDeviceList.getSocket();
+            BTPrint.btsocket = BTDeviceListActivity.getSocket();
             if (BTPrint.btsocket != null) {
                 try {
                     Thread.sleep(1000);

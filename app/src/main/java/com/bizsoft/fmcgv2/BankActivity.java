@@ -41,7 +41,7 @@ public class BankActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank);
-        UIUtil.setActionBarMenu(BankActivity.this,getSupportActionBar(),"Banks");
+        UIUtil.setActionBarMenu(BankActivity.this,getSupportActionBar(),"Bank List");
         getSupportActionBar().setTitle("Bank List");
         searchBar = (EditText) findViewById(R.id.search_bar);
         listView = (ListView) findViewById(R.id.listview);

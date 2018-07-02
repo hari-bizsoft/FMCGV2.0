@@ -83,7 +83,7 @@ public class Store {
     public TextView reprintSpinnerText;
     public  ArrayList<Receipt> receipts = new ArrayList<Receipt>();
     public ArrayList<Payment> payments = new ArrayList<>();
-    public int idleTimeLimit = 3;
+    public int idleTimeLimit = 1;
     public String serverStatus;
     public String appId;
     public String deviceName;

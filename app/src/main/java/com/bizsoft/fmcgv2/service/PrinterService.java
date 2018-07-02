@@ -135,7 +135,10 @@ public class PrinterService  {
         if (customer1.getId() == null) {
             BTPrint.PrintTextLine("Customer ID :" + "Unregistered");
         } else {
-            BTPrint.PrintTextLine("Customer ID :" + customer1.getId());
+
+            if(customer1.getId()!=0) {
+                BTPrint.PrintTextLine("Customer ID :" + customer1.getId());
+            }
         }
         BTPrint.PrintTextLine("Customer Name :" + customer1.getLedger().getLedgerName());
         BTPrint.PrintTextLine("Person In Charge :" + customer1.getLedger().getPersonIncharge());
