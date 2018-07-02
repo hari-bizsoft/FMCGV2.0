@@ -305,9 +305,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         bankName.setThreshold(1);
         bankName.setAdapter(bankAdapter);
-        registerReceiver(new ConnectivityChangeReceiver(),
-                new IntentFilter(
-                        ConnectivityManager.CONNECTIVITY_ACTION));
 
 
         chequeDate.setOnTouchListener(new View.OnTouchListener() {
@@ -1287,7 +1284,7 @@ public class DashboardActivity extends AppCompatActivity {
             paymentModeValue = saleReturn.getPaymentMode();
 
         }
-        status = bizUtils.write(DashboardActivity.this,customer.getLedgerName()+" | "+ refNo +"|"+bizUtils.getCurrentTime()+" | ( "+company.getCompanyName()+" )" +" | "+Store.getInstance().dealerId,company,customer,Store.getInstance().addedProductList,refNo, sale,saleOrder,saleReturn);
+        status = bizUtils.write(DashboardActivity.this,customer.getLedger().getLedgerName()+" | "+ refNo +"|"+bizUtils.getCurrentTime()+" | ( "+company.getCompanyName()+" )" +" | "+Store.getInstance().dealerId,company,customer,Store.getInstance().addedProductList,refNo, sale,saleOrder,saleReturn);
 
         if (status)
         {
@@ -1667,7 +1664,7 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Intent intent = new Intent(DashboardActivity.this, BTDeviceList.class);
+                        Intent intent = new Intent(DashboardActivity.this, BTDeviceListActivity.class);
 
                         startActivityForResult(intent, BLUETOOTH_FLAG);
 
@@ -1945,7 +1942,7 @@ public class DashboardActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     lockAllUIComponents();
-                    Toast.makeText(DashboardActivity.this, "Customer Name : " + Store.getInstance().currentCustomer, Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(DashboardActivity.this, "Customer Name : " + Store.getInstance().currentCustomer, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -4720,7 +4717,7 @@ public class DashboardActivity extends AppCompatActivity {
             super.onPostExecute(o);
             lockAllUIComponents();
             customerName.setText(String.valueOf(choosedCustomer.getLedger().getLedgerName()).toUpperCase());
-            Toast.makeText(DashboardActivity.this, "Customer Name : " + String.valueOf(choosedCustomer.getLedger().getLedgerName()).toUpperCase(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(DashboardActivity.this, "Customer Name : " + String.valueOf(choosedCustomer.getLedger().getLedgerName()).toUpperCase(), Toast.LENGTH_SHORT).show();
 
         }
     }

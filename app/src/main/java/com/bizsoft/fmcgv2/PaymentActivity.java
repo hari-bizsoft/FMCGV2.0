@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
+import com.bizsoft.fmcgv2.BTLib.BTDeviceListActivity;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
 import com.bizsoft.fmcgv2.dataobject.Customer;
@@ -397,7 +398,7 @@ public class PaymentActivity extends AppCompatActivity {
         try {
 
 
-            BTPrint.btsocket = BTDeviceList.getSocket();
+            BTPrint.btsocket = BTDeviceListActivity.getSocket();
             if (BTPrint.btsocket != null) {
                 try {
                     Thread.sleep(1000);

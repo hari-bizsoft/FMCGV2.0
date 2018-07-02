@@ -221,12 +221,16 @@ public class PrintPreview extends AppCompatActivity {
        companyMail.setText(String.valueOf(company.getEMailId()));
             companyPostal.setText(String.valueOf(company.getPostalCode()));
 
-            if(customer.getId()==null) {
+            if(customer.getId()==null ||  customer.getId()==0)  {
                 customerId.setText(String.valueOf("Unregistered"));
+                customerId.setVisibility(View.INVISIBLE);
+                findViewById(R.id.textView58).setVisibility(View.INVISIBLE);
             }
             else
             {
+                customerId.setVisibility(View.VISIBLE);
                 customerId.setText(String.valueOf(customer.getId()));
+                findViewById(R.id.textView58).setVisibility(View.VISIBLE);
             }
 
             customerName.setText(String.valueOf(customer.getLedger().getLedgerName()));

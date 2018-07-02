@@ -40,7 +40,7 @@ public class Waiter extends Thread
 
 
 
-            System.out.println("Network State >>>"+Network.isNetworkAvailable(context));
+            System.out.println("Network State 1 >>>"+Network.isNetworkAvailable(context));
             if(Network.isNetworkAvailable(context)) {
                 if (Store.getInstance().mHubConnectionReceiver != null) {
                     if (Store.getInstance().mHubConnectionReceiver.getState().toString().toLowerCase().contains("disconnected")) {

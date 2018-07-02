@@ -421,7 +421,13 @@ public class STOSOActivity extends AppCompatActivity {
             }
             else
             {
-                genderList.add(customerList.get(i).getId()+" - "+customerList.get(i).getLedger().getLedgerName());
+                if(customerList.get(i).getId()==0)
+                {
+                    genderList.add(customerList.get(i).getLedger().getLedgerName());
+                }
+                else {
+                    genderList.add(customerList.get(i).getId() + " - " + customerList.get(i).getLedger().getLedgerName());
+                }
             }
         }
 
@@ -469,6 +475,8 @@ public class STOSOActivity extends AppCompatActivity {
         final ArrayList<SOPending> soPendings = new ArrayList<SOPending>();
         for(int i=0;i<Store.getInstance().SOPendingList.size();i++)
         {
+            System.out.println("Ledger Id of Cus :"+currentCustomer.getLedger().getId());
+            System.out.println("Ledger Id of SOPlist :"+Store.getInstance().SOPendingList.get(i).getLedgerId());
             if(Store.getInstance().SOPendingList.get(i).getLedgerId() == currentCustomer.getLedger().getId())
             {
                 System.out.println("-------------------------"+Store.getInstance().SOPendingList.get(i).getDiscountAmount());

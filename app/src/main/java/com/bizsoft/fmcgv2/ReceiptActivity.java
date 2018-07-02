@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizsoft.fmcgv2.BTLib.BTDeviceList;
+import com.bizsoft.fmcgv2.BTLib.BTDeviceListActivity;
 import com.bizsoft.fmcgv2.BTLib.BTPrint;
 import com.bizsoft.fmcgv2.Tables.Bank;
 import com.bizsoft.fmcgv2.adapter.CustomSpinnerAdapter;
@@ -309,7 +310,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
                 try {
                     if (BTPrint.btsocket == null) {
-                        Intent intent = new Intent(ReceiptActivity.this, BTDeviceList.class);
+                        Intent intent = new Intent(ReceiptActivity.this, BTDeviceListActivity.class);
 
                         startActivityForResult(intent, BLUETOOTH_FLAG);
 
@@ -334,7 +335,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
         try {
             if (BTPrint.btsocket == null) {
-                Intent intent = new Intent(ReceiptActivity.this, BTDeviceList.class);
+                Intent intent = new Intent(ReceiptActivity.this, BTDeviceListActivity.class);
 
                 startActivityForResult(intent, BLUETOOTH_FLAG);
 
@@ -385,7 +386,7 @@ public class ReceiptActivity extends AppCompatActivity {
             {
                 if(customerList.get(i).getId()==0)
                 {
-                    genderList.add("Unsaved"+" - "+customerList.get(i).getLedger().getLedgerName());
+                    genderList.add(customerList.get(i).getLedger().getLedgerName());
                 }
                 else {
                     genderList.add(customerList.get(i).getId() + " - " + customerList.get(i).getLedger().getLedgerName());
@@ -624,7 +625,9 @@ public class ReceiptActivity extends AppCompatActivity {
         }
         else
         {
-            BTPrint.PrintTextLine("Customer ID :"+customer1.getId());
+            if(customer1.getId()!=0) {
+                BTPrint.PrintTextLine("Customer ID :" + customer1.getId());
+            }
         }
 
 
@@ -673,7 +676,7 @@ public class ReceiptActivity extends AppCompatActivity {
             try {
 
 
-                BTPrint.btsocket = BTDeviceList.getSocket();
+                BTPrint.btsocket = BTDeviceListActivity.getSocket();
                 if (BTPrint.btsocket != null) {
                     try {
                         Thread.sleep(1000);
